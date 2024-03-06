@@ -1,0 +1,19 @@
+{
+  "name": "ainterview_server",
+  "version": "1.0.0",
+  "description": "Web server of AInterview project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahmoudk07/AInterview_Frontend.git"
+  },
+  "author": "Mahmoud Khaled",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mahmoudk07/AInterview_Frontend/issues"
+  },
+  "homepage": "https://github.com/mahmoudk07/AInterview_Frontend#readme"
+}
