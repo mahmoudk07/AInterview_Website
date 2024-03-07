@@ -54,3 +54,16 @@ export const deleteUserByID = AsyncHandler(async (request, response) => {
     await UserModel.deleteOne({ _id: id })
     return response.status(StatusCodes.OK).json(`User with ID: ${id} deleted successfully`)
 })
+export const UpdatePassword = AsyncHandler(async (request, response) => {
+    const { newPassword } = request.body
+    if (!newPassword)
+        return response.status(StatusCodes.BAD_REQUEST).json(`Please provide new password to update old password`)
+    const { id } = request.user
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(newPassword, salt)
+    await UserModel.findOneAndUpdate({ _id: id }, { password: hashedPassword }, {
+        runValidators: true,
+        new: true
+    })
+    return response.status(StatusCodes.OK).json(`Password updated successfully`)
+})
