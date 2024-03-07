@@ -15,8 +15,11 @@ const Login = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(email !== "" && password !== "" && isValidEmail)
-            await dispatch(LoginUser(data)).then(() => navigate('/'))
+        if (email !== "" && password !== "" && isValidEmail)
+            dispatch(LoginUser(data)).then((response) => {
+                if (!response.hasOwnProperty('error'))
+                    navigate('/')
+            })
     }
     useEffect(() => {
         localStorage.removeItem('token')

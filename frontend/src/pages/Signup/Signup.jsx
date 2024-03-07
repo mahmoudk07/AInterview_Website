@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { SignupUser } from '../../services/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Error } from '../../services/auth/authSlice';
 import './Signup.css'
 const Signup = () => {
     const [name , setName] = useState("")
@@ -17,14 +16,13 @@ const Signup = () => {
         firstname: name.split(' ')[0], lastname: name.split(' ')[1],
         email, password, gender, job, role: role.toLowerCase()
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         if (name !== "" && email !== "" && password !== "" && job !== "" && role !== "")
-        {
-            dispatch(SignupUser(data))
-            if(!Error)
-                navigate('/login')
-        }
+            dispatch(SignupUser(data)).then((response) => {
+                if (!response.hasOwnProperty('error'))
+                    navigate('/login')
+            })
     }
     const jobTitles = [
         'Data Scientist',
