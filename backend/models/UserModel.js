@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jsonwebtoken from "jsonwebtoken";
+import { json } from "express";
 const UserSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -44,4 +47,15 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 }
 );
+UserSchema.pre('save', async function () {
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password , salt)
+})
+UserSchema.methods.CreateJWT = function () {
+  return jsonwebtoken.sign({
+    id: this._id,
+    firstname: this.firstname,
+    lastname: this.lastname}, process.env.JWT_SECRET , {expiresIn : '30d'})
+}
 export const UserModel = mongoose.model('User', UserSchema);
+
