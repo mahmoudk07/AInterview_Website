@@ -8,6 +8,9 @@ const Signup = () => {
     const [data, setData] = useState({
         firstname: "", lastname: "" , email: "" , password: "" , gender: "", job: "Software Engineer", role: "user"
     })
+    const [focusedInputs, setFocusedInputs] = useState({
+        name : true , email: true , password: true
+    })
     const [showModal, setShowModal] = useState(false)
     const { error } = useSelector((state) => state.User)
     const dispatch = useDispatch()
@@ -44,23 +47,32 @@ const Signup = () => {
         <Modal show = { showModal } message = { error } close = { closeModal } />
         <form className = 'login__form min-w-[25%] min-h-[80%] bg-transparent py-[30px] px-[40px]' onSubmit = {handleSubmit}>
               <h1 className='text-3xl font-bold text-white text-center mb-[35px]'>Signup</h1>
-              <div className = 'relative'>
-                  <input className='bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 mb-[35px] pr-[40px]'
+                <div className={`relative ${data.firstname === "" && !focusedInputs.name ? 'mb-[30px]' : ''}`}>
+                    <input className={` block bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 ${data.firstname === "" && !focusedInputs.name ? 'mb-[0px]' :'mb-[35px]'} pr-[40px]`}
                       type='text' id='name' placeholder='Name' required onChange = {(e) => setData({...data , firstname: e.target.value.split(' ')[0], lastname: e.target.value.split(' ')[1]})}
+                      onFocus = {() => setFocusedInputs({...focusedInputs , name: true})}
+                      onBlur = {() => setFocusedInputs({...focusedInputs , name: false})}
                   />
-                  <i className='absolute right-[15px] top-[18%] text-[20px] bx bxs-user'></i>
+                    <i className='absolute right-[15px] top-[18%] text-[20px] bx bxs-user'></i>
+                    {data.firstname === "" && !focusedInputs.name && <span className = 'font-bold text-[16px] text-red-600 ml-1'>Name is required</span>}
                 </div>
-                <div className='relative'>
-                    <input className='bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 mb-[35px] pr-[40px]'
+                <div className={`relative ${data.email === "" && !focusedInputs.email ? 'mb-[30px]' : ''}`}>
+                    <input className={`block bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 ${data.email === "" && !focusedInputs.email ? 'mb-[0px]' : 'mb-[35px]'} pr-[40px]`}
                         type='email' id='email' placeholder='Email' required onChange = {(e) => setData({...data , email: e.target.value})}
+                        onFocus={() => setFocusedInputs({ ...focusedInputs, email: true })}
+                        onBlur={() => setFocusedInputs({ ...focusedInputs, email: false })}
                     />
                     <i className='absolute right-[15px] top-[18%] text-[20px] bx bxs-envelope'></i>
+                    {data.email === "" && !focusedInputs.email && <span className='font-bold text-[16px] text-red-600 ml-1'>Email is required</span>}
                 </div>
-              <div className = 'relative'>
-                    <input className='bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 mb-[35px] pr-[40px]'
+                <div className={`relative ${data.password === "" && !focusedInputs.password ? 'mb-[30px]' : ''}`}>
+                    <input className={`block bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 ${data.password === "" && !focusedInputs.password ? 'mb-[0px]' : 'mb-[35px]'} pr-[40px]`}
                         type='password' id='password' placeholder='Password' required onChange={(e) => setData({ ...data, password: e.target.value })}
+                        onFocus={() => setFocusedInputs({ ...focusedInputs, password: true })}
+                        onBlur={() => setFocusedInputs({ ...focusedInputs, password: false })}
                   />
-                  <i className = 'absolute right-[15px] top-[17px] text-[20px] bx bxs-lock-alt'></i>
+                    <i className = 'absolute right-[15px] top-[17px] text-[20px] bx bxs-lock-alt'></i>
+                    {data.password === "" && !focusedInputs.password && <span className='font-bold text-[16px] text-red-600 ml-1'>Password is required</span>}
                 </div>
                 <div className="flex items-center justify-between gender-selector mb-[20px]">
                     <div className = 'flex items-center'>
@@ -69,7 +81,7 @@ const Signup = () => {
                                 type="radio"
                                 name="gender"
                                 value="male"
-                                className='mr-[5px]'
+                                className='mr-[5px] cursor-pointer'
                                 id='male'
                                 onChange = {(e) => setData({...data , gender: e.target.value})}
                             />
@@ -80,7 +92,7 @@ const Signup = () => {
                                 type="radio"
                                 name="gender"
                                 value="female"
-                                className='mr-[5px]'
+                                className='mr-[5px] cursor-pointer'
                                 id='female'
                                 onChange = {(e) => setData({...data , gender : e.target.value})}
                             />
