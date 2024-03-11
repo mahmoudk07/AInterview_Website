@@ -7,8 +7,11 @@ import Modal from '../../components/Modal/Modal'
 import './Login.css'
 const Login = () => {
     const [isValidEmail, setIsValidEmail] = useState(true)
-    const { error } = useSelector((state) => state.User)
+    const [focusedInputs, setFocusedInputs] = useState({
+        email: true , password: true
+    })
     const [showModal, setShowModal] = useState(false)
+    const { error } = useSelector((state) => state.User)
     const [data, setData] = useState({
         email: "",
         password: ""
@@ -39,17 +42,23 @@ const Login = () => {
         <Modal show={showModal} message = {error} close = {closeModal} />
         <form className = 'login__form min-w-[25%] min-h-[55%] bg-transparent py-[30px] px-[40px]' onSubmit = {handleSubmit}>
               <h1 className='text-3xl font-bold text-white text-center mb-[35px]'>Login</h1>
-              <div className = 'relative'>
-                  <input className='bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 mb-[35px] pr-[40px]'
-                      type='email' id='email' placeholder='Email' required onChange={(e) => { setData({ ...data, email: e.target.value}); setIsValidEmail(validateEmail(e.target.value)) }}
+              <div className = {`relative ${data.email === "" && !focusedInputs.email ? 'mb-[35px]' : ''}`}>
+                  <input className={`block bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 ${data.email === "" && !focusedInputs.email ? 'mb-[0px]' : 'mb-[35px]'} pr-[40px]`}
+                      type='email' id='email' placeholder='Email' required onChange={(e) => { setData({ ...data, email: e.target.value }); setIsValidEmail(validateEmail(e.target.value)) }}
+                      onFocus={() => setFocusedInputs({ ...focusedInputs, email: true })}
+                      onBlur={() => setFocusedInputs({ ...focusedInputs, email: false })}
                   />
-                  <i className='absolute right-[15px] top-[18%] text-[20px] bx bxs-user'></i>
+                  <i className='absolute right-[15px] top-[20%] text-[20px] bx bxs-user'></i>
+                  {data.email === "" && !focusedInputs.email && <span className='text-[16px] font-bold text-red-600 ml-1'>Email is required</span>}
               </div>
-              <div className = 'relative'>
-                  <input className='bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 mb-[25px] pr-[40px]'
-                      type='password' id='password' placeholder='Password' required onChange = {(e) => setData({...data , password : e.target.value})}
+              <div className={`relative ${data.password === "" && !focusedInputs.password ? 'mb-[25px]' : ''}`}>
+                  <input className={`block bg-transparent w-full p-[10px] text-white rounded-[20px] outline-none border-[2px] border-solid border-gray-500 ${data.password === "" && !focusedInputs.password ? 'mb-[0px]' : 'mb-[25px]'} pr-[40px]`}
+                      type='password' id='password' placeholder='Password' required onChange={(e) => setData({ ...data, password: e.target.value })}
+                      onFocus={() => setFocusedInputs({ ...focusedInputs, password: true })}
+                      onBlur={() => setFocusedInputs({ ...focusedInputs, password: false })}
                   />
-                  <i className = 'absolute right-[15px] top-[17px] text-[20px] bx bxs-lock-alt'></i>
+                  <i className='absolute right-[15px] top-[17px] text-[20px] bx bxs-lock-alt'></i>
+                  {data.password === "" && !focusedInputs.password && <span className='text-[16px] font-bold text-red-600 ml-1'>Password is required</span>}
               </div>
               <div className='flex items-center justify-between mb-[15px]'>
                   <div className = 'remember__me__checkbox'>
