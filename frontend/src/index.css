@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
     --background-image : url('/Volumes/MKSSD/AInterview_Frontend/frontend/src/assets/background5.jpg')
 }
 
@@ -10,4 +10,4 @@ body{
     background-image: var(--background-image);
     background-size: cover;
     background-repeat: no-repeat;
-}
+} */

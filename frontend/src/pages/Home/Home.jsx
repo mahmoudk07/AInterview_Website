@@ -1,8 +1,10 @@
 import React from 'react'
-
+import VideoRecorder from './components/VideoRecorder'
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <VideoRecorder />
+    </div>
   )
 }
 
