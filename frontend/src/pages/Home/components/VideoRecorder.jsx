@@ -3,7 +3,7 @@ import 'video-react/dist/video-react.css'
 import { Player } from 'video-react'
 import { RecordRTCPromisesHandler } from 'recordrtc'
 import { FiDownload } from "react-icons/fi";
-// import { saveAs } from 'file-saver'
+import { saveAs } from 'file-saver'
 
 const MainRecorder = () => {
     const [recorder, setRecorder] = useState(null)
@@ -41,9 +41,9 @@ const MainRecorder = () => {
 
     const downloadVideo = () => {
         if (videoBlob) {
-            // const mp4File = new File([videoBlob], 'demo.mp4', { type: 'video/mp4' })
-            // saveAs(mp4File, `Video-${Date.now()}.mp4`)
-            // saveAs(videoBlob, `Video-${Date.now()}.webm`)
+            const mp4File = new File([videoBlob], 'demo.mp4', { type: 'video/mp4' })
+            saveAs(mp4File, `Video-${Date.now()}.mp4`)
+            saveAs(videoBlob, `Video-${Date.now()}.webm`)
         }
     }
 

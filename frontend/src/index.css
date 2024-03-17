@@ -2,12 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
+:root {
     --background-image : url('/Volumes/MKSSD/AInterview_Frontend/frontend/src/assets/background5.jpg')
 }
-
 body{
-    background-image: var(--background-image);
+    /* background-image: var(--background-image);
     background-size: cover;
-    background-repeat: no-repeat;
-} */
+    background-repeat: no-repeat; */
+    /* background-color: #002D62; */
+    background-color: rgba(0,21,52,255);
+
+}
+@layer utilities{
+    .header{
+        height: 9vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2% 4%;
+        border-bottom: 0.5px solid #033772;
+        background-color: rgba(0,21,52,255);
+        position: fixed;
+        top: 0px;
+    }
+    .header-links{
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .header-buttons{
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        border: 2px solid #033772;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+    }
+    .main-section{
+        margin-top: 80px;
+        width: 100%;
+        padding: 4.5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .interview-button{
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        outline: none;
+        border: 2px solid #FF204E;
+        border-radius: 20px;
+        background-color: #FF204E;
+        padding: 10px 15px;
+        margin-top: 20px;
+        transition: 0.5s ease-in-out all;
+    }
+    .interview-button:hover{
+        background-color: #e11d45;
+        border: 2px solid #FF204E;
+        color: white;
+    }
+}
