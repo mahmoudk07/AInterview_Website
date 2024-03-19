@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { LoginUser } from '../../services/auth/authSlice'
+import { LoginUser } from '../../../services/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
-import { validateEmail } from '../../utils/Utilities'
-import Modal from '../../components/Modal/Modal'
+import { validateEmail } from '../../../utils/Utilities'
+import Modal from '../../../components/Modal/Modal'
 import './Login.css'
 const Login = () => {
     const [isValidEmail, setIsValidEmail] = useState(true)

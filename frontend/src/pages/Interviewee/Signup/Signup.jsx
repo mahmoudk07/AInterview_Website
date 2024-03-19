@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch , useSelector } from 'react-redux';
-import { SignupUser } from '../../services/auth/authSlice';
+import { SignupUser } from '../../../services/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../../components/Modal/Modal';
 import './Signup.css'
 const Signup = () => {
     const [data, setData] = useState({

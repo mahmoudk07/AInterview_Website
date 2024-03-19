@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from '../../components/Header/Header'
-import AI_Image from '../../assets/2401770.jpg'
+import Header from '../../../components/Header/Header'
+import AI_Image from '../../../assets/2401770.jpg'
 const Home = () => {
   return (
     <div className = 'w-full min-h-[100vh] overflow-x-hidden'>
