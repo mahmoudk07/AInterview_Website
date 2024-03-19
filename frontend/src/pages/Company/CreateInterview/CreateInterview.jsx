@@ -24,8 +24,9 @@ const CreateInterview = () => {
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px]'>
         <Header />
-        <div className = 'bg-transparent border-borderColor border-[1px] rounded-[10px] w-[70%] m-auto p-[3%]'>
+        <div className = 'bg-transparent border-borderColor border-[1px] rounded-[10px] w-[50%] m-auto p-[3%]'>
             <Stepper
+                className = 'w-[100%]'            
                 activeStep={activeStep}
                 isLastStep={(value) => setIsLastStep(value)}
                 isFirstStep={(value) => setIsFirstStep(value)} activeLineClassName='bg-green-500' lineClassName="bg-white/50">
@@ -54,11 +55,15 @@ const CreateInterview = () => {
             {CurrentContent()}
             { activeStep !== 3 &&
                 <div className="mt-16 flex justify-between">
-                    <Button onClick={handlePrev} disabled={isFirstStep}>
+                      <Button className='bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
+                        onClick={handlePrev} disabled={isFirstStep}>
                         Prev
                     </Button>
                     {
-                        activeStep === 2 ? <Button onClick={() => setActiveStep(3)}>Confirm</Button> : <Button onClick={handleNext} disabled={isLastStep}>
+                        activeStep === 2 ? <Button className= 'bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
+                            onClick={() => setActiveStep(3)}>Confirm</Button> :
+                            <Button className= 'bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
+                            onClick={handleNext} disabled={isLastStep}>
                             Next
                         </Button>
                     }
