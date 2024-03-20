@@ -10,6 +10,8 @@ module.exports = withMT({
         "tertiary-color": "#E0FBFC",
         "quaternary-color": "#293241",
         "borderColor": "#033772",
+        "backgroundColor": "rgba(0,21,52,255)",
+        "success": "#20bb75",
       },
     },
   },
