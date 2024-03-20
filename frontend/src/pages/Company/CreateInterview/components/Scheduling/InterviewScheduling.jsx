@@ -12,7 +12,7 @@ const InterviewScheduling = () => {
       }));
       setData(prevData => ({ ...prevData, Questions: newQuestions }));
     }
-  }, [data.numOfQuestions]);
+  }, [data.numOfQuestions , setData]);
   return (
     <div className = 'mt-[60px]'>
         <div className = 'flex-col items-center space-y-5'>
