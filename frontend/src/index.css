@@ -25,6 +25,7 @@ body{
         background-color: rgba(0,21,52,255);
         position: fixed;
         top: 0px;
+        z-index: 200;
     }
     .header-links{
         color: white;
