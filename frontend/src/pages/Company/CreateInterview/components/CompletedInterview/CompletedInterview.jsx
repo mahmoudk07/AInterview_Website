@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+// import { InterviewContext } from '../../CreateInterview'
 const CompletedInterview = () => {
+  // const { data, setDate } = useContext(InterviewContext) 
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => navigate("/") , 2500)
     }, [navigate])
+  // console.log(data)
   return (
     <div className = 'mt-[60px]'>
           <div className='flex-col text-center'>
