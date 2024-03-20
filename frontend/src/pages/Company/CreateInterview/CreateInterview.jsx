@@ -16,15 +16,15 @@ const CreateInterview = () => {
                 return <InterviewScheduling />
             case 1:
                 return <QuestionsAnswers />
-            case 3:
+            case 2:
                 return <CompletedInterview />
             default:
         }
     }
   return (
-    <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px]'>
+    <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px] mb-[50px]'>
         <Header />
-        <div className = 'bg-transparent border-borderColor border-[1px] rounded-[10px] w-[50%] m-auto p-[3%]'>
+        <div className = 'bg-transparent border-borderColor border-[1px] rounded-[10px] w-[40%] m-auto p-[3%]'>
             <Stepper
                 className = 'w-[100%]'            
                 activeStep={activeStep}
@@ -44,7 +44,7 @@ const CreateInterview = () => {
                         </Typography>
                     </div>
                 </Step>
-                <Step onClick={() => setActiveStep(2)} activeClassName='bg-white' completedClassName='bg-green-500'>
+                <Step onClick={() => setActiveStep(2)} activeClassName='bg-green-500'>
                     <div className="absolute -bottom-[2rem] ml-2 w-max text-center">
                         <Typography variant="h6" className = 'text-gray-400'>
                             Completed
@@ -53,15 +53,15 @@ const CreateInterview = () => {
                 </Step>
             </Stepper>
             {CurrentContent()}
-            { activeStep !== 3 &&
+            { activeStep !== 2 &&
                 <div className="mt-16 flex justify-between">
                       <Button className='bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
                         onClick={handlePrev} disabled={isFirstStep}>
                         Prev
                     </Button>
                     {
-                        activeStep === 2 ? <Button className= 'bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
-                            onClick={() => setActiveStep(3)}>Confirm</Button> :
+                        activeStep === 1 ? <Button className= 'bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
+                            onClick={() => setActiveStep(2)}>Confirm</Button> :
                             <Button className= 'bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
                             onClick={handleNext} disabled={isLastStep}>
                             Next
