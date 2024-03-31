@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InterviewContext } from '../../CreateInterview'
 const CompletedInterview = () => {
-  const { data, setDate } = useContext(InterviewContext) 
+  const { data } = useContext(InterviewContext) 
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => navigate("/") , 2500)
