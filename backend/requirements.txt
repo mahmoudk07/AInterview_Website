@@ -1,0 +1,8 @@
+fastapi
+pymongo
+uvicorn
+python-dotenv
+asyncio
+pydantic
+beanie
+motor
