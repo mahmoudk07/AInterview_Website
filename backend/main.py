@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from fastapi.exceptions import HTTPException
+from fastapi import FastAPI, Request
+from fastapi.exceptions import HTTPException, RequestValidationError
+from fastapi.responses import JSONResponse
 from config.database_connection import database_connection
-from models.user import User
-from schemas.user import UserSchema
+from routes.router import router
 from dotenv import load_dotenv
 import uvicorn
 import os
@@ -10,16 +10,14 @@ load_dotenv()
 
 app = FastAPI()
 
-@app.get("/")
-def getUsers():
-    return {"users": ["John", "Doe"]}
 
-@app.post("/user/createUser")
-async def createUser(request: UserSchema):
-    user = User(**request.dict())
-    await user.create()
-    return {"message": "User created successfully"}
+app.include_router(router)
 
+@app.exception_handler(RequestValidationError)
+async def validationErrorHandler(request: Request , exc: RequestValidationError):
+    error_details = [
+    {"field": error["loc"][-1], "message": error["msg"]} for error in exc.errors()]
+    return JSONResponse(status_code=400 , content={"message": "Validation error", "errors": error_details})
     
 async def startup_event():
     connectionString = os.getenv("CONNECTION_STRING")
