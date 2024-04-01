@@ -1,17 +1,22 @@
-from beanie import Document 
+from typing import Optional
+from beanie import Document, Indexed
+from pydantic import EmailStr
 class User(Document):
-    fullname: str
-    email: str
-    course_of_study: str
-    year: int
-    gpa: float
+    firstname: str
+    lastname: str
+    email: Indexed(EmailStr , unique=True) # type: ignore
+    password: str
+    gender: Optional[str] = None
+    job: str
+    role: str
     class Config:
         json_schema_extra = {
         "example": {
-            "fullname": "Abdulazeez Abdulazeez Adeshina",
-            "email": "abdul@school.com",
-            "course_of_study": "Water resources engineering",
-            "year": 4,
-            "gpa": "3.76",
+            "firstname": "Mahmoud",
+            "lastname": "Khaled",
+            "email": "mahmoud@example.com",
+            "gender": "Male",
+            "job": "Software Engineer",
+            "role": "user",
         }
     }
