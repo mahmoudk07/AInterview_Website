@@ -6,3 +6,6 @@ asyncio
 pydantic
 beanie
 motor
+email-validator
+passlib
+bcrypt
