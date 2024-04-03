@@ -22,3 +22,8 @@ class RegisterSchema(BaseModel):
 class LoginSchema(BaseModel):
     email: EmailStr = Field(... , description = 'Email address of the user')
     password: str = Field(... , description = 'Password of the user')
+
+class PasswordSchema(BaseModel):
+    old_password: str = Field(... , description = 'Old password of the user')
+    new_password: str = Field(... , description = 'New password of the user')
+    confirm_password: str = Field(... , description = 'Confirm password of the user')
