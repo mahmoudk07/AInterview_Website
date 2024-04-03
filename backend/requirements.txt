@@ -9,3 +9,4 @@ motor
 email-validator
 passlib
 bcrypt
+jose
