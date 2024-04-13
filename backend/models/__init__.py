@@ -1,3 +1,4 @@
 from models.user import User
 from models.interview import Interview
-__all__ = [User , Interview]
+from models.company import Company
+__all__ = [User , Interview , Company]
