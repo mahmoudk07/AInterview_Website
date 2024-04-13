@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema
 from models.user import User
+from models.interview import Interview
 from services.userServices import UserServices
 from fastapi.responses import JSONResponse
 import pymongo
@@ -73,3 +74,14 @@ async def deleteUser(id: str , user: dict = Depends(UserServices.is_admin_user))
 async def deleteAllUsers(user: dict = Depends(UserServices.is_admin_user)):
     await User.delete_all()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "All users deleted successfully"})
+@UserRoutes.patch("/join_interview/{interview_id}" , summary = "Apply for an interview")
+async def apply_to_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    existed_user.interviews.append(ObjectId(interview_id))
+    interview.interviewees.append(existed_user.id)
+    await interview.save()
+    await existed_user.save()
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Applied to interview successfully"})
