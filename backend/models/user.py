@@ -7,10 +7,12 @@ class User(Document):
     lastname: str
     email: Indexed(EmailStr , unique=True) # type: ignore
     password: str
-    gender: Optional[str] = None
+    gender: Optional[str]
     job: str
     role: str
+    image: Optional[str] = "https://www.gravatar.com/avatar/?d=mp"
     interviews: Optional[List[ObjectId]] = []
+    company_id: Optional[ObjectId] = None
     class Settings:
         collection = "User"
     class Config:
