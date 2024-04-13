@@ -13,6 +13,7 @@ class User(Document):
     image: Optional[str] = "https://www.gravatar.com/avatar/?d=mp"
     interviews: Optional[List[ObjectId]] = []
     company_id: Optional[ObjectId] = None
+    following: Optional[List[ObjectId]] = []
     class Settings:
         collection = "User"
     class Config:
