@@ -12,12 +12,14 @@ CompanyRoutes = APIRouter()
 @CompanyRoutes.post('/create' , summary = "Create a new company")
 async def create_company(data : CompanySchema , payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload['email'])
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "User not found to create company")
     newCompany = Company(
         name = data.name,
         address = data.address,
         country = data.country,
         image = data.image,
-        following_interviewees = data.following_interviewees,
+        followers = data.followers,
         interviews = data.interviews
     )
     try:
