@@ -1,5 +1,6 @@
-from typing import Optional
+from typing import List, Optional
 from beanie import Document, Indexed
+from bson import ObjectId
 from pydantic import EmailStr
 class User(Document):
     firstname: str
@@ -9,7 +10,14 @@ class User(Document):
     gender: Optional[str] = None
     job: str
     role: str
+    interviews: Optional[List[ObjectId]] = []
+    class Settings:
+        collection = "User"
     class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: lambda oid: str(oid),
+        }
         json_schema_extra = {
         "example": {
             "firstname": "Mahmoud",
