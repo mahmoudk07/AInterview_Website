@@ -2,6 +2,7 @@ from datetime import timedelta
 from bson import ObjectId
 from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
+from models.company import Company
 from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema
 from models.user import User
 from models.interview import Interview
@@ -66,3 +67,35 @@ async def apply_to_interview(interview_id: str , user: dict = Depends(UserServic
     await interview.save()
     await existed_user.save()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Applied to interview successfully"})
+@UserRoutes.patch('/follow/{company_id}' , summary = "Follow a company")
+async def follow_company(company_id : str , payload: dict = Depends(UserServices.is_authorized_user)):
+    user = await UserServices.get_user_by_email(payload['email'])
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "User not found to follow company")
+    company = await Company.find_one(Company.id == ObjectId(company_id))
+    if not company:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Company not found")
+    company.followers.append(user.id)
+    user.following.append(company.id)
+    try:
+        await company.save()
+        await user.save()
+    except Exception as e:
+        raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company followed successfully"})
+@UserRoutes.patch('/unfollow/{company_id}' , summary = "Unfollow a company")
+async def unfollow_company(company_id : str , payload : dict = Depends(UserServices.is_authorized_user)):
+    user = await UserServices.get_user_by_email(payload['email'])
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "User not found to unfollow company")
+    company = await Company.find_one(Company.id == ObjectId(company_id))
+    if not company:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Company not found")
+    company.followers.remove(user.id)
+    user.following.remove(company.id)
+    try:
+        await company.save()
+        await user.save()
+    except Exception as e:
+        raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company unfollowed successfully"})
