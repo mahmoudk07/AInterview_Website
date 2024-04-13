@@ -48,6 +48,10 @@ class UserServices:
     async def is_admin_user(authorization : str = Header(...)):
         payload = await UserServices.is_authorized_user(authorization)
         user = await UserServices.get_user_by_email(payload.get('email'))
+        if not user:
+            raise HTTPException(
+                status_code = status.HTTP_404_NOT_FOUND , detail = "User not found"
+            )
         if not user.role == "admin":
             raise HTTPException(
                 status_code = status.HTTP_403_FORBIDDEN , detail = "You are not authorized to perform this action"
