@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 class Interview(Document):
     title: str
     questions: List[dict]
-    company_id: str
+    company_id: ObjectId
     interviewees: Optional[List[ObjectId]] = []
     attended_interviewees: Optional[List[ObjectId]] = []
     video_path: Optional[List[dict]] = []
