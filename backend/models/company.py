@@ -7,7 +7,7 @@ class Company(Document):
     address: str
     country: str
     image: str
-    following_interviewees: List[ObjectId]
+    followers: List[ObjectId]
     interviews: List[ObjectId]
     class Settings:
         collection = "Company"
