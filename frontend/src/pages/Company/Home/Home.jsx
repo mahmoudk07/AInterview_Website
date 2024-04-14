@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const navigate = useNavigate()
   const Navigate = () => {
-    navigate('/interview')
+    navigate('/createInterview')
   }
   return (
     <div className = 'w-full min-h-[100vh] overflow-x-hidden'>
