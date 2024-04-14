@@ -4,7 +4,7 @@ import axios from 'axios'
 export const SignupUser = createAsyncThunk('user/signup', async (data, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/signup`, data)
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/register`, data)
         return response.data
     }
     catch (error) {
@@ -14,7 +14,7 @@ export const SignupUser = createAsyncThunk('user/signup', async (data, thunkAPI)
 export const LoginUser = createAsyncThunk('user/login', async (data, thunkAPI) => {
     const { rejectWithValue } = thunkAPI
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login`, data)
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login`, data);
         return response.data
     }
     catch (error) {
