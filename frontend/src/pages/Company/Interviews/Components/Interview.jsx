@@ -1,7 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AvatarStack } from './AvatarStack'
 
 const Interview = () => {
+    const navigate = useNavigate()
   return (
     <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor'>
         <div className = 'w-full flex items-center justify-center'>
@@ -12,7 +14,7 @@ const Interview = () => {
             <span className='text-white font-bold text-[18px]'>Time: <span className = 'text-gray-400 font-bold'>10:00AM</span></span>
             <span className='text-white font-bold text-[18px]'>Status: <span className='text-gray-400'>Upcoming</span></span>
             <div className = 'flex items-center mt-[5px]'>
-                <div className = 'cursor-pointer' onClick = {() => console.log("here")}>
+                  <div className='cursor-pointer' onClick={() => navigate('/interviewees/1')}>
                     <AvatarStack />
                 </div>
                 <span className='text-white text-[14px] ml-[1.5%] font-bold'>32 Interviewees applied for an interview</span>
