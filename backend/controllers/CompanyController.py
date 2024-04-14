@@ -32,3 +32,6 @@ async def create_company(data : CompanySchema , payload : dict = Depends(UserSer
     except Exception as e:
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_201_CREATED , content = {"message": "Company created successfully", "company": newCompany.dict()})
+@CompanyRoutes.get('/followers' , summary = "Get all followers")
+async def get_all_followers():
+    pass
