@@ -18,28 +18,30 @@ const Login = () => {
     })
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (data.email !== "" && data.password !== "" && isValidEmail)
-            dispatch(LoginUser(data)).then((response) => {
-                if (!response.hasOwnProperty('error'))
-                    navigate('/')
-                else
-                    openModal()
-            })
-    }
     const openModal = () => {
         setShowModal(true)
     }
     const closeModal = () => {
         setShowModal(false)
     }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (data.email !== "" && data.password !== "" && isValidEmail)
+            dispatch(LoginUser(data)).then((response) => {
+                console.log(response)
+                if (!response.hasOwnProperty('error'))
+                    navigate('/')
+                else
+                    openModal()
+            })
+    }
+
     useEffect(() => {
         localStorage.removeItem('token')
     }, [])
   return (
     <div className = 'flex items-center justify-center w-[100vw] h-[100vh]'>
-        <Modal show={showModal} message = {error} close = {closeModal} />
+        <Modal show={showModal} message = {error?.detail} close = {closeModal} />
         <form className = 'login__form min-w-[25%] min-h-[55%] bg-transparent py-[30px] px-[40px]' onSubmit = {handleSubmit}>
               <h1 className='text-3xl font-bold text-white text-center mb-[35px]'>Login</h1>
               <div className = {`relative ${data.email === "" && !focusedInputs.email ? 'mb-[35px]' : ''}`}>
