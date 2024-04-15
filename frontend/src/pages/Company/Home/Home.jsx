@@ -6,8 +6,11 @@ const Home = () => {
   const [isManager, setIsManager] = useState("")
   const [role , setRole] = useState("")
   const navigate = useNavigate()
-  const Navigate = () => {
+  const interviewCreation = () => {
     navigate('/createInterview')
+  }
+  const companyCreation = () => { 
+    navigate('/addCompany')
   }
   useEffect(() => {
     const role = localStorage.getItem('type')
@@ -18,9 +21,9 @@ const Home = () => {
   }, [])
   const handleRole = () => {
     if (role === "manager" && isManager !== "undefined")
-      return <button className='interview-button' onClick={Navigate}>Create Interview</button>
+      return <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
     else if(role === "manager" && isManager === "undefined")
-      return <button className='interview-button' onClick={Navigate}>Add your company</button>
+      return <button className='interview-button' onClick={companyCreation}>Add your company</button>
     else
       return ""
   }
@@ -31,7 +34,6 @@ const Home = () => {
         <div className='text-center'>
           <span className='block text-3xl font-bold text-gray-200 mb-[15px]'>Seamless Interview Management Platform </span>
           <span className='block font-bold text-gray-200 text-2xl'>Make Your Interview Process Easy!</span>
-          {/* <button className='interview-button' onClick={Navigate}>Create Interview</button> */}
           {handleRole()}
         </div>
         <div className = 'text-center'>
