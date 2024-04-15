@@ -37,6 +37,8 @@ const userSlice = createSlice({
         logout: (state , action) => {
             state.isLoggedIn = false
             localStorage.removeItem('token')
+            localStorage.removeItem('type')
+            localStorage.removeItem('isManager')
         },
     },
     extraReducers: (builder) => {
@@ -62,8 +64,8 @@ const userSlice = createSlice({
             state.isLoading = false
             state.error = null
             localStorage.setItem('token', action.payload.token)
-            localStorage.setItem('firstname', action.payload.firstname)
-            localStorage.setItem('lastname', action.payload.lastname)
+            localStorage.setItem('type', action.payload.type)
+            localStorage.setItem('isManager', action.payload.ismanager)
         })
         builder.addCase(LoginUser.rejected, (state, action) => {
             state.isLoading = false

@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { IoMenu } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
+import { logout } from '../../services/auth/authSlice';
 const Header = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   return (
     <div className='header'>
@@ -18,7 +23,7 @@ const Header = () => {
       <div className = 'md:hidden flex ml-[150px] text-white text-2xl cursor-pointer' onClick = {() => setIsOpen(!isOpen)}>
         {isOpen ? <MdOutlineClose /> : <IoMenu />}
       </div>
-      <button className='header-buttons'>Logout</button>
+      <button className='header-buttons' onClick={() => { dispatch(logout()); navigate("/login") }}>Logout</button>
     </div>
   )
 }

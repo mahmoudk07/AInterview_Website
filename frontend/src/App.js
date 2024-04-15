@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './app/ProtectedRoutes';
 import Login from './pages/Interviewee/Login/Login';
 import Layout from './app/Layout'
 import Signup from './pages/Interviewee/Signup/Signup';
@@ -19,10 +20,12 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/createInterview" element={<CreateInterview />} />
-              <Route path="/interviews" element={<Interviews />} />
-              <Route path="/interviewees/:id" element={<Interviewees />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/createInterview" element={<CreateInterview />} />
+                <Route path="/interviews" element={<Interviews />} />
+                <Route path="/interviewees/:id" element={<Interviewees />} />
+              </Route>
             </Routes>
           </BrowserRouter>
         </Provider>

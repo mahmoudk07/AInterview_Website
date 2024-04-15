@@ -40,7 +40,7 @@ async def loginUser(request: LoginSchema):
     if not UserServices.verify_password(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
     token = UserServices.generate_JWT(user.email, timedelta(minutes=30))
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User logged in successfully", "token": token})
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User logged in successfully", "token": token , "type": user.role, "isManager": user.company_id})
 
 @UserRoutes.post("/changePassword" , summary = "Change Password of the user")
 async def changePassword(request: PasswordSchema , payload : dict = Depends(UserServices.is_authorized_user)):
