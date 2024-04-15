@@ -6,6 +6,7 @@ class Company(Document):
     name: Indexed(str , unique=True) # type: ignore
     address: str
     country: str
+    website: str
     image: str
     followers: List[ObjectId]
     interviews: List[ObjectId]
