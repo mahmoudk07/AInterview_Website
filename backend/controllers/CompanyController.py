@@ -28,6 +28,7 @@ async def create_company(data : CompanySchema , payload : dict = Depends(UserSer
         name = data.name,
         address = data.address,
         country = data.country,
+        website = data.website,
         image = data.image,
         followers = data.followers,
         interviews = data.interviews
@@ -55,3 +56,7 @@ async def get_all_followers(payload : dict = Depends(UserServices.is_authorized_
     followers = [extract_specific_fields(user) for user in followers]
     print(followers)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Followers retrieved successfully", "followers": followers})
+@CompanyRoutes.get("/get_companies" , summary = "get all companies")
+async def get_all_companies(_ : dict = Depends(UserServices.is_authorized_user)):
+    companies = await Company.find().to_list()
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Companies retrieved successfully", "companies": companies})
