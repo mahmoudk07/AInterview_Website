@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import Header from '../../components/Header/Header';
+import Header from '../../../components/Header/Header';
 import { Input } from '@material-tailwind/react';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../../components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createCompany } from '../../services/manager/managerSlice';
+import { createCompany } from '../../../services/manager/managerSlice';
 const CompanyCreation = () => {
     const navigate = useNavigate()
-    const { error } = useSelector((state) => state.Manager)
+    // const { error } = useSelector((state) => state.Manager)
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState({
