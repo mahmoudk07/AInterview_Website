@@ -17,14 +17,16 @@ const CompanyCreation = () => {
         country: ''
     })
     const [responseMessage, setResponseMessage] = useState("")
+    const [errorMessage , setErrorMessage] = useState("")
     const openModal = () => {
         setShowModal(true)
     }
     const closeModal = () => {
         setShowModal(false)
-        if (error === "") {
+        if (responseMessage === "Company created successfully!")
             navigate('/')
-        }
+        setErrorMessage("")
+        setResponseMessage("")
     }
     const validateWebsite = (website) => {
         const urlRegex = /^(http|https):\/\/[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/;
@@ -38,7 +40,7 @@ const CompanyCreation = () => {
         const addressRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$/;
         return addressRegex.test(address);
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (data.address !== "" && data.website !== "" && data.name !== "" && data.country !== "")
             if (!validateWebsite(data.website))
@@ -48,10 +50,10 @@ const CompanyCreation = () => {
             else if (!validateAddress(data.address))
               setResponseMessage("Please enter a valid address!")
             else {
-                dispatch(createCompany(data)).then((response) => {
+                await dispatch(createCompany(data)).then((response) => {
                     console.log(response)
-                    if (response.hasOwnProperty('error'))
-                        setResponseMessage(error)
+                    if (response.error)
+                        setErrorMessage(response.payload.detail)
                     else{
                         setResponseMessage("Company created successfully!");
                         localStorage.setItem("isManager", response.payload.company.id)
@@ -66,7 +68,7 @@ const CompanyCreation = () => {
   return (
     <div className="w-full min-h-[80vh] overflow-x-hidden mt-[80px] flex items-center justify-center">
       <Header />
-      <Modal show={showModal} message = {responseMessage} close = {closeModal} />
+      <Modal show={showModal} message = {errorMessage === "" ? responseMessage : errorMessage} close = {closeModal} />
       <div className="bg-transparent border-[1px] border-borderColor w-[30%] h-[400px] py-[1%] px-[3%] rounded-[20px] ">
         <div className = 'text-center w-full mb-[30px]'>
           <span className="text-white font-bold text-[22px]">Company creation</span>
