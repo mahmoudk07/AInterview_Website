@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Header from '../../../components/Header/Header';
 import { Input } from '@material-tailwind/react';
 import Modal from '../../../components/Modal/Modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createCompany } from '../../../services/manager/managerSlice';
 const CompanyCreation = () => {
