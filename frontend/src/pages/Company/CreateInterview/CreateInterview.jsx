@@ -4,20 +4,21 @@ import { Stepper, Step, Button, Typography } from '@material-tailwind/react'
 import InterviewScheduling from './components/Scheduling/InterviewScheduling'
 import QuestionsAnswers from './components/QuestionsAnswers/QuestionsAnswers'
 import CompletedInterview from './components/CompletedInterview/CompletedInterview'
+import axios from "axios"
 export const InterviewContext = createContext(null)
 const CreateInterview = () => {
+    const [numOfQuestions, setNumOfQuestions] = useState("")
     const [data, setData] = useState({
         "title": "",
         "Date": "",
         "Time": "",
-        "numOfQuestions": "",
-        "Questions": []
+        "questions": []
     })
     const [activeStep, setActiveStep] = useState(0);
     const [isLastStep, setIsLastStep] = useState(false);
     const [isFirstStep, setIsFirstStep] = useState(false);
-    const checkCurrentData = () => data.Date !== "" && data.Time !== "" && data.numOfQuestions !== "" && data.title !== ""
-    const hasEmptyValues = data.Questions.some(question => Object.values(question).some(value => value === ""));
+    const checkCurrentData = () => data.Date !== "" && data.Time !== "" && numOfQuestions !== "" && data.title !== ""
+    const hasEmptyValues = data.questions.some(question => Object.values(question).some(value => value === ""));
     const handleNext = () => checkCurrentData() &&!isLastStep && setActiveStep((cur) => cur + 1);
     const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
     const CurrentContent = () => {
@@ -31,10 +32,20 @@ const CreateInterview = () => {
             default:
         }
     }
+    const handleSubmit = async () => {
+        await axios.post('http://localhost:8000/interview/create', data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => { console.log(res); setActiveStep(2) })
+            .catch(err => console.log(err))
+    }
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px] mb-[50px]'>
         <Header />
-        <InterviewContext.Provider value = {{data , setData}}>
+        <InterviewContext.Provider value = {{data , setData, numOfQuestions , setNumOfQuestions}}>
             <div className='bg-transparent border-borderColor border-[1px] rounded-[10px] w-[40%] m-auto p-[3%]'>
                 <Stepper
                     className='w-[100%]'
@@ -72,7 +83,7 @@ const CreateInterview = () => {
                         </Button>
                         {
                             activeStep === 1 ? <Button className='bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
-                                onClick={() => setActiveStep(2)} disabled = {hasEmptyValues}>Confirm</Button> :
+                                  onClick={handleSubmit} disabled = {hasEmptyValues}>Confirm</Button> :
                                 <Button className='bg-transparent font-bold text-white border-[1px] rounded-[20px] border-borderColor text-[13px]'
                                     onClick={handleNext} disabled={isLastStep}>
                                     Next
