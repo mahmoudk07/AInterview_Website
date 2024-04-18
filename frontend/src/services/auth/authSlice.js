@@ -65,7 +65,7 @@ const userSlice = createSlice({
             state.error = null
             localStorage.setItem('token', action.payload.token)
             localStorage.setItem('type', action.payload.type)
-            localStorage.setItem('isManager', action.payload.ismanager)
+            localStorage.setItem('isManager', action.payload.isManager)
         })
         builder.addCase(LoginUser.rejected, (state, action) => {
             state.isLoading = false
