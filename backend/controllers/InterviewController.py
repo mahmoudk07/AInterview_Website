@@ -15,7 +15,8 @@ def extract_interview_fields(interview):
         "status": interview.status,
         "Date": interview.Date,
         "Time": interview.Time,
-        "interviewees": len(interview.interviewees)
+        "interviewees": len(interview.interviewees),
+        "questions": interview.questions,
     }
 
 @InterviewRoutes.post("/create" , summary = "Create an interview")
@@ -80,3 +81,11 @@ async def get_status_count(payload : dict = Depends(UserServices.is_authorized_u
     ]
     results = await Interview.aggregate(pipeline).to_list()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"results": results})
+
+@InterviewRoutes.get("/get_interview/{id}" , summary = "Get Interview by ID")
+async def get_interview_by_id(id : str , _ : dict = Depends(UserServices.is_authorized_user)):
+    interview = await Interview.find_one(Interview.id == ObjectId(id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    interview = extract_interview_fields(interview)
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interview": interview})
