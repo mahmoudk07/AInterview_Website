@@ -4,9 +4,11 @@ import { Stepper, Step, Button, Typography } from '@material-tailwind/react'
 import InterviewScheduling from './components/Scheduling/InterviewScheduling'
 import QuestionsAnswers from './components/QuestionsAnswers/QuestionsAnswers'
 import CompletedInterview from './components/CompletedInterview/CompletedInterview'
-import axios from "axios"
+import { useDispatch } from 'react-redux'
+import { createInterview } from '../../../services/manager/managerSlice'
 export const InterviewContext = createContext(null)
 const CreateInterview = () => {
+    const dispatch = useDispatch()
     const [numOfQuestions, setNumOfQuestions] = useState("")
     const [data, setData] = useState({
         "title": "",
@@ -33,14 +35,12 @@ const CreateInterview = () => {
         }
     }
     const handleSubmit = async () => {
-        await axios.post('http://localhost:8000/interview/create', data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+        await dispatch(createInterview(data)).then((response) => {
+            if (response.error)
+                console.log(response.error)
+            else
+                setActiveStep(2)
         })
-            .then(res => { console.log(res); setActiveStep(2) })
-            .catch(err => console.log(err))
     }
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px] mb-[50px]'>
