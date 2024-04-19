@@ -8,6 +8,15 @@ from fastapi.responses import JSONResponse
 from services.userServices import UserServices
 from services.InterviewServices import InterviewServices
 InterviewRoutes = APIRouter()
+def extract_interview_fields(interview):
+    return {
+        "id": str(interview.id),
+        "title": interview.title,
+        "status": interview.status,
+        "Date": interview.Date,
+        "Time": interview.Time,
+        "interviewees": len(interview.interviewees)
+    }
 
 @InterviewRoutes.post("/create" , summary = "Create an interview")
 async def create_interview(interview: InterviewSchema , payload : dict = Depends(UserServices.is_authorized_user)) -> InterviewSchema:
@@ -31,8 +40,8 @@ async def create_interview(interview: InterviewSchema , payload : dict = Depends
 @InterviewRoutes.get("/get_interviews" , summary = "Get Interview by ID")
 async def get_interviews(payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])
-    interviews = await Interview.find(Interview.company_id == str(user.id)).to_list()
-    interviews = [interview.dict() for interview in interviews]
+    interviews = await Interview.find(Interview.company_id == user.company_id).to_list()
+    interviews = [extract_interview_fields(interview) for interview in interviews]
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "count" : len(interviews)})
 @InterviewRoutes.delete('/delete_interview/{id}' , summary = "Delete interview by ID")
 async def delete_interview_by_id(id : str):
@@ -54,7 +63,7 @@ async def get_status_count(payload : dict = Depends(UserServices.is_authorized_u
     pipeline = [
         {
             "$match": {
-                "company_id": str(user.id)
+                "company_id": user.company_id
             }
         },
         {
