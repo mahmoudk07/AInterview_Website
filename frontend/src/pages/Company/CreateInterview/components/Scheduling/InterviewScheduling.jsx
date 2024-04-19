@@ -11,7 +11,7 @@ const InterviewScheduling = () => {
         [`Q${index + 1}`]: "",
         "Answer": ""
       }));
-      setData(prevData => ({ ...prevData, Questions: newQuestions }));
+      setData(prevData => ({ ...prevData, questions: newQuestions }));
     }
   }, [data.numOfQuestions , setData, numOfQuestions , setNumOfQuestions]);
   return (
