@@ -16,7 +16,21 @@ export const createCompany = createAsyncThunk('manager/createCompany', async (da
         return rejectWithValue(error.response.data)
     }
  })
-
+export const createInterview = createAsyncThunk('manager/createInterview', async (data, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/create`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 const initialState = {
     website: "",
     name: "",
