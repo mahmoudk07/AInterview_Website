@@ -1,60 +1,96 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../../../components/Header/Header'
-import { Avatar , Input } from '@material-tailwind/react'
+import { Avatar, Input } from '@material-tailwind/react'
+import axios from "axios"
+import Modal from '../../../components/Modal/Modal'
 const Profile = () => {
-    const [isInputsChanged , setIsInputChanged] = useState(false)
-    const handleUpdate = (e) => {
-        e.preventDefault()
+    const [isInputsChanged, setIsInputChanged] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const closeModal = () => {
+        setShowModal(false)
     }
+    const [CompanyData, setCompanyData] = useState(null)
+    const [userData, setUserData] = useState(null)
+    const [interviewsStatus, setInterviewsStatus] = useState(null)
+    const handleUpdate = async () => {
+        console.log(CompanyData)
+        await axios.patch(`${process.env.REACT_APP_BASE_URL}/company/update`, CompanyData, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then((response) => { console.log(response); setShowModal(true) }).catch((error) => { console.log(error) })
+    }
+    const fetchCompanyInfo = async () => {
+        await axios.get(`${process.env.REACT_APP_BASE_URL}/company/get_company`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then((response) => { setCompanyData(response.data.company); setUserData(response.data.user) }).catch((error) => console.log(error));
+    }
+    const fetchInterviewsStatus = async () => {
+        await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_interviews_status`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then((response) => setInterviewsStatus(response.data.results))
+    }
+    useEffect(() => {
+        fetchCompanyInfo();
+        fetchInterviewsStatus();
+    }, [])
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px]'>
           <Header />
-        <div className = 'md:flex flex-wrap items-center w-[80%] mx-[10%] space-x-[5%]'>
-            <div className= 'flex-col min-h-[400px] md:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent'>
-                <div className = 'flex-col items-center justify-end text-center mb-[10px]'>
-                    <Avatar className='rounded-[50%] w-[80px] h-[80px] m-auto' src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
-                    <span className = 'block font-bold text-white mt-[8px]'>Tim Coke</span>
-                    <span className = 'block text-[12px] text-gray-300 font-bold'>CEO of Apple</span>
-                </div>
-                <hr className = 'border-borderColor outline-none b-[20px]' />
-                <div className = 'flex items-center justify-between p-[5%]'>
-                    <span className = 'text-gray-300'>Processed Interviews</span>
-                    <span className = 'text-red-700 font-bold'>32</span>
-                </div>
-                <hr className='border-borderColor outline-none b-[20px]' />
-                <div className = 'flex items-center justify-between p-[5%]'>
-                    <span className = 'text-gray-300'>Current Interviews</span>
-                    <span className = 'text-green-700 font-bold'>32</span>
-                </div>
-                <hr className='border-borderColor outline-none b-[20px]' />
-                <div className='flex items-center justify-between p-[5%]'>
-                      <span className = 'text-gray-300'>Upcoming Interviews</span>
-                      <span className = 'text-orange-500'>32</span>
-                </div>
-                <hr className='border-borderColor outline-none b-[20px]' />
-                <div className = 'text-center'>
-                    <button className = 'mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[10px] px-[15px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500'>View Public Profile</button>
-                </div>
-            </div>
-            <div className = 'bg-transparent border-borderColor border-[1px] h-[400px] min-w-[70%] p-[3%] rounded-[10px]'>
-                <span className = 'block text-2xl font-bold text-gray-300 mb-[20px]'>General Information</span>
-                <div className = 'flex items-center justify-center space-x-[5%] mb-[25px]'>           
-                      <Input type = 'text' variant="outlined" label="Name" color='white' value = "Apple" onChange = {() => setIsInputChanged(true)}  />
-                      <Input type = 'email' variant="outlined" label="Email" color='white' value = "apple@gmail.com" onChange = {() => setIsInputChanged(true)} />
-                </div>
-                <div className = 'flex items-center justify-center space-x-[5%] mb-[25px]'>           
-                      <Input type = 'password' variant="outlined" label="Password" color='white' value = "apple" onChange = {() => setIsInputChanged(true)} />
-                      <Input type = "text" variant="outlined" label="Address" color='white' value = "New york city" onChange = {() => setIsInputChanged(true)} />
-                </div>
-                <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
-                    <Input variant="outlined" label="Country" color='white' onChange = {() => setIsInputChanged(true)} />
-                    <Input type = "text" variant="outlined" label="Website" color='white' value = "www.apple.com" onChange = {() => setIsInputChanged(true)} />
-                </div>
-                <div className = 'flex justify-end mt-[10%]'>
-                    <button className='text-white font-bold rounded-[20px] py-[10px] px-[15px] bg-red-800' onClick={handleUpdate} disabled={!isInputsChanged}>Update Profile</button>
-                </div>
-            </div>
-        </div>
+          <Modal show = {showModal} close={closeModal} message = "Company's Information updated successfully" />
+          {CompanyData && userData && interviewsStatus ?
+              <div className='md:flex flex-wrap items-center w-[80%] mx-[10%] space-x-[5%]'>
+                  <div className='flex-col min-h-[400px] md:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent'>
+                      <div className='flex-col items-center justify-end text-center mb-[10px]'>
+                          <Avatar className='rounded-[50%] w-[80px] h-[80px] m-auto' src={userData?.image} alt="avatar" />
+                          <span className='block font-bold text-white mt-[8px]'>{userData?.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}</span>
+                          <span className='block text-[12px] text-gray-300 font-bold'>CEO of {CompanyData?.name}</span>
+                      </div>
+                      <hr className='border-borderColor outline-none b-[20px]' />
+                      <div className='flex items-center justify-between p-[5%]'>
+                          <span className='text-gray-300'>Processed Interviews</span>
+                          <span className='text-red-700 font-bold'>{interviewsStatus.find(status => status._id === "finished")?.count || 0}</span>
+                      </div>
+                      <hr className='border-borderColor outline-none b-[20px]' />
+                      <div className='flex items-center justify-between p-[5%]'>
+                          <span className='text-gray-300'>Current Interviews</span>
+                          <span className='text-green-700 font-bold'>{interviewsStatus.find(status => status._id === "upcoming")?.count || 0}</span>
+                      </div>
+                      <hr className='border-borderColor outline-none b-[20px]' />
+                      <div className='flex items-center justify-between p-[5%]'>
+                          <span className='text-gray-300'>Cancelled Interviews</span>
+                          <span className='text-orange-500'>{interviewsStatus.find(status => status._id === "finished")?.count || 0}</span>
+                      </div>
+                      <hr className='border-borderColor outline-none b-[20px]' />
+                      <div className='text-center'>
+                          <button className='mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[10px] px-[15px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500'>View Public Profile</button>
+                      </div>
+                  </div>
+                  <div className='bg-transparent border-borderColor border-[1px] h-[400px] min-w-[70%] p-[3%] rounded-[10px]'>
+                      <span className='block text-2xl font-bold text-gray-300 mb-[20px]'>General Information</span>
+                      <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
+                          <Input type='text' variant="outlined" label="Name" color='white' defaultValue={CompanyData?.name} onChange={(e) => { setCompanyData({ ...CompanyData, name: e.target.value }); setIsInputChanged(true) }} />
+                          <Input type='email' variant="outlined" label="Email" color='white' defaultValue={CompanyData?.website} onChange={(e) => { setCompanyData({ ...CompanyData, website: e.target.value }); setIsInputChanged(true) }} />
+                      </div>
+                      <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
+                          <Input type="text" variant="outlined" label="Address" color='white' defaultValue={CompanyData?.address} onChange={(e) => { setCompanyData({ ...CompanyData, address: e.target.value }); setIsInputChanged(true) }} />
+                          <Input variant="outlined" label="Country" color='white' defaultValue={CompanyData?.country} onChange={(e) => { setCompanyData({ ...CompanyData, country: e.target.value }); setIsInputChanged(true)}} />
+                      </div>
+                      <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
+                          <Input type="text" variant="outlined" label="Website" color='white' value="www.apple.com" onChange={(e) => { setIsInputChanged(true) }} />
+                      </div>
+                      <div className='flex justify-end mt-[10%]'>
+                          <button className='text-white font-bold rounded-[20px] py-[10px] px-[15px] bg-red-800' onClick={handleUpdate} disabled={!isInputsChanged}>Update Profile</button>
+                      </div>
+                  </div>
+              </div> : ''}
     </div>
   )
 }
