@@ -10,7 +10,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
         await axios.delete(`${process.env.REACT_APP_BASE_URL}/interview/delete_interview/${id}`).then((response) => { console.log(response); setShowModal(true) }).catch((error) => console.log(error))
     }
   return (
-    <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor'>
+    <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
         <div className = 'w-full flex items-center justify-center'>
               <span className='text-white font-bold text-xl m-auto'>{title}</span>
         </div>
@@ -26,7 +26,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
             </div>
             <div className = 'flex items-center justify-end mt-[15px] gap-5'>
                 <button className = 'text-white bg-red-700 px-[3%] py-[1%] rounded-[20px] font-bold' onClick={deleteInterview}>Delete</button>
-                <button className = 'text-white bg-orange-600 px-[3%] py-[1%] rounded-[20px] font-bold'>Update</button>
+                <button className = 'text-white bg-orange-600 px-[3%] py-[1%] rounded-[20px] font-bold' onClick ={() => navigate(`/interview/${id}`)}>Edit</button>
             </div>
         </div> 
     </div>
