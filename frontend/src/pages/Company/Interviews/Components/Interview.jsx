@@ -19,7 +19,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
               <span className='text-white font-bold text-[18px]'>Time: <span className='text-gray-400 font-bold'>{Time}</span></span>
               <span className='text-white font-bold text-[18px]'>Status: <span className='text-gray-400'>{status}</span></span>
             <div className = 'flex items-center mt-[5px]'>
-                <div className='cursor-pointer' onClick={() => navigate('/interviewees/1')}>
+                <div className='cursor-pointer' onClick={() => navigate(`/interviewees/${id}`)}>
                     {parseInt(interviewees) !== 0 ? <AvatarStack /> : ''}
                 </div>
                 <span className='text-white text-[14px] ml-[1.5%] font-bold'>{interviewees} Interviewees applied for an interview</span>
