@@ -20,7 +20,7 @@ const Header = () => {
             <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
             <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
             <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
-            <a href="/results" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Results</a>
+            <a href="/followers" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Followers</a>
           </> : ''}
       </div> 
       <div className = 'md:hidden flex ml-[150px] text-white text-2xl cursor-pointer' onClick = {() => setIsOpen(!isOpen)}>
