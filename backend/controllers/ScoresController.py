@@ -1,0 +1,41 @@
+from bson import ObjectId
+from fastapi import APIRouter, Depends , status
+from fastapi.exceptions import HTTPException
+from fastapi.responses import JSONResponse
+from models.scores import Scores
+from models.user import User
+from services.userServices import UserServices
+from schemas.ScoresSchema import ScoresSchema
+
+ScoresRoutes = APIRouter()
+def extract_user_fields(user):
+    return {
+        "id": str(user.id),
+        "firstname": user.firstname,
+        "lastname": user.lastname,
+        "email": user.email,
+        "image": user.image,
+        "job": user.job
+    }
+
+@ScoresRoutes.post("/add_scores" , summary = "Add scores of interviewees")
+async def add_scores(request: ScoresSchema):
+    scores = Scores(
+        interview_id=ObjectId(request.interview_id),
+        interviewees_scores=request.interviewees_scores
+    )
+    await scores.create()
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content = {"message": "Scores added successfully"})
+
+@ScoresRoutes.get("/get_scores/{interview_id}" , summary = "get scores of interviewees by interview id")
+async def get_scores(interview_id: str, _ : dict = Depends(UserServices.is_authorized_user)):
+    scores = await Scores.find_one({"interview_id" : ObjectId(interview_id)})
+    if not scores:
+        raise HTTPException(status_code=404, detail="Scores with this interview id not found")
+    interviewees_scores = []
+    for score in scores.interviewees_scores:
+        user = await User.find_one(User.id == ObjectId(score["id"]))
+        user = extract_user_fields(user)
+        user["score"] = score["score"]
+        interviewees_scores.append(user)
+    return JSONResponse(status_code=status.HTTP_200_OK, content = {"message": "Scores retrieved successfully", "interviewees_scores": interviewees_scores})
