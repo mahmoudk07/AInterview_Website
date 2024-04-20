@@ -10,6 +10,7 @@ import Interviews from './pages/Company/Interviews/Interviews';
 import Interviewees from './pages/Company/Interviewees/Interviewees';
 import CompanyCreation from './pages/Company/CompanyCreation/CompanyCreation';
 import UpdateInterview from './pages/Company/UpdateInterview/UpdateInterview';
+import Followers from './pages/Company/Followers/Followers';
 import { Provider } from "react-redux";
 import { store } from './store';
 function App() {
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/interviewees/:id" element={<Interviewees />} />
                 <Route path="/interview/:id" element={<UpdateInterview />} />
                 <Route path="/addCompany" element={<CompanyCreation />} />
+                <Route path="/followers" element={<Followers />} />
               </Route>
             </Routes>
           </BrowserRouter>
