@@ -11,6 +11,7 @@ import pymongo
 
 def extract_specific_fields(user):
     return {
+        "id": str(user.id),
         "firstname": user.firstname,
         "lastname": user.lastname,
         "email": user.email,
