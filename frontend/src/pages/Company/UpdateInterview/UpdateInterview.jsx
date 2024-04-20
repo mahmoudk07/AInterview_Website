@@ -48,6 +48,7 @@ const UpdateInterview = () => {
     }
     useEffect(() => {
         fetchingInterview();
+        // eslint-disable-next-line
     }, [])
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px] mb-[50px]'>
