@@ -4,6 +4,7 @@ from fastapi.exceptions import HTTPException
 from schemas.interviewSchema import InterviewSchema , UpdateInterview
 from models.interview import Interview
 from models.company import Company
+from models.user import User
 from fastapi.responses import JSONResponse
 from services.userServices import UserServices
 from services.InterviewServices import InterviewServices
@@ -18,7 +19,15 @@ def extract_interview_fields(interview):
         "interviewees": len(interview.interviewees),
         "questions": interview.questions,
     }
-
+def extract_interviewee_fields(interviewee):
+    return {
+        "id": str(interviewee.id),
+        "email": interviewee.email,
+        "firstname": interviewee.firstname,
+        "lastname": interviewee.lastname,
+        "image": interviewee.image,
+        "job": interviewee.job
+    }
 @InterviewRoutes.post("/create" , summary = "Create an interview")
 async def create_interview(interview: InterviewSchema , payload : dict = Depends(UserServices.is_authorized_user)) -> InterviewSchema:
     user = await UserServices.get_user_by_email(payload["email"])
@@ -89,3 +98,15 @@ async def get_interview_by_id(id : str , _ : dict = Depends(UserServices.is_auth
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
     interview = extract_interview_fields(interview)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interview": interview})
+
+@InterviewRoutes.get("/get_interviewees/{id}" , summary = "Get Interviewees by ID")
+async def get_interviewees_by_id(id : str , _ : dict = Depends(UserServices.is_authorized_user)):
+    interview = await Interview.find_one(Interview.id == ObjectId(id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    interviewees = []
+    for interviewee in interview.interviewees:
+        user = await User.find_one(User.id == interviewee)
+        user = extract_interviewee_fields(user)
+        interviewees.append(user)
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "count": len(interviewees)})
