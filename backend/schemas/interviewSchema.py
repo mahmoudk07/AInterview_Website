@@ -24,3 +24,8 @@ class UpdateInterview(BaseModel):
         json_encoders = {
             ObjectId: lambda oid: str(oid),  # Converts ObjectId to string for JSON serialization
         }
+
+class ProcessingInterviews(BaseModel):
+    Interview_ID:str
+    Interviewee_ID:str
+    Vedio_Path:str

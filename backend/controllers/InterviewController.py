@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Body , Depends , status
 from bson.objectid import ObjectId
 from fastapi.exceptions import HTTPException
-from schemas.interviewSchema import InterviewSchema , UpdateInterview
+from schemas.interviewSchema import InterviewSchema , UpdateInterview,ProcessingInterviews
 from models.interview import Interview
 from models.company import Company
 from models.user import User
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,Response
 from services.userServices import UserServices
 from services.InterviewServices import InterviewServices
+import pika
+import json
 InterviewRoutes = APIRouter()
 def extract_interview_fields(interview):
     return {
@@ -110,3 +112,35 @@ async def get_interviewees_by_id(id : str , _ : dict = Depends(UserServices.is_a
         user = extract_interviewee_fields(user)
         interviewees.append(user)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "count": len(interviewees)})
+
+@InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
+async def detect(input_data:ProcessingInterviews):
+    url=input_data.Vedio_Path
+    input_data_dict = {
+        "Interview_ID": input_data.Interview_ID,
+        "Interviewee_ID": input_data.Interviewee_ID,
+        "Vedio_Path": input_data.Vedio_Path
+    }
+    print(json.dumps( input_data_dict)
+          )
+    if not url.startswith("http"):
+        raise HTTPException(
+            status_code=400, detail="Invalid URL format"
+        )
+    connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+    channel.queue_declare(queue='task_queue', durable=True)
+    
+    message = json.dumps( input_data_dict)
+    
+    channel.basic_publish(
+        exchange='',
+        routing_key='task_queue',
+        body=message,   
+        properties=pika.BasicProperties(
+            delivery_mode=pika.DeliveryMode.Persistent
+        ))
+    connection.close()
+   
+    return Response(status_code=200)
