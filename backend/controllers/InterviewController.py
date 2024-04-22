@@ -11,6 +11,7 @@ from services.userServices import UserServices
 from services.InterviewServices import InterviewServices
 import datetime
 import json
+import pika
 from pymongo import UpdateOne
 InterviewRoutes = APIRouter()
 def extract_interview_fields(interview):
