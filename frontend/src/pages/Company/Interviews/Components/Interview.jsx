@@ -7,7 +7,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
     const { setShowModal } = useContext(InterviewsContext)
     const navigate = useNavigate()
     const deleteInterview = async () => {
-        await axios.delete(`${process.env.REACT_APP_BASE_URL}/interview/delete_interview/${id}`).then((response) => { console.log(response); setShowModal(true) }).catch((error) => console.log(error))
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/interview/delete_interview/${id}`).then((response) => {console.log(response); setShowModal(true) }).catch((error) => console.log(error))
     }
   return (
     <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
