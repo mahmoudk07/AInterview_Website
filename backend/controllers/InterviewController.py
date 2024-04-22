@@ -122,7 +122,7 @@ async def get_status_count(payload : dict = Depends(UserServices.is_authorized_u
         },
         {
             "$match": {
-                "_id": {"$in": ["upcoming", "finished", "cancelled"]}
+                "_id": {"$in": ["upcoming", "finished", "processed"]}
             }
         }
     ]
