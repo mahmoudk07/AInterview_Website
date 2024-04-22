@@ -1,5 +1,5 @@
 from bson import ObjectId
-from fastapi import APIRouter , Depends , status
+from fastapi import APIRouter , Depends , status, Query
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 import pymongo.errors
@@ -54,18 +54,22 @@ async def create_company(data : CompanySchema , payload : dict = Depends(UserSer
     return JSONResponse(status_code = status.HTTP_201_CREATED , content = {"message": "Company created successfully", "company": newCompany.dict()})
 
 @CompanyRoutes.get('/followers' , summary = "Get all followers")
-async def get_all_followers(payload : dict = Depends(UserServices.is_authorized_user)):
+async def get_all_followers(page : int = Query(1 , gt = 0) ,payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload['email'])
     company = await Company.find_one(Company.id == user.company_id)
     if not company:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Company not found")
+    limit , totalCount = 6 , len(company.followers)
+    totalPages = (totalCount + limit - 1) // limit
+    start_index = (page - 1) * limit
+    end_index = min(start_index + limit, totalCount)
     followers = []
-    for follower in company.followers:
+    for follower in company.followers[start_index : end_index]:
         user = await User.find_one(User.id == follower)
         followers.append(user)
     followers = [extract_specific_fields(user) for user in followers]
     print(followers)
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Followers retrieved successfully", "followers": followers})
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Followers retrieved successfully", "followers": followers, "totalPages": totalPages})
 
 @CompanyRoutes.get("/get_companies" , summary = "get all companies")
 async def get_all_companies(_ : dict = Depends(UserServices.is_authorized_user)):
