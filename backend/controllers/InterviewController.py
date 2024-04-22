@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body , Depends, Response , status
+from fastapi import APIRouter, Body , Depends, Response , status, Query
 from bson.objectid import ObjectId
 from fastapi.exceptions import HTTPException
 from schemas.interviewSchema import InterviewSchema , UpdateInterview,ProcessingInterviews
@@ -55,9 +55,11 @@ async def create_interview(interview: InterviewSchema , payload : dict = Depends
     return JSONResponse(status_code = status.HTTP_201_CREATED , content = {"message": "Interview created successfully"})
 
 @InterviewRoutes.get("/get_interviews" , summary = "Get Interview by ID")
-async def get_interviews(payload : dict = Depends(UserServices.is_authorized_user)):
+async def get_interviews(page : int = Query(1 , gt=0), payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])
-    interviews = await Interview.find(Interview.company_id == user.company_id).to_list()
+    limit : int = 6
+    skip = (page - 1) * limit
+    interviews = await Interview.find(Interview.company_id == user.company_id).skip(skip).limit(limit).to_list()
     Status = None
     operations = []
     for interview in interviews:
@@ -79,11 +81,13 @@ async def get_interviews(payload : dict = Depends(UserServices.is_authorized_use
         try:
             result = await Interview.get_motor_collection().bulk_write(operations)
             print("Bulk update result:", result.bulk_api_result)
-            interviews = await Interview.find(Interview.company_id == user.company_id).to_list()
+            interviews = await Interview.find(Interview.company_id == user.company_id).skip(skip).limit(limit).to_list()
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    total_count = await Interview.find(Interview.company_id == user.company_id).count()
+    total_pages = (total_count + limit - 1) // limit
     interviews = [extract_interview_fields(interview) for interview in interviews]
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "count" : len(interviews)})
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages})
 
 @InterviewRoutes.delete('/delete_interview/{id}' , summary = "Delete interview by ID")
 async def delete_interview_by_id(id : str):
