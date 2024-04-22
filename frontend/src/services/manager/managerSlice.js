@@ -31,6 +31,21 @@ export const createInterview = createAsyncThunk('manager/createInterview', async
         return rejectWithValue(error.response.data)
     }
 })
+export const fetchInterviews = createAsyncThunk('manager/fetchInterviews', async (page, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_interviews?page=${page}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 const initialState = {
     website: "",
     name: "",
@@ -59,6 +74,17 @@ const managerSlice = createSlice({
             state.isLoading = false
             state.error = action.payload.detail
         })
+        builder.addCase(fetchInterviews.pending, (state, action) => {
+          state.isLoading = true;
+        });
+        builder.addCase(fetchInterviews.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.error = null;
+        });
+        builder.addCase(fetchInterviews.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload.detail;
+        });
     }
 })
 export const Error = (state) => state.Manager.error;
