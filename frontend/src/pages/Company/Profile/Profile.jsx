@@ -3,7 +3,13 @@ import Header from '../../../components/Header/Header'
 import { Avatar, Input } from '@material-tailwind/react'
 import axios from "axios"
 import Modal from '../../../components/Modal/Modal'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchingCompanyInfo } from '../../../services/manager/managerSlice'
+import { fetchingInterviewsStatus } from '../../../services/manager/managerSlice'
+import { Spinner } from '@material-tailwind/react'
 const Profile = () => {
+    const { isLoading } = useSelector(state => state.Manager)
+    const dispatch = useDispatch()
     const [isInputsChanged, setIsInputChanged] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const closeModal = () => {
@@ -21,30 +27,32 @@ const Profile = () => {
             }
         }).then((response) => { console.log(response); setShowModal(true) }).catch((error) => { console.log(error) })
     }
-    const fetchCompanyInfo = async () => {
-        await axios.get(`${process.env.REACT_APP_BASE_URL}/company/get_company`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const handlingCompanyRequest = async () => {
+        await dispatch(fetchingCompanyInfo()).then((response) => {
+            if (!response.error) {
+                setCompanyData(response.payload.company)
+                setUserData(response.payload.user)
             }
-        }).then((response) => { setCompanyData(response.data.company); setUserData(response.data.user) }).catch((error) => console.log(error));
+        })
     }
-    const fetchInterviewsStatus = async () => {
-        await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_interviews_status`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then((response) => setInterviewsStatus(response.data.results))
+    const handlingInterviewsRequest = async () => {
+        await dispatch(fetchingInterviewsStatus()).then((response) => {
+            if (!response.error)
+                setInterviewsStatus(response.payload.results)
+        })
     }
     useEffect(() => {
-        fetchCompanyInfo();
-        fetchInterviewsStatus();
+        handlingCompanyRequest();
+        handlingInterviewsRequest();
+        // eslint-disable-next-line
     }, [])
   return (
     <div className = 'w-full min-h-[80vh] overflow-x-hidden mt-[150px]'>
           <Header />
-          <Modal show = {showModal} close={closeModal} message = "Company's Information updated successfully" />
+          <Modal show={showModal} close={closeModal} message="Company's Information updated successfully" />
+          {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
+              <Spinner color="blue" size="5xl" className="h-12 w-12" />
+          </div> : ''}
           {CompanyData && userData && interviewsStatus ?
               <div className='md:flex flex-wrap items-center w-[80%] mx-[10%] space-x-[5%]'>
                   <div className='flex-col min-h-[400px] md:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent'>
@@ -55,7 +63,7 @@ const Profile = () => {
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
                       <div className='flex items-center justify-between p-[5%]'>
-                          <span className='text-gray-300'>Processed Interviews</span>
+                          <span className='text-gray-300'>Finished Interviews</span>
                           <span className='text-red-700 font-bold'>{interviewsStatus.find(status => status._id === "finished")?.count || 0}</span>
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
@@ -65,8 +73,8 @@ const Profile = () => {
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
                       <div className='flex items-center justify-between p-[5%]'>
-                          <span className='text-gray-300'>Cancelled Interviews</span>
-                          <span className='text-orange-500'>{interviewsStatus.find(status => status._id === "finished")?.count || 0}</span>
+                          <span className='text-gray-300'>Processed Interviews</span>
+                          <span className='text-orange-500'>{interviewsStatus.find(status => status._id === "processed")?.count || 0}</span>
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
                       <div className='text-center'>
