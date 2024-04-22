@@ -76,10 +76,10 @@ export const fetchingInterviewsStatus = createAsyncThunk('manager/InterviewsStat
         return rejectWithValue(error.response.data)
     }
 })
-export const fetchingFollowers = createAsyncThunk('manager/companyFollowers', async (_, thunkAPI) => { 
+export const fetchingFollowers = createAsyncThunk('manager/companyFollowers', async (page, thunkAPI) => { 
     const { rejectWithValue } = thunkAPI
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/followers`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/followers?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -163,7 +163,7 @@ const managerSlice = createSlice({
           state.isLoading = false;
           state.error = action.payload.detail;
         });
-        
+
     }
 })
 export const Error = (state) => state.Manager.error;
