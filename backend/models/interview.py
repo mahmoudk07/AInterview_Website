@@ -13,7 +13,8 @@ class Interview(Document):
     Date: str
     Time: str
     class Settings:
-        collection = "Interview"
+        collection = "Interview",
+        use_state_management: True
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {

@@ -56,6 +56,7 @@ async def changePassword(request: PasswordSchema , payload : dict = Depends(User
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_200_OK, content = {"message": "Password changed successfully"})
+
 @UserRoutes.patch("/join_interview/{interview_id}" , summary = "Apply for an interview")
 async def apply_to_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
     existed_user = await UserServices.get_user_by_email(user["email"])
@@ -67,6 +68,7 @@ async def apply_to_interview(interview_id: str , user: dict = Depends(UserServic
     await interview.save()
     await existed_user.save()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Applied to interview successfully"})
+
 @UserRoutes.patch('/follow/{company_id}' , summary = "Follow a company")
 async def follow_company(company_id : str , payload: dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload['email'])
@@ -83,6 +85,7 @@ async def follow_company(company_id : str , payload: dict = Depends(UserServices
     except Exception as e:
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company followed successfully"})
+
 @UserRoutes.patch('/unfollow/{company_id}' , summary = "Unfollow a company")
 async def unfollow_company(company_id : str , payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload['email'])
@@ -99,3 +102,16 @@ async def unfollow_company(company_id : str , payload : dict = Depends(UserServi
     except Exception as e:
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company unfollowed successfully"})
+
+@UserRoutes.patch("/finish_interview/{interview_id}" , summary = "Finish for an interview")
+async def apply_to_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    interview.attended_interviewees.append(existed_user.id)
+    try:
+        await interview.save()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview submitted successfully"})

@@ -5,11 +5,12 @@ from schemas.interviewSchema import InterviewSchema , UpdateInterview,Processing
 from models.interview import Interview
 from models.company import Company
 from models.user import User
-from fastapi.responses import JSONResponse,Response
+from models.scores import Scores
+from fastapi.responses import JSONResponse
 from services.userServices import UserServices
 from services.InterviewServices import InterviewServices
-import pika
-import json
+import datetime
+from pymongo import UpdateOne
 InterviewRoutes = APIRouter()
 def extract_interview_fields(interview):
     return {
@@ -30,6 +31,7 @@ def extract_interviewee_fields(interviewee):
         "image": interviewee.image,
         "job": interviewee.job
     }
+
 @InterviewRoutes.post("/create" , summary = "Create an interview")
 async def create_interview(interview: InterviewSchema , payload : dict = Depends(UserServices.is_authorized_user)) -> InterviewSchema:
     user = await UserServices.get_user_by_email(payload["email"])
@@ -49,12 +51,38 @@ async def create_interview(interview: InterviewSchema , payload : dict = Depends
     except Exception as e:
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_201_CREATED , content = {"message": "Interview created successfully"})
+
 @InterviewRoutes.get("/get_interviews" , summary = "Get Interview by ID")
 async def get_interviews(payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])
     interviews = await Interview.find(Interview.company_id == user.company_id).to_list()
+    Status = None
+    operations = []
+    for interview in interviews:
+        if interview.Date < datetime.datetime.now().strftime("%Y-%m-%d"):
+            interview_score = await Scores.find_one({"interview_id": interview.id})
+            if interview_score:
+                if len(interview_score.interviewees_scores) == len(interview.attended_interviewees):
+                    Status = "processed"
+                else:
+                    Status = "finished"
+            else:
+                Status = "finished"
+        elif interview.Date > datetime.datetime.now().strftime("%Y-%m-%d"):
+            Status = "upcoming"
+        else:
+            Status = "current"
+        operations.append(UpdateOne({'_id': interview.id}, {'$set': {'status': Status}}))
+    if operations:
+        try:
+            result = await Interview.get_motor_collection().bulk_write(operations)
+            print("Bulk update result:", result.bulk_api_result)
+            interviews = await Interview.find(Interview.company_id == user.company_id).to_list()
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     interviews = [extract_interview_fields(interview) for interview in interviews]
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "count" : len(interviews)})
+
 @InterviewRoutes.delete('/delete_interview/{id}' , summary = "Delete interview by ID")
 async def delete_interview_by_id(id : str):
     interview = await Interview.find_one(Interview.id == ObjectId(id))
@@ -65,10 +93,12 @@ async def delete_interview_by_id(id : str):
     company.interviews.remove(interview.id)
     await company.save()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview deleted successfully"})
+
 @InterviewRoutes.patch('/update_interview/{id}' , summary = "Update an interview")
 async def update_interview(id : str , updatedInterview : UpdateInterview = Body(...)):
     await InterviewServices.update_interview(id , updatedInterview)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview updated successfully"})
+
 @InterviewRoutes.get("/get_interviews_status" , summary = "Get count for each status")
 async def get_status_count(payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])

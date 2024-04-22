@@ -4,7 +4,7 @@ from typing import List, Optional
 from bson.objectid import ObjectId
 class InterviewSchema(BaseModel):
     title: str = Field(..., description = "Title of the interview" , min_length = 3 , max_length = 50)
-    status: str = Field(default = "upcoming" , description = "Status of Interview" , enum = ["upcoming" , "finished" , "cancelled"])
+    status: str = Field(default = "upcoming" , description = "Status of Interview" , enum = ["upcoming" , "finished" , "current", "processed"])
     Date: str = Field(... , description = "Date of the interview")
     Time: str = Field(... , description = "Time of the interview")
     questions: List[dict] = Field(... , description = "Questions and answers of the interview")

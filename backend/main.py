@@ -39,3 +39,4 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT"))
     print(f"Server is running on port {port}")
     uvicorn.run("main:app" , host = '127.0.0.1' , port = port , lifespan = "on" , reload=True)
+
