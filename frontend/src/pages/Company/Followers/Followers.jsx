@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import Header from "../../../components/Header/Header";
 import { Card, Typography, Button, CardBody, CardFooter, Avatar, } from "@material-tailwind/react";
-import axios from "axios"
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchingFollowers } from '../../../services/manager/managerSlice';
+import { Spinner } from '@material-tailwind/react';
 const TABLE_HEAD = ["Member", "Job", "Email"];
 const Followers = () => {
+    const { isLoading } = useSelector((state) => state.Manager)
+    const dispatch = useDispatch()  
     const [data, setData] = useState(null)
-    const fetching_followers = async () => {
-        await axios.get(`${process.env.REACT_APP_BASE_URL}/company/followers`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then((response) => { setData(response.data.followers); console.log(response) }).catch((error) => console.log(error))
+  const handlingFetching = async () => {
+    await dispatch(fetchingFollowers()).then((response) => {
+      if (!response.error)
+          setData(response.payload.followers)
+      })
     }
     useEffect(() => {
-        fetching_followers()
+      handlingFetching()
         // eslint-disable-next-line
     }, [])
     return (
       <div className="w-full min-h-[80vh] overflow-x-hidden mt-[100px] flex justify-center items-center">
       <Header />
+      {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
+        <Spinner color="blue" size="5xl" className="h-12 w-12" />
+      </div> : ''}
       {data ?
         <div className="min-w-[50%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor">
