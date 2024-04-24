@@ -23,11 +23,11 @@ const Header = () => {
             <a href="/followers" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Followers</a>
           </> : ''}
       </div> 
-      <div className = 'md:hidden flex ml-[150px] text-white text-2xl cursor-pointer' onClick = {() => setIsOpen(!isOpen)}>
+      <div className = 'md:hidden flex ml-[30%] text-white text-2xl cursor-pointer' onClick = {() => setIsOpen(!isOpen)}>
         {isOpen ? <MdOutlineClose /> : <IoMenu />}
       </div>
       {localStorage.getItem("token") !== null ? <button className='header-buttons' onClick={() => { dispatch(logout()); navigate("/login") }}>Logout</button>
-        : <button className='header-buttons' onClick={() => navigate("/login")}>Login</button>}
+        : <button className={`header-buttons`} onClick={() => navigate("/login")}>Login</button>}
     </div>
   )
 }

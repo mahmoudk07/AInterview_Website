@@ -45,7 +45,7 @@ const Followers = () => {
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
       {data ?
-        <div className="min-w-[50%] mb-[50px]">
+        <div className="min-w-[40%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
               Followers
