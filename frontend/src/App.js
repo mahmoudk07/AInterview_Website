@@ -11,6 +11,9 @@ import Interviewees from './pages/Company/Interviewees/Interviewees';
 import CompanyCreation from './pages/Company/CompanyCreation/CompanyCreation';
 import UpdateInterview from './pages/Company/UpdateInterview/UpdateInterview';
 import Followers from './pages/Company/Followers/Followers';
+import Users from './pages/Admin/Users/Users';
+import Companies from './pages/Admin/Companies/Companies';
+import Error from './pages/ErrorPage/Error';
 import { Provider } from "react-redux";
 import { store } from './store';
 function App() {
@@ -20,10 +23,10 @@ function App() {
         <Provider store={store}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home />} errorElement={<Error />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route element={<ProtectedRoute />}>
+              <Route element={<ProtectedRoute />} errorElement={<Error />}>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/createInterview" element={<CreateInterview />} />
                 <Route path="/interviews" element={<Interviews />} />
@@ -31,7 +34,10 @@ function App() {
                 <Route path="/interview/:id" element={<UpdateInterview />} />
                 <Route path="/addCompany" element={<CompanyCreation />} />
                 <Route path="/followers" element={<Followers />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/companies" element={<Companies />} />
               </Route>
+              <Route path="*" element={<Error />} />
             </Routes>
           </BrowserRouter>
         </Provider>
