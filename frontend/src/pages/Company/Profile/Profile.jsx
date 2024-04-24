@@ -54,8 +54,8 @@ const Profile = () => {
               <Spinner color="blue" size="5xl" className="h-12 w-12" />
           </div> : ''}
           {CompanyData && userData && interviewsStatus ?
-              <div className='md:flex flex-wrap items-center w-[80%] mx-[10%] space-x-[5%]'>
-                  <div className='flex-col min-h-[400px] md:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent'>
+              <div className='flex flex-col lg:flex-row items-center w-[80%] mx-[10%] md:space-x-[5%]'>
+                  <div className='flex-col min-h-[400px] w-full md:w-[60%] lg:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent mb-[50px] lg:mb-[0px]'>
                       <div className='flex-col items-center justify-end text-center mb-[10px]'>
                           <Avatar className='rounded-[50%] w-[80px] h-[80px] m-auto' src={userData?.image} alt="avatar" />
                           <span className='block font-bold text-white mt-[8px]'>{userData?.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}</span>
@@ -81,13 +81,13 @@ const Profile = () => {
                           <button className='mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[10px] px-[15px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500'>View Public Profile</button>
                       </div>
                   </div>
-                  <div className='bg-transparent border-borderColor border-[1px] h-[400px] min-w-[70%] p-[3%] rounded-[10px]'>
+                  <div className='bg-transparent border-borderColor border-[1px] min-h-[400px] w-full lg:w-[70%] p-[3%] rounded-[10px] mb-[70px] lg:mb-[0px]'>
                       <span className='block text-2xl font-bold text-gray-300 mb-[20px]'>General Information</span>
-                      <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
+                      <div className='flex flex-col md:flex-row items-center justify-center md:space-x-[5%] mb-[25px] gap-y-6 md:gap-y-0'>
                           <Input type='text' variant="outlined" label="Name" color='white' defaultValue={CompanyData?.name} onChange={(e) => { setCompanyData({ ...CompanyData, name: e.target.value }); setIsInputChanged(true) }} />
                           <Input type='email' variant="outlined" label="Email" color='white' defaultValue={CompanyData?.website} onChange={(e) => { setCompanyData({ ...CompanyData, website: e.target.value }); setIsInputChanged(true) }} />
                       </div>
-                      <div className='flex items-center justify-center space-x-[5%] mb-[25px]'>
+                      <div className='flex flex-col md:flex-row items-center justify-center md:space-x-[5%] mb-[25px] gap-y-6 md:gap-y-0'>
                           <Input type="text" variant="outlined" label="Address" color='white' defaultValue={CompanyData?.address} onChange={(e) => { setCompanyData({ ...CompanyData, address: e.target.value }); setIsInputChanged(true) }} />
                           <Input variant="outlined" label="Country" color='white' defaultValue={CompanyData?.country} onChange={(e) => { setCompanyData({ ...CompanyData, country: e.target.value }); setIsInputChanged(true)}} />
                       </div>
