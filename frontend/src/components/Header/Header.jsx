@@ -8,6 +8,30 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const render_depend_on_type = () => {
+  const type = localStorage.getItem('type')
+    if (type === 'manager')
+      return (<>
+        <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
+        <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
+        <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
+        <a href="/followers" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Followers</a>
+      </>)
+    else if (type === 'user')
+      return (<>
+        <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
+        <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
+        <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
+        <a href="/following" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Following</a>
+      </>)
+    else
+      return (<>
+        <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
+        <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
+        <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Users</a>
+        <a href="/following" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Companies</a>
+      </>)
+  }
   return (
     <div className='header'>
       <div className = 'flex items-center space-x-2'>
@@ -15,13 +39,7 @@ const Header = () => {
         <span className = 'text-white font-bold text-2xl'>AÏnterview</span>
       </div>
       <div className={`absolute flex md:flex-row flex-col justify-center items-start md:items-center md:space-x-10 md:relative top-[-100vh] md:top-[inherit] ${isOpen ? 'left-0 gap-5 p-[15px] w-full top-[68px] bg-black duration-500 text-black' : 'top-[-100vh]'} z-auto`}>
-        {localStorage.getItem("token") !== null ? 
-          <>
-            <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
-            <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
-            <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
-            <a href="/followers" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Followers</a>
-          </> : ''}
+        {localStorage.getItem("token") !== null ? render_depend_on_type() : ''}
       </div> 
       <div className = 'md:hidden flex ml-[30%] text-white text-2xl cursor-pointer' onClick = {() => setIsOpen(!isOpen)}>
         {isOpen ? <MdOutlineClose /> : <IoMenu />}
