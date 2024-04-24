@@ -28,8 +28,8 @@ const Header = () => {
       return (<>
         <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
         <a href="/profile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
-        <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Users</a>
-        <a href="/following" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Companies</a>
+        <a href="/users" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Users</a>
+        <a href="/companies" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Companies</a>
       </>)
   }
   return (
