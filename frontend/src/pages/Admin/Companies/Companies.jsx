@@ -52,7 +52,7 @@ const Companies = () => {
     // eslint-disable-next-line
   }, [active, isDeleted])
   return (
-    <div className='w-full min-h-[80vh] overflow-x-hidden mt-[100px] flex justify-center items-center'>
+    <div className='w-full min-h-[80vh] overflow-x-hidden mt-[30px] flex justify-center items-center'>
       <Header />
       <Modal show={showModal} close={closeModal} message="Company deleted successfully" />
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
@@ -127,7 +127,7 @@ const Companies = () => {
                             </Typography>
                           </td>
                           <td className={classes}>
-                            <button className='text-white font-bold bg-red-600 rounded-[20px] px-[15%] py-[10%] mr-4' onClick={() => handleDelete(id)}>Delete</button>
+                            <button className='text-white font-bold bg-red-600 rounded-[20px] px-[10%] py-[5%] mr-4' onClick={() => handleDelete(id)}>Delete</button>
                           </td>
                         </tr>
                       );
