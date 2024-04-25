@@ -20,9 +20,9 @@ const Home = () => {
     console.log(role , isManager)
   }, [])
   const handleRole = () => {
-    if (role === "manager" && isManager !== "undefined")
+    if (role === "manager" && isManager !== "None")
       return <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
-    else if(role === "manager" && isManager === "undefined")
+    else if(role === "manager" && isManager === "None")
       return <button className='interview-button' onClick={companyCreation}>Add your company</button>
     else
       return ""
