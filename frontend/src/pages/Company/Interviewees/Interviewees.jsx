@@ -7,7 +7,6 @@ const TABLE_HEAD = ["Member", "Job", "Email"];
 const Interviewees = () => {
   const { id } = useParams()
   const [data, setData] = useState(null)
-  
   const fetching_interviewees = async () => {
     await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_interviewees/${id}`, {
       headers: {
