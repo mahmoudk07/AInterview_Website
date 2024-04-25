@@ -13,6 +13,7 @@ import UpdateInterview from './pages/Company/UpdateInterview/UpdateInterview';
 import Followers from './pages/Company/Followers/Followers';
 import Users from './pages/Admin/Users/Users';
 import Companies from './pages/Admin/Companies/Companies';
+import Result from './pages/Company/InterviewsResults/Result';
 import Error from './pages/ErrorPage/Error';
 import { Provider } from "react-redux";
 import { store } from './store';
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/followers" element={<Followers />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/companies" element={<Companies />} />
+                <Route path="/result/:id" element={<Result />} />
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>
