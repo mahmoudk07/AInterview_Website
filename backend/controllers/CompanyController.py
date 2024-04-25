@@ -20,6 +20,7 @@ def extract_specific_fields(user):
     }
 def extract_specific_company_fields(company):
     return {
+        "id": str(company.id),
         "name": company.name,
         "address": company.address,
         "country": company.country,
@@ -72,9 +73,14 @@ async def get_all_followers(page : int = Query(1 , gt = 0) ,payload : dict = Dep
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Followers retrieved successfully", "followers": followers, "totalPages": totalPages})
 
 @CompanyRoutes.get("/get_companies" , summary = "get all companies")
-async def get_all_companies(_ : dict = Depends(UserServices.is_authorized_user)):
-    companies = await Company.find().to_list()
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Companies retrieved successfully", "companies": companies})
+async def get_all_companies(page : int = Query(1 , gt = 0) , _ : dict = Depends(UserServices.is_authorized_user)):
+    limit = 6
+    total_count = await Company.find().count()
+    totalPages = (total_count + limit - 1) // limit
+    skip = (page - 1)*limit;
+    companies = await Company.find().skip(skip).limit(limit).to_list()
+    companies = [extract_specific_company_fields(company) for company in companies]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Companies retrieved successfully", "companies": companies, "totalPages": totalPages})
 
 @CompanyRoutes.get('/get_company' , summary = "Get company by id")
 async def get_company_by_id(payload : dict = Depends(UserServices.is_authorized_user)):
