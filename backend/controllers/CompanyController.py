@@ -70,6 +70,7 @@ async def get_all_followers(page : int = Query(1 , gt = 0) ,payload : dict = Dep
         followers.append(user)
     followers = [extract_specific_fields(user) for user in followers]
     print(followers)
+    print(totalPages)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Followers retrieved successfully", "followers": followers, "totalPages": totalPages})
 
 @CompanyRoutes.get("/get_companies" , summary = "get all companies")

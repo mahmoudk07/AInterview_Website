@@ -122,34 +122,35 @@ const Followers = () => {
               </table>
             </CardBody>
             </Card>
-            <div className={`w-full flex items-center gap-4 ml-[20%] mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
-              <Button
-                variant="text"
-                className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
-                onClick={prev}
-                disabled={active === 1}
-              > Previous
-              </Button>
-              <div className="flex items-center gap-2 flex-wrap">
-                {[...Array(totalPages)].map((_, index) => (
-                  <IconButton
-                    key={index}
-                    className={`text-white bg-transparent border-[1px] border-borderColor text-[16px] font-bold ${active === index + 1 ? "bg-green-700" : ""}`}
-                    {...getItemProps(index + 1)}
-                  >
-                    {index + 1}
-                  </IconButton>
-                ))}
-              </div>
-              <Button
-                variant="text"
-                className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px]"
-                onClick={next}
-                disabled={active === totalPages}
-              >
-                Next
-              </Button>
-            </div>
+            {totalPages !== 0 ?
+              <div className={`w-full flex items-center gap-4 ml-[20%] mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+                <Button
+                  variant="text"
+                  className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
+                  onClick={prev}
+                  disabled={active === 1}
+                > Previous
+                </Button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {[...Array(totalPages)].map((_, index) => (
+                    <IconButton
+                      key={index}
+                      className={`text-white bg-transparent border-[1px] border-borderColor text-[16px] font-bold ${active === index + 1 ? "bg-green-700" : ""}`}
+                      {...getItemProps(index + 1)}
+                    >
+                      {index + 1}
+                    </IconButton>
+                  ))}
+                </div>
+                <Button
+                  variant="text"
+                  className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px]"
+                  onClick={next}
+                  disabled={active === totalPages}
+                >
+                  Next
+                </Button>
+              </div> : ''}
         </div> : ''}
     </div>
   )
