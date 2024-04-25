@@ -44,7 +44,7 @@ const Followers = () => {
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
-      {data ?
+      {!isLoading && data ?
         <div className="min-w-[40%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
