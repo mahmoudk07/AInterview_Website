@@ -16,6 +16,7 @@ import Companies from './pages/Admin/Companies/Companies';
 import Result from './pages/Company/InterviewsResults/Result';
 import Error from './pages/ErrorPage/Error';
 import { Provider } from "react-redux";
+import  Quiz from './pages/Interviewers/Quiz';
 import { store } from './store';
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/users" element={<Users />} />
                 <Route path="/companies" element={<Companies />} />
                 <Route path="/result/:id" element={<Result />} />
+                <Route path="/Quiz" element={<Quiz />} />
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>

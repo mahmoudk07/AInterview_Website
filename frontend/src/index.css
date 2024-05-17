@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-    --background-image : url('/Volumes/MKSSD/AInterview_Frontend/frontend/src/assets/background5.jpg')
+    --background-image : url("D:/College/GP/AInterview_Website/frontend/src/assets/background5.jpg")
 }
 body{
     /* background-image: var(--background-image);
