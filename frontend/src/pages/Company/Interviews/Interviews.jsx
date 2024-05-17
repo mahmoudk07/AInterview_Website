@@ -7,10 +7,12 @@ import { Button, IconButton } from '@material-tailwind/react'
 import { useDispatch } from 'react-redux'
 import { fetchInterviews } from '../../../services/manager/managerSlice'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 export const InterviewsContext = createContext(null)
 const Interviews = () => {
-  const { isLoading } = useSelector((state) => state.Manager)
   const dispacth = useDispatch()
+  const navigate = useNavigate()
+  const { isLoading } = useSelector((state) => state.Manager)
   const [data, setData] = useState(null)
   const [isDeleted, setIsDeleted] = useState(false)
   const [totalPages, setTotalPages] = useState(null)
@@ -59,7 +61,7 @@ const Interviews = () => {
             {data.map((interview) => <Interview key={interview.id} id={interview.id} title={interview.title} Date={interview.Date} Time={interview.Time} status={interview.status} interviewees={interview.interviewees} />)}
           </div> : ''}
         {totalPages && totalPages !== 0 ?
-          <div className={`flex items-center gap-4 ml-[26%] mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+          <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
             <Button
               variant="text"
               className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
@@ -86,7 +88,16 @@ const Interviews = () => {
             >
               Next
             </Button>
-          </div> : ''}
+          </div> :
+          <div className='flex justify-center items-center'>
+            {totalPages === 0 ?
+              <div className = 'flex flex-col'>
+                <h1 className='text-3xl text-gray-400 font-bold'>No interviews available</h1>
+                <button className='interview-button' onClick={() => navigate('/createInterview')}>Create Interview</button>
+              </div>
+              : ''}
+          </div>
+        }
       </div>
 
     </InterviewsContext.Provider>

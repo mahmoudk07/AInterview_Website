@@ -9,11 +9,12 @@ const InterviewScheduling = () => {
     if (num > 0 && Number.isInteger(num)) {
       const newQuestions = Array.from({ length: num }, (_, index) => ({
         [`Q${index + 1}`]: "",
+        "Type": "",
         "Answer": ""
       }));
       setData(prevData => ({ ...prevData, questions: newQuestions }));
     }
-  }, [data.numOfQuestions , setData, numOfQuestions , setNumOfQuestions]);
+  }, [setData, numOfQuestions , setNumOfQuestions]);
   return (
     <div className = 'mt-[60px]'>
         <div className = 'flex-col items-center space-y-5'>
