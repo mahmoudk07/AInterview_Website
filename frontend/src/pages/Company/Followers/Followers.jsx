@@ -4,7 +4,7 @@ import { Card, Typography, Button, CardBody, Avatar, IconButton} from "@material
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchingFollowers } from '../../../services/manager/managerSlice';
 import { Spinner } from '@material-tailwind/react';
-
+import { ImSad } from "react-icons/im";
 const TABLE_HEAD = ["Member", "Job", "Email"];
 const Followers = () => {
     const { isLoading } = useSelector((state) => state.Manager)
@@ -36,6 +36,7 @@ const Followers = () => {
     }
     useEffect(() => {
       handlingFetching()
+      console.log(!isLoading && data)
         // eslint-disable-next-line
     }, [active])
     return (
@@ -44,7 +45,7 @@ const Followers = () => {
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
-      {!isLoading && data ?
+      {data?.length !== 0 && !isLoading ? (
         <div className="min-w-[40%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
@@ -71,7 +72,7 @@ const Followers = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {data.map(
+                {data?.map(
                   ({ id , image, firstname, email, job, lastname}, index) => {
                     const isLast = index === data.length - 1;
                     const classes = isLast
@@ -123,7 +124,7 @@ const Followers = () => {
             </CardBody>
             </Card>
             {totalPages !== 0 ?
-              <div className={`w-full flex items-center gap-4 ml-[20%] mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+              <div className={`w-full flex items-center justify-center gap-4 mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
                 <Button
                   variant="text"
                   className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
@@ -150,8 +151,15 @@ const Followers = () => {
                 >
                   Next
                 </Button>
-              </div> : ''}
-        </div> : ''}
+              </div> :''
+              }
+          </div> ) : data?.length === 0 && !isLoading ? (
+            <div className="flex flex-col items-center justify-center gap-4">
+              <ImSad className="text-9xl text-gray-400" />
+              <h1 className="text-3xl text-gray-400 font-bold">No Followers available</h1>
+            </div>
+          ) : ''
+        }
     </div>
   )
 }
