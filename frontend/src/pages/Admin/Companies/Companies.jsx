@@ -137,7 +137,7 @@ const Companies = () => {
               </table>
             </CardBody>
           </Card>
-          <div className={`w-full flex items-center gap-4 ml-[20%] mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+          <div className={`w-full flex items-center gap-4 justify-center mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
             <Button
               variant="text"
               className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
