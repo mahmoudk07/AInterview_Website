@@ -7,6 +7,7 @@ from models.user import User
 from models.company import Company
 from models.interview import Interview
 from services.userServices import UserServices
+from schemas.userSchema import UpdateUser
 from pymongo import DeleteMany
 AdminRoutes = APIRouter()
 
@@ -50,7 +51,7 @@ async def deleteAllUsers(user: dict = Depends(UserServices.is_admin_user)):
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "All users deleted successfully"})
 
 @AdminRoutes.delete("/deleteCompany/{id}" , summary = "Delete company by id")
-async def delete_company(id : str , payload : dict = Depends(UserServices.is_admin_user)):
+async def delete_company(id : str , _ : dict = Depends(UserServices.is_admin_user)):
     company = await Company.find_one(Company.id == ObjectId(id))
     if not company:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
@@ -64,4 +65,29 @@ async def delete_company(id : str , payload : dict = Depends(UserServices.is_adm
     await Interview.get_motor_collection().delete_many({'company_id': company.id})
     await company.delete()
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company deleted successfully"})
+
+@AdminRoutes.patch("/updateAdmin" , summary = "Update user by id")
+async def updateUser(data: UpdateUser , user : dict = Depends(UserServices.is_admin_user)):
+    user = await User.find_one(User.id == user.id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if data.email:
+        user.email = data.email
+    if data.firstname:
+        user.firstname = data.firstname
+    if data.lastname:
+        user.lastname = data.lastname
+    if data.job:
+        user.job = data.job
+    print(data)
+    try:
+        await user.save()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update user")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User updated successfully"})
     
+@AdminRoutes.get("/getAdminUser" , summary = "Get user by id")
+async def getUser(user: dict = Depends(UserServices.is_admin_user)):
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User retrieved successfully", "user": extract_users_field(user)})
+
+
