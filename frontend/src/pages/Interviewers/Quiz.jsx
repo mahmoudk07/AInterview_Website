@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaRegClock } from "react-icons/fa6";
 import { FaBriefcase } from "react-icons/fa";
 import { RiSurveyFill } from "react-icons/ri";
-import useDrivepicker from 'react-google-drive-picker';
+// import useDrivepicker from 'react-google-drive-picker';
 const Quiz = () => {
     const [questions] = useState({
         "Q1": {
@@ -106,6 +106,7 @@ const Quiz = () => {
             });
         }, 1000);
         return () => clearInterval(timer);
+        // eslint-disable-next-line
     }, [currentQuestionKey]);
 
     useEffect(() => {
@@ -116,12 +117,14 @@ const Quiz = () => {
                 [currentQuestionKey]: selectedChoice
             }));
         }
+        // eslint-disable-next-line
     }, [selectedChoice, currentQuestionKey, quizFinished]);
     useEffect(() => {
         // Log answers when quiz is finished
         if (quizFinished) {
             console.log("Interview finished. Answers:", answers);
         }
+        // eslint-disable-next-line
     }, [quizFinished, answers]);
     const currentQuestion = questions[currentQuestionKey];
     const { Type, Question, Choices } = currentQuestion;
