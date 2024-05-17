@@ -58,7 +58,7 @@ const Profile = () => {
                   <div className='flex-col min-h-[400px] w-full md:w-[60%] lg:w-[24%] border-[1px] p-[0%] border-borderColor rounded-[10px] py-[2%] bg-transparent mb-[50px] lg:mb-[0px]'>
                       <div className='flex-col items-center justify-end text-center mb-[10px]'>
                           <Avatar className='rounded-[50%] w-[80px] h-[80px] m-auto' src={userData?.image} alt="avatar" />
-                          <span className='block font-bold text-white mt-[8px]'>{userData?.firstname.toUpperCase() + ' ' + userData.lastname.toUpperCase()}</span>
+                          <span className='block font-bold text-white mt-[8px]'>{userData?.firstname.toUpperCase() + ' ' + userData?.lastname.toUpperCase()}</span>
                           <span className='block text-[12px] text-gray-300 font-bold'>CEO of {CompanyData?.name}</span>
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
