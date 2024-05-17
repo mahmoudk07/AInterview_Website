@@ -115,3 +115,4 @@ async def apply_to_interview(interview_id: str , user: dict = Depends(UserServic
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview submitted successfully"})
+
