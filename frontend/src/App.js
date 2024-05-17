@@ -15,6 +15,7 @@ import Users from './pages/Admin/Users/Users';
 import Companies from './pages/Admin/Companies/Companies';
 import Result from './pages/Company/InterviewsResults/Result';
 import Error from './pages/ErrorPage/Error';
+import AdminProfile from './pages/Admin/Profile/AdminProfile';
 import { Provider } from "react-redux";
 import  Quiz from './pages/Interviewers/Quiz';
 import { store } from './store';
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/companies" element={<Companies />} />
                 <Route path="/result/:id" element={<Result />} />
                 <Route path="/Quiz" element={<Quiz />} />
+                <Route path="/adminProfile" element={<AdminProfile />} />
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>
