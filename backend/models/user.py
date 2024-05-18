@@ -14,6 +14,7 @@ class User(Document):
     interviews: Optional[List[ObjectId]] = []
     company_id: Optional[ObjectId] = None
     following: Optional[List[ObjectId]] = []
+    following_interviews: Optional[List[ObjectId]] = []
     class Settings:
         collection = "User"
     class Config:
