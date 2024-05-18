@@ -23,6 +23,7 @@ def extract_interview_fields(interview):
         "Time": interview.Time,
         "interviewees": len(interview.interviewees),
         "questions": interview.questions,
+        "company_name": interview.company_name
     }
 def extract_interviewee_fields(interviewee):
     return {
@@ -38,13 +39,15 @@ def extract_interviewee_fields(interviewee):
 async def create_interview(interview: InterviewSchema , payload : dict = Depends(UserServices.is_authorized_user)) -> InterviewSchema:
     user = await UserServices.get_user_by_email(payload["email"])
     company = await Company.find_one(Company.id == user.company_id)
+    print(company.name)
     newInterview = Interview(
+        company_name = company.name,
         title = interview.title,
         questions = interview.questions,
         company_id = ObjectId(company.id),
         status = interview.status,
         Date = interview.Date,
-        Time = interview.Time
+        Time = interview.Time,
     )
     await newInterview.create()
     try:
@@ -54,7 +57,7 @@ async def create_interview(interview: InterviewSchema , payload : dict = Depends
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR , detail = "Error occurred while saving")
     return JSONResponse(status_code = status.HTTP_201_CREATED , content = {"message": "Interview created successfully"})
 
-@InterviewRoutes.get("/get_interviews" , summary = "Get Interview by ID")
+@InterviewRoutes.get("/get_interviews" , summary = "Get Interviews created by company")
 async def get_interviews(page : int = Query(1 , gt=0), payload : dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])
     limit : int = 6
@@ -148,6 +151,16 @@ async def get_interviewees_by_id(id : str , _ : dict = Depends(UserServices.is_a
         user = extract_interviewee_fields(user)
         interviewees.append(user)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "count": len(interviewees)})
+
+@InterviewRoutes.get("/get_all_interviews" , summary = "Get all interviews")
+async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(UserServices.is_authorized_user)):
+    limit : int = 6
+    skip = (page - 1) * limit
+    interviews = await Interview.find().skip(skip).limit(limit).to_list()
+    total_count = await Interview.find().count()
+    total_pages = (total_count + limit - 1) // limit
+    interviews = [extract_interview_fields(interview) for interview in interviews]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages})
 
 @InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
 async def detect(input_data:ProcessingInterviews):
