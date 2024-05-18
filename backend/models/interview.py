@@ -6,6 +6,7 @@ class Interview(Document):
     title: str
     questions: List[dict]
     company_id: ObjectId
+    company_name: str
     interviewees: Optional[List[ObjectId]] = []
     attended_interviewees: Optional[List[ObjectId]] = []
     video_path: Optional[List[dict]] = []
@@ -24,6 +25,7 @@ class Interview(Document):
             "example": {
                 "title": "Interview",
                 "company_id": ["5f5f4f7c7b7e13b0f7f3e7b2"],
+                "company_name": "Valeo",
                 "interviewees": ["5f5f4f7c7b7e13b0f7f3e7b2"],
                 "attended_interviewees": ["5f5f4f7c7b7e13b0f7f3e7b2"],
                 "video_path": [{"path": "path/to/video"}],
