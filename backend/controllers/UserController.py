@@ -12,6 +12,27 @@ import pymongo
 
 UserRoutes = APIRouter()
 
+
+def extract_specific_company_fields(company):
+    return {
+        "id": str(company.id),
+        "name": company.name,
+        "address": company.address,
+        "country": company.country,
+        "website": company.website,
+        "image": company.image,
+    }
+def extract_interview_fields(interview):
+    return {
+        "id": str(interview.id),
+        "title": interview.title,
+        "status": interview.status,
+        "Date": interview.Date,
+        "Time": interview.Time,
+        "interviewees": len(interview.interviewees),
+        "questions": interview.questions,
+        "company_name": interview.company_name
+}
 @UserRoutes.post("/register" , summary = "Create a new user")
 async def register(request: RegisterSchema):
     empty_attributes = [key for key, value in request.dict().items() if not value]
@@ -116,3 +137,47 @@ async def apply_to_interview(interview_id: str , user: dict = Depends(UserServic
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview submitted successfully"})
 
+@UserRoutes.get("/get_following_companies" , summary = "Get following companies")
+async def get_following_companies(payload: dict = Depends(UserServices.is_authorized_user)):
+    user = await UserServices.get_user_by_email(payload["email"])
+    companies = await Company.find({"_id": {"$in": user.following}}).to_list()
+    companies = [extract_specific_company_fields(company) for company in companies]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"companies": companies})
+
+@UserRoutes.get("/get_interviews_by_following_companies" , summary = "Get interviews by following companies")
+async def get_interviews_by_following_companies(payload: dict = Depends(UserServices.is_authorized_user)):
+    user = await UserServices.get_user_by_email(payload["email"])
+    companies = await Company.find({"_id": {"$in": user.following}}).to_list()
+    interviews = []
+    for company in companies:
+        company_interviews = await Interview.find(Interview.company_id == company.id).to_list()
+        interviews.extend(company_interviews)
+    interviews = [extract_interview_fields(interview) for interview in interviews]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews})
+
+@UserRoutes.patch("/follow_interview/{interview_id}" , summary = "Follow an interview")
+async def follow_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    existed_user.following_interviews.append(ObjectId(interview_id))
+    await existed_user.save()
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview followed successfully"})
+
+@UserRoutes.patch("/unfollow_interview/{interview_id}" , summary = "Unfollow an interview")
+async def unfollow_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    if not interview:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    existed_user.following_interviews.remove(ObjectId(interview_id))
+    await existed_user.save()
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Interview unfollowed successfully"})
+
+@UserRoutes.get("/get_following_interviews" , summary = "Get following interviews")
+async def get_following_interviews(payload: dict = Depends(UserServices.is_authorized_user)):
+    user = await UserServices.get_user_by_email(payload["email"])
+    interviews = await Interview.find({"_id": {"$in": user.following_interviews}}).to_list()
+    interviews = [extract_interview_fields(interview) for interview in interviews]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews})
