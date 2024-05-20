@@ -12,6 +12,66 @@ import { useDispatch } from 'react-redux'
 import { getUserInformation } from '../../services/auth/authSlice'
 import { getFollowedCompanies } from '../../services/auth/authSlice'
 import { getFollowedInterviews } from '../../services/auth/authSlice'
+const interviewData = [
+    {
+        image: googleImage,
+        jobTitle: "Google Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    },
+    {
+        image: facebookImage,
+        jobTitle: "Facebook Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    },
+    {
+        image: amazonImage,
+        jobTitle: "Amazon Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    },
+    {
+        image: microsoftImage,
+        jobTitle: "Microsoft Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    },
+    {
+        image: googleImage,
+        jobTitle: "Google Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    },
+    {
+        image: siemensImage,
+        jobTitle: "Siemens Interview",
+        description: "The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
+    }
+];
+
+const companyData = [
+    {
+        comapanyImage: googleImage,
+        companyname: "Google",
+        address: "Mountain View, California"
+    },
+    {
+        comapanyImage: facebookImage,
+        companyname: "Facebook",
+        address: "Menlo Park, California"
+    },
+    {
+        comapanyImage: amazonImage,
+        companyname: "Amazon",
+        address: "Seattle, Washington"
+    },
+    {
+        comapanyImage: microsoftImage,
+        companyname: "Microsoft",
+        address: "Redmond, Washington"
+    },
+    {
+        comapanyImage: siemensImage,
+        companyname: "Siemens",
+        address: "Seattle, Washington"
+    }
+];
 const UserProfile = () => {
     const dispatch = useDispatch()
     const [userInfo, setUserInfo] = useState(null)
@@ -55,46 +115,27 @@ const UserProfile = () => {
                 <div>
                     <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Interviews</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
-                        <InterviewCard
-                            image={googleImage}
-                            jobTitle="Google Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
-                        <InterviewCard
-                            image={facebookImage}
-                            jobTitle="Facebook Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
-                        <InterviewCard
-                            image={amazonImage}
-                            jobTitle="Amazon Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
-                        <InterviewCard
-                            image={microsoftImage}
-                            jobTitle="Microsoft Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
-                        <InterviewCard
-                            image={googleImage}
-                            jobTitle="Google Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
-                        <InterviewCard
-                            image={siemensImage}
-                            jobTitle="Siemens Interview"
-                            description="The job is for a software engineer. The applicant must have at least a bachelor's degree in computer engineering."
-                        />
+                        {interviewData.map((interview, index) => (
+                            <InterviewCard
+                                key={index}
+                                image={interview.image}
+                                jobTitle={interview.jobTitle}
+                                description={interview.description}
+                            />
+                        ))}
                     </div>
 
                 </div>
                 <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Pages you follow</h1>
                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-[20px]">
-                    <CompanyCard comapanyImage={googleImage} companyname="Google" address="Mountain View, California" />
-                    <CompanyCard comapanyImage= {facebookImage} companyname="Facebook" address="Menlo Park, California" />
-                    <CompanyCard comapanyImage={amazonImage} companyname="Amazon" address="Seattle, Washington" />
-                    <CompanyCard comapanyImage={microsoftImage} companyname="Microsoft" address="Redmond, Washington" />
-                    <CompanyCard comapanyImage={siemensImage} companyname="Siemens" address = "Seattle,Washington"/>
+                {companyData.map((company, index) => (
+                        <CompanyCard
+                            key={index}
+                            comapanyImage={company.comapanyImage}
+                            companyname={company.companyname}
+                            address={company.address}
+                        />
+                    ))}
                 </div>
             </div>
 
