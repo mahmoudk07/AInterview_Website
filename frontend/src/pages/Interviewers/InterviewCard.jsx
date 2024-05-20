@@ -2,7 +2,6 @@ import React from 'react';
 // import googleImage from '../../assets/google.jpeg';
 import defaultImage from '../../assets/unknown.png';
 
-import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const InterviewCard = ({
     image,

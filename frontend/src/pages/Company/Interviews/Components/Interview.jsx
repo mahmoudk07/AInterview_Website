@@ -37,7 +37,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
         </div>
         <div className = 'flex flex-col justify-center gap-y-2 mt-[10px]'>
               <span className='text-white font-bold text-[18px]'>Date: <span className='text-gray-400 font-bold'>{Date}</span></span>
-              <span className='text-white font-bold text-[18px]'>Time: <span className='text-gray-400 font-bold'>{Time}</span></span>
+              <span className='text-white font-bold text-[18px]'>Time: <span className='text-gray-400 font-bold'>{Time} AM</span></span>
               <span className='text-white font-bold text-[18px]'>Status: <span className='text-gray-400'>{status.toUpperCase()}</span></span>
             <div className = 'flex items-center mt-[5px]'>
                 <div className='cursor-pointer' onClick={() => navigate(`/interviewees/${id}`)}>

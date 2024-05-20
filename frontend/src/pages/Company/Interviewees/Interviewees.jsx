@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import Header from "../../../components/Header/Header";
-import { Card, Typography, Button, CardBody, CardFooter, Avatar, } from "@material-tailwind/react";
+import { Card, Typography, CardBody, Avatar, } from "@material-tailwind/react";
 import axios from "axios"
 const TABLE_HEAD = ["Member", "Job", "Email"]; 
 const Interviewees = () => {
@@ -100,19 +100,7 @@ const Interviewees = () => {
               </tbody>
               </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-gray-700 p-4">
-              <Typography variant="small" className="text-white font-bold">
-                Page 1 of 10
-              </Typography>
-              <div className="flex gap-2">
-                <Button variant="outlined" size="sm" className="font-bold text-white border-[2px] border-borderColor">
-                  Previous
-                </Button>
-                <Button variant="outlined" size="sm" className="font-bold text-white border-[2px] border-borderColor">
-                  Next
-                </Button>
-              </div>
-            </CardFooter>
+
           </Card>
         </div> : ''}
     </div>
