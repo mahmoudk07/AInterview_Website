@@ -58,7 +58,7 @@ const Interviews = () => {
         </div> : ''}
         {!isLoading && data ?
           <div className='flex items-center flex-wrap w-full min-h-[100px] px-[5%] py-[2%] gap-x-[2%] gap-y-6'>
-            {data.map((interview) => <Interview key={interview.id} id={interview.id} title={interview.title} Date={interview.Date} Time={interview.Time} status={interview.status} interviewees={interview.interviewees} />)}
+            {data.map((interview) => <Interview key={interview.id} id={interview.id} title={interview.job_opportunity} Date={interview.Date} Time={interview.Time} status={interview.status} interviewees={interview.interviewees} />)}
           </div> : ''}
         {totalPages && totalPages !== 0 ?
           <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
