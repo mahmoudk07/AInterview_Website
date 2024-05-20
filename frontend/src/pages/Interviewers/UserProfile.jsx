@@ -10,7 +10,7 @@ import microsoftImage from '../../assets/micropng.png';
 import siemensImage from '../../assets/download.png'
 const UserProfile = () => {
     return (
-        <div>
+        <div className = 'w-full min-h-[80vh] mt-[100px] mb-[100px]'>
             <Header />
             <div className=' px-5 py-3 mt-[100px] border border-borderColor rounded-lg w-[80%] m-auto'>
                 <InformationUser />
@@ -51,7 +51,7 @@ const UserProfile = () => {
 
                 </div>
                 <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Pages you follow</h1>
-                <div className="mt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-[20px]">
                     <CompanyCard comapanyImage={googleImage} companyname="Google" address="Mountain View, California" />
                     <CompanyCard comapanyImage= {facebookImage} companyname="Facebook" address="Menlo Park, California" />
                     <CompanyCard comapanyImage={amazonImage} companyname="Amazon" address="Seattle, Washington" />
