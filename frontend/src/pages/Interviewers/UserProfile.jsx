@@ -53,6 +53,7 @@ const UserProfile = () => {
                         {followed_interviews.map((interview, index) => (
                             <InterviewCard
                                 key={index}
+                                id = {interview.id}
                                 image={interview.image}
                                 title={interview.job_title}
                                 description={interview.job_description}
@@ -60,7 +61,7 @@ const UserProfile = () => {
                                 Time={interview.Time}
                                 company_name={interview.company_name}
                                 status={interview.status}
-                                favouriteornot='false'
+                                followorunfollow='y'
                             />
                         ))}
                     </div>
