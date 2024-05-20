@@ -18,11 +18,12 @@ const InterviewScheduling = () => {
   return (
     <div className = 'mt-[60px]'>
         <div className = 'flex-col items-center space-y-5'>
-            <Input type = "text" label = "Title" variant = 'outlined' color = 'white' onChange = {(e) => setData({...data , title: e.target.value})} value = {data.title}  />
+            <Input type="text" label="Job title" variant='outlined' color='white' onChange={(e) => setData({ ...data, job_title: e.target.value })} value={data.job_title} />
+            <Input type="text" label="Job Description" variant='outlined' color='white' onChange={(e) => setData({ ...data, job_description: e.target.value })} value={data.job_description} />
+            <Input type="text" label="Job Opportunity" variant='outlined' color='white' onChange={(e) => setData({ ...data, job_opportunity: e.target.value })} value={data.job_opportunity} />
             <Input type="text" label="Number of Questions" variant='outlined' color='white' onChange={(e) => setNumOfQuestions(e.target.value)} value={numOfQuestions} />
             <input className = 'date-picker text-white bg-transparent outline-none w-full border-[1px] border-white px-[2%] py-[1.5%] rounded-[10px] cursor-pointer' type = "date" onChange = {(e) => setData({...data , Date: e.target.value})} value = {data.Date}  />
             <input type="time" className='date-picker text-white bg-transparent outline-none w-full border-[1px] border-white px-[2%] py-[1.5%] rounded-[10px] cursor-pointer' onChange={(e) => setData({ ...data, Time: e.target.value })} value={data.Time} />
-            {/* <Input type = "text" label = "Time" variant = 'outlined' color = 'white' onChange = {(e) => setData({...data , Time: e.target.value})} value = {data.Time} /> */}
         </div>
     </div>
   )
