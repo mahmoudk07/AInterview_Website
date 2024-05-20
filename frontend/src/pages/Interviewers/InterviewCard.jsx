@@ -1,5 +1,5 @@
 import React from 'react';
-import googleImage from '../../assets/google.jpeg';
+// import googleImage from '../../assets/google.jpeg';
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const InterviewCard = ({

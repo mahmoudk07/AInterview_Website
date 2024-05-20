@@ -1,8 +1,8 @@
 import React from 'react'
-import InterviewCard from '../../pages/Interviewers/Interview_card'
+import InterviewCard from '../../pages/Interviewers/InterviewCard'
 import Header from '../../components/Header/Header'
-import Company_Card from './Company_Card'
-import Information_User from './Information_User'
+import CompanyCard from './CompanyCard'
+import InformationUser from './InformationUser'
 import googleImage from '../../assets/google.jpeg';
 import facebookImage from '../../assets/facebook.jpeg';
 import amazonImage from '../../assets/amazonjpeg.jpeg';
@@ -13,7 +13,7 @@ const UserProfile = () => {
         <div>
             <Header />
             <div className=' px-5 py-3 mt-[100px] border border-borderColor rounded-lg w-[80%] m-auto'>
-                <Information_User />
+                <InformationUser />
                 <div>
                     <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Interviews</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
@@ -52,11 +52,11 @@ const UserProfile = () => {
                 </div>
                 <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Pages you follow</h1>
                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <Company_Card comapanyImage={googleImage} companyname="Google" address="Mountain View, California" />
-                    <Company_Card comapanyImage= {facebookImage} companyname="Facebook" address="Menlo Park, California" />
-                    <Company_Card comapanyImage={amazonImage} companyname="Amazon" address="Seattle, Washington" />
-                    <Company_Card comapanyImage={microsoftImage} companyname="Microsoft" address="Redmond, Washington" />
-                    <Company_Card comapanyImage={siemensImage} companyname="Siemens" address = "Seattle,Washington"/>
+                    <CompanyCard comapanyImage={googleImage} companyname="Google" address="Mountain View, California" />
+                    <CompanyCard comapanyImage= {facebookImage} companyname="Facebook" address="Menlo Park, California" />
+                    <CompanyCard comapanyImage={amazonImage} companyname="Amazon" address="Seattle, Washington" />
+                    <CompanyCard comapanyImage={microsoftImage} companyname="Microsoft" address="Redmond, Washington" />
+                    <CompanyCard comapanyImage={siemensImage} companyname="Siemens" address = "Seattle,Washington"/>
                 </div>
             </div>
 
