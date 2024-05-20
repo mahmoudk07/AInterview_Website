@@ -16,7 +16,9 @@ class InterviewSchema(BaseModel):
             ObjectId: lambda oid: str(oid),  # Converts ObjectId to string for JSON serialization
     }
 class UpdateInterview(BaseModel):
-    title: Optional[str] = Field(None , description = "Title of the interview" , min_length = 3 , max_length = 50)
+    job_title: Optional[str] = Field(None , description = "Title of the interview" , min_length = 3 , max_length = 50)
+    job_description: Optional[str] = Field(None , description = "Description of the interview" , min_length = 3 , max_length = 500)
+    job_opportunity: Optional[str] = Field(None , description = "Opportunity of the interview" , min_length = 3 , max_length = 100)
     status: Optional[str] = Field(default = "upcoming" , description = "Status of Interview" , enum = ["upcoming" , "finished" , "cancelled"])
     Date: Optional[str] = Field(None , description = "Date of the interview")
     Time: Optional[str] = Field(None ,description = "Time of the interview")
