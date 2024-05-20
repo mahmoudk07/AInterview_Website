@@ -21,11 +21,11 @@ const Interviewees = () => {
   }, [])
   
   return (
-    <div className="w-full min-h-[80vh] overflow-x-hidden mt-[100px] flex justify-center items-center">
+    <div className="w-full min-h-[80vh] overflow-x-hidden flex justify-center items-center">
       <Header />
       {data ?
-        <div className="min-w-[50%] mb-[50px]">
-          <Card className="bg-transparent border-[1px] border-borderColor">
+        <div className="min-w-[50%] mb-[50px] mt-[-100px] ">
+          <Card className="bg-transparent border-[1px] border-borderColor ">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
               Interviewees
             </div>
