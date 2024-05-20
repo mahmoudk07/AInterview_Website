@@ -11,7 +11,16 @@ from fastapi.responses import JSONResponse
 import pymongo
 
 UserRoutes = APIRouter()
-
+def extract_users_field(user):
+    return {
+        "id": str(user.id),
+        "firstname": user.firstname,
+        "lastname": user.lastname,
+        "email": user.email,
+        "job": user.job,
+        "image": user.image,
+        "role": user.role
+}
 
 def extract_specific_company_fields(company):
     return {
@@ -181,3 +190,8 @@ async def get_following_interviews(payload: dict = Depends(UserServices.is_autho
     interviews = await Interview.find({"_id": {"$in": user.following_interviews}}).to_list()
     interviews = [extract_interview_fields(interview) for interview in interviews]
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews})
+
+@UserRoutes.get("/getUserInfo" , summary = "Get user by id")
+async def getUser(user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User retrieved successfully", "user": extract_users_field(existed_user)})
