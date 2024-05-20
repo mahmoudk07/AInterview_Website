@@ -1,10 +1,12 @@
 import React from 'react'
+import defaultImage from '../../assets/unknown.png';
+
 const CompanyCard = ({ comapanyImage, companyname, address }) => {
     return (
         <div className='flex flex-row items-center justify-between hover:cursor-pointer '>
             <div className='flex flex-row space-x-3 items-center '>
                 <div>
-                    <img className="w-10 h-10 rounded-full border-4 border-white" src={comapanyImage} alt="Google" />
+                    <img className="w-10 h-10 rounded-full border-4 border-white" src={comapanyImage || defaultImage} alt="Google" />
                 </div>
                 <div>
                     <h1 className='text-xl text-bold text-gray-300'>
