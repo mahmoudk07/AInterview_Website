@@ -60,21 +60,7 @@ export const deleteCompany = createAsyncThunk('admin/deleteCompany', async (id, 
         return rejectWithValue(error.response.data)
     }
 })
-export const getAdminInformation = createAsyncThunk('admin/getAdminInformation', async (page, thunkAPI) => { 
-    const { rejectWithValue } = thunkAPI
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/admin/getAdminUser`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        return response.data
-    }
-    catch (error) {
-        return rejectWithValue(error.response.data)
-    }
-})
+
 const initialState = {
   firstname: "",
   lastname: "",
@@ -103,22 +89,6 @@ const adminSlice = createSlice({
     builder.addCase(fetchin_interviewees.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-    });
-    builder.addCase(getAdminInformation.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-    });
-    builder.addCase(getAdminInformation.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.firstname = payload.firstname;
-        state.lastname = payload.lastname;
-        state.email = payload.email;
-        state.role = payload.role;
-        state.image = payload.image;
-    });
-    builder.addCase(getAdminInformation.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
     });
   },
 });
