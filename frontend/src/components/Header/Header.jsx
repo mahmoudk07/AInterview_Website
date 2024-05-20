@@ -21,7 +21,7 @@ const Header = () => {
       return (<>
         <a href="/" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 transition-all ease-in-out duration-700' : ''}`} >Home</a>
         <a href="/UserProfile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
-        <a href="/interviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
+        <a href="/UserInterviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
         <a href="/following" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Following</a>
       </>)
     else
