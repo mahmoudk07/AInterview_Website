@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState , useEffect} from 'react'
 import InterviewCard from '../../pages/Interviewers/InterviewCard'
 import Header from '../../components/Header/Header'
 import CompanyCard from './CompanyCard'
@@ -8,7 +8,45 @@ import facebookImage from '../../assets/facebook.jpeg';
 import amazonImage from '../../assets/amazonjpeg.jpeg';
 import microsoftImage from '../../assets/micropng.png';
 import siemensImage from '../../assets/download.png'
+import { useDispatch } from 'react-redux'
+import { getUserInformation } from '../../services/auth/authSlice'
+import { getFollowedCompanies } from '../../services/auth/authSlice'
+import { getFollowedInterviews } from '../../services/auth/authSlice'
 const UserProfile = () => {
+    const dispatch = useDispatch()
+    const [userInfo, setUserInfo] = useState(null)
+    const [followed_companies, setFollowedCompanies] = useState(null)
+    const [followed_interviews, setFollowedInterviews] = useState(null)
+    const fetchUserInfo = async () => {
+        await dispatch(getUserInformation()).then((response) => {
+            if (!response.error) {
+                setUserInfo(response.payload.user)
+                console.log(response.payload.user)
+            }
+        })
+    }
+    const fetchFollowedCompanies = async () => { 
+        await dispatch(getFollowedCompanies()).then((response) => {
+            if (!response.error) {
+                setFollowedCompanies(response.payload.companies)
+                console.log(response.payload.companies)
+            }
+        })
+    }
+    const fetchFollowedInterviews = async () => { 
+        await dispatch(getFollowedInterviews()).then((response) => {
+            if (!response.error) {
+                setFollowedInterviews(response.payload.interviews)
+                console.log(response.payload.interviews)
+            }
+        })
+    }
+    useEffect(() => {
+        fetchUserInfo()
+        fetchFollowedCompanies()
+        fetchFollowedInterviews()
+        // eslint-disable-next-line
+    } , [])
     return (
         <div className = 'w-full min-h-[80vh] mt-[100px] mb-[100px]'>
             <Header />
