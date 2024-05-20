@@ -11,7 +11,9 @@ const CreateInterview = () => {
     const dispatch = useDispatch()
     const [numOfQuestions, setNumOfQuestions] = useState("")
     const [data, setData] = useState({
-        "title": "",
+        "job_title": "",
+        "job_description": "",
+        "job_opportunity": "",
         "Date": "",
         "Time": "",
         "questions": []
