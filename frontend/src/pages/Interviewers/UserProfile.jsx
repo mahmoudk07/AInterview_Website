@@ -48,14 +48,14 @@ const UserProfile = () => {
             <div className=' px-5 py-3 mt-[100px] border border-borderColor rounded-lg w-[80%] m-auto'>
                 <InformationUser info ={userInfo}  />
                 <div>
-                    <h1 className='text-white text-bold text-4xl mt-10 mb-10'>Interviews</h1>
+                    <h1 className='text-white text-bold text-3xl mt-10 mb-10'> Favourite Interviews</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
                         {followed_interviews.map((interview, index) => (
                             <InterviewCard
                                 key={index}
                                 image={interview.image}
-                                title={interview.title}
-                                // description={interview.description}
+                                title={interview.job_title}
+                                description={interview.job_description}
                                 Date={interview.Date}
                                 Time={interview.Time}
                                 company_name={interview.company_name}
