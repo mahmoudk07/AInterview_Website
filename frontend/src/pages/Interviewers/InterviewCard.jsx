@@ -14,6 +14,7 @@ const InterviewCard = ({
     status
 }) => {
     return (
+        // لو قربت هنا يا محمود هعلقك
         <div className=" bg-white flex flex-col items-center border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 max-w-sm shadow-lg w-60 transform transition-all duration-500 hover:scale-105 cursor-pointer">
             <div className="flex flex-col items-center">
                 <img className="w-16 h-16 rounded-full border-4 border-white" src={image || defaultImage} alt="company_image" />
