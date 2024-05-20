@@ -13,7 +13,7 @@ import button from '@material-tailwind/react'
 import axios from 'axios'
 export const InterviewsContext = createContext(null)
 const UserInterviews = () => {
-    const dispacth = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const { isLoading } = useSelector((state) => state.Manager)
     const [interviews, setinterviews] = useState([])
@@ -39,6 +39,19 @@ const UserInterviews = () => {
         setActive(active - 1);
         setinterviews(null)
     };
+    const [FollowedInterviewsIDS, setFollowedInterviewsIDS] = useState([])
+    const fetchFollowedInterviews = async () => { 
+        await dispatch(getFollowedInterviews()).then((response) => {
+            if (!response.error) {
+                const newID = response.payload.interviews.map((interview) => interview.id)
+                setFollowedInterviewsIDS(newID);
+                localStorage.setItem('FollowedInterviewsIDS', JSON.stringify(newID));
+                //setFollowedCompanies(response.payload.companies)
+                console.log(response.payload.interviews)
+                console.log(FollowedInterviewsIDS)
+            }
+        })
+    }
     const fetchAllInterviews = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_all_interviews`, {
@@ -71,7 +84,7 @@ const UserInterviews = () => {
     }
     // I want to make function to check if  setIsAllClicked and setIsCompaniesClicked are true or false and if setIsAllClicked is true call fetchAllInterviews() and if setIsCompaniesClicked is true call fetchCompaniesInterviews() all this in useEffect
     // const fetching = async () => {
-    //     await dispacth(getFollowedInterviews(active)).then((response) => {
+    //     await dispatch(getFollowedInterviews(active)).then((response) => {
     //         if (!response.error) {
     //             setData(response.payload.interviews)
     //             setTotalPages(response.payload.totalPages)
@@ -90,6 +103,12 @@ const UserInterviews = () => {
         setIsAllClicked(false);
     }
     useEffect(() => {
+        const storedFollowedInterviewsIDS = localStorage.getItem('FollowedInterviewsIDS');
+        if (storedFollowedInterviewsIDS) {
+            setFollowedInterviewsIDS(JSON.parse(storedFollowedInterviewsIDS));
+        } else {
+            fetchFollowedInterviews();
+        }
         setinterviews(null);
         if (isAllClicked) fetchAllInterviews();
         if (isCompaniesClicked) fetchCompaniesInterviews();
