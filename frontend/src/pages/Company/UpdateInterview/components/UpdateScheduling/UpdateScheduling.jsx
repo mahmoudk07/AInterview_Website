@@ -1,8 +1,32 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Input } from '@material-tailwind/react'
 import { UpdateInterviewContext } from '../../UpdateInterview'
 const UpdateScheduling = () => {
     const { data, setData, numOfQuestions, setNumOfQuestions, setIsInputChanged } = useContext(UpdateInterviewContext)
+    useEffect(() => {
+        const num = parseInt(numOfQuestions);
+        if (num > 0 && Number.isInteger(num)) {
+            setData(prevData => {
+                const currentQuestions = prevData.questions || [];
+                const currentLength = currentQuestions.length;
+                let newQuestions;
+                if (num > currentLength) {
+                    // Retain existing questions and add new empty questions
+                    const additionalQuestions = Array.from({ length: num - currentLength }, (_, index) => ({
+                        [`Q${currentLength + index + 1}`]: "",
+                        "Type": "",
+                        "Answer": ""
+                    }));
+                    newQuestions = [...currentQuestions, ...additionalQuestions];
+                } else {
+                    // Retain only the necessary questions
+                    newQuestions = currentQuestions.slice(0, num);
+                }
+
+                return { ...prevData, questions: newQuestions };
+            });
+        }
+    }, [numOfQuestions, setData, setNumOfQuestions]);
     return (  
         <div className='mt-[60px]'>
             {data ? 
