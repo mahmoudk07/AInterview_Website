@@ -11,7 +11,8 @@ const InterviewCard = ({
     Time,
     company_name,
     title,
-    status
+    status,
+    favouriteornot,
 }) => {
     return (
         // لو قربت هنا يا محمود هعلقك
@@ -46,6 +47,11 @@ const InterviewCard = ({
             <div className='mt-3'>
                 <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" ? "hidden" : ""}`}>
                     Apply
+                </button>
+            </div>
+            <div className=''>
+                <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${favouriteornot ? "hidden" : ""}`}>
+                     Add to Favourites
                 </button>
             </div>
         </div>
