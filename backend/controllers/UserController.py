@@ -34,7 +34,9 @@ def extract_specific_company_fields(company):
 def extract_interview_fields(interview):
     return {
         "id": str(interview.id),
-        "title": interview.title,
+        "job_title": interview.job_title,
+        "job_description": interview.job_description,
+        "job_opportunity": interview.job_opportunity,
         "status": interview.status,
         "Date": interview.Date,
         "Time": interview.Time,
