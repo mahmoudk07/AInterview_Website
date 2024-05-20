@@ -142,14 +142,13 @@ const UserInterviews = () => {
                     </div>
                     {!isLoading && interviews ?
                         <div className='flex items-center justify-center flex-wrap w-full min-h-[100px] px-[5%] py-[2%] gap-x-[2%] gap-y-6 '>
-                            {interviews.map((interview) => <InterviewCard key={interview.id} image={interview.image}
+                            {interviews.map((interview) => <InterviewCard id={interview.id} image={interview.image}
                                 title={interview.job_title}
                                 description={interview.job_description}
                                 Date={interview.Date}
                                 Time={interview.Time}
                                 company_name={interview.company_name}
-                                status={interview.status}
-                                favouriteornot={false} />)}
+                                status={interview.status} />)}
                         </div> : ''}
                     {totalPages && totalPages !== 0 ?
                         <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!interviews ? 'mt-[80vh]' : ''} ${isLoading && interviews ? 'mt-[80vh]' : ''}`}>
