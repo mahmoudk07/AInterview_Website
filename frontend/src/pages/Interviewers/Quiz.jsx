@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaRegClock } from "react-icons/fa6";
 import { FaBriefcase } from "react-icons/fa";
 import { RiSurveyFill } from "react-icons/ri";
-// import useDrivepicker from 'react-google-drive-picker';
+import Header from '../../components/Header/Header';
 const Quiz = () => {
     const [questions] = useState({
         "Q1": {
@@ -28,10 +28,12 @@ const Quiz = () => {
     });
     const [timeLeft, setTimeLeft] = useState(60);
     const [currentQuestionKey, setCurrentQuestionKey] = useState(Object.keys(questions)[0]);
-    const [selectedChoice, setSelectedChoice] = useState(null);
+    const [selectedChoice, setSelectedChoice] = useState('');
     const [answers, setAnswers] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
     const [transitioning, setTransitioning] = useState(false); // State for smooth transition
+    const [recording, setRecording] = useState(false); // State for recording
+    const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
 
     const handleNextQuestion = () => {
         if (quizFinished) return;
@@ -62,40 +64,48 @@ const Quiz = () => {
     }
 
     const handleRecordVideo = () => {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(stream => {
-                const mediaRecorder = new MediaRecorder(stream);
-                const chunks = [];
+        if (recording) {
+            // Stop recording
+            mediaRecorder.stop();
+            setRecording(false);
+        } else {
+            // Start recording
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    const recorder = new MediaRecorder(stream);
+                    setMediaRecorder(recorder);
+                    const chunks = [];
 
-                mediaRecorder.ondataavailable = event => {
-                    chunks.push(event.data);
-                };
+                    recorder.ondataavailable = event => {
+                        chunks.push(event.data);
+                    };
 
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'video/webm' });
-                    const videoURL = URL.createObjectURL(blob);
-                    
-                    // Save the videoURL as the answer to the current question
-                    setAnswers(prevAnswers => ({
-                        ...prevAnswers,
-                        [currentQuestionKey]: videoURL
-                    }));
-                };
+                    recorder.onstop = () => {
+                        const blob = new Blob(chunks, { type: 'video/webm' });
+                        const videoURL = URL.createObjectURL(blob);
 
-                mediaRecorder.start();
+                        // Save the videoURL as the answer to the current question
+                        setAnswers(prevAnswers => ({
+                            ...prevAnswers,
+                            [currentQuestionKey]: videoURL
+                        }));
 
-                // Placeholder: You may want to set a timer to stop recording after a certain duration
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                }, 10000); // Recording duration of 10 seconds (adjust as needed)
-            })
-            .catch(error => {
-                console.error('Error accessing camera:', error);
-                // Handle error, e.g., display an error message to the user
-            });
+                        // Stop all video tracks to release the camera
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    recorder.start();
+                    setRecording(true);
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                    // Handle error, e.g., display an error message to the user
+                });
+        }
     };
 
     useEffect(() => {
+        if (quizFinished) return; // Stop the timer if the quiz is finished
         const timer = setInterval(() => {
             setTimeLeft(prevTimeLeft => {
                 const newTimeLeft = prevTimeLeft - 1;
@@ -107,7 +117,7 @@ const Quiz = () => {
         }, 1000);
         return () => clearInterval(timer);
         // eslint-disable-next-line
-    }, [currentQuestionKey]);
+    }, [currentQuestionKey, quizFinished]);
 
     useEffect(() => {
         // Store the selected choice in answers state
@@ -141,6 +151,7 @@ const Quiz = () => {
     }
     return (
         <div className='flex flex-col h-screen justify-center items-center'>
+            <Header />
             <div className={`transition-opacity duration-300 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className='bg-white p-4 rounded-md md:w-[700px] sm:w-full'>
                     <h1 className='text-center text-3xl font-bold'>Interview Time</h1>
@@ -189,7 +200,9 @@ const Quiz = () => {
                     ))}
                     {Type === 'Camera' && (
                         <div className='flex flex-col items-center'>
-                            <button onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>Record Video</button>
+                            <button onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
+                                {recording ? 'Stop Recording' : 'Record Video'}
+                            </button>
                         </div>
                     )}
                     {Type === 'Written' && (
