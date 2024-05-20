@@ -19,6 +19,7 @@ import AdminProfile from './pages/Admin/Profile/AdminProfile';
 import { Provider } from "react-redux";
 import  Quiz from './pages/Interviewers/Quiz';
 import UserProfile from './pages/Interviewers/UserProfile';
+import UserHome from './pages/Interviewers/userHome';
 import { store } from './store';
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/adminProfile" element={<AdminProfile />} />
                 <Route path="/UserProfile" element={<UserProfile />} />
+                <Route path="/UserHome" element={<UserHome />} />
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>
