@@ -19,7 +19,7 @@ def extract_users_field(user):
         "email": user.email,
         "job": user.job,
         "image": user.image,
-        "role": user.role,
+        "role": user.role
     }
 
 @AdminRoutes.get("/getAllUsers" , summary = "Get all signed up users")
@@ -85,9 +85,6 @@ async def updateUser(data: UpdateUser , user : dict = Depends(UserServices.is_ad
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update user")
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User updated successfully"})
-    
-@AdminRoutes.get("/getAdminUser" , summary = "Get user by id")
-async def getUser(user: dict = Depends(UserServices.is_admin_user)):
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User retrieved successfully", "user": extract_users_field(user)})
+
 
 

@@ -1,7 +1,7 @@
 import React, {useState , useEffect} from 'react'
 import Header from '../../../components/Header/Header'
 import { Avatar, Input } from '@material-tailwind/react'
-import { getAdminInformation } from '../../../services/admin/adminSlice'
+import { getUserInformation } from '../../../services/auth/authSlice'
 import { useDispatch , useSelector } from 'react-redux'
 import Modal from '../../../components/Modal/Modal'
 import axios from 'axios'
@@ -23,7 +23,7 @@ const AdminProfile = () => {
         }).then((response) => { console.log(response); setShowModal(true) }).catch((error) => { console.log(error) })
     }
     const fetchingInformation = async () => {
-        await dispatch(getAdminInformation()).then((response) => {
+        await dispatch(getUserInformation()).then((response) => {
             if (!response.error) {
                 setData(response.payload.user)
             }

@@ -21,11 +21,58 @@ export const LoginUser = createAsyncThunk('user/login', async (data, thunkAPI) =
         return rejectWithValue(error.response.data)
     }
 })
-
+export const getUserInformation = createAsyncThunk('auth/getUserInformation', async (page, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/getUserInfo`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+export const getFollowedCompanies = createAsyncThunk('auth/getFollowedCompanies', async (page, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/get_following_companies`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+export const getFollowedInterviews = createAsyncThunk('auth/getFollowedInterviews', async (page, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/get_following_interviews`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 const initialState = {
     firstname: "",
     lastname: "",
     token: "",
+    email: "",
+    role: "",
+    image: "",
     isLoggedIn: false,
     isLoading: false,
     error: null
@@ -71,6 +118,44 @@ const userSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         })
+            builder.addCase(getUserInformation.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+    });
+    builder.addCase(getUserInformation.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.firstname = payload.firstname;
+        state.lastname = payload.lastname;
+        state.email = payload.email;
+        state.role = payload.role;
+        state.image = payload.image;
+    });
+    builder.addCase(getUserInformation.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+    });
+    builder.addCase(getFollowedCompanies.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+    });
+    builder.addCase(getFollowedCompanies.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+    });
+    builder.addCase(getFollowedCompanies.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+    });
+    builder.addCase(getFollowedInterviews.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+    });
+    builder.addCase(getFollowedInterviews.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+    });
+    builder.addCase(getFollowedInterviews.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+    });
     }
 })
 export const Error = (state) => state.User.error

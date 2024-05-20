@@ -1,7 +1,7 @@
 import React from 'react'
-const Company_Card = ({ comapanyImage, companyname, address }) => {
+const CompanyCard = ({ comapanyImage, companyname, address }) => {
     return (
-        <div className='flex flex-row items-center justify-between hover:cursor-pointer'>
+        <div className='flex flex-row items-center justify-between hover:cursor-pointer '>
             <div className='flex flex-row space-x-3 items-center '>
                 <div>
                     <img className="w-10 h-10 rounded-full border-4 border-white" src={comapanyImage} alt="Google" />
@@ -22,4 +22,4 @@ const Company_Card = ({ comapanyImage, companyname, address }) => {
     )
 }
 
-export default Company_Card
+export default CompanyCard
