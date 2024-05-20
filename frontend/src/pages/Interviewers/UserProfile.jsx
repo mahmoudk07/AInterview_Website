@@ -60,6 +60,7 @@ const UserProfile = () => {
                                 Time={interview.Time}
                                 company_name={interview.company_name}
                                 status={interview.status}
+                                favouriteornot='false'
                             />
                         ))}
                     </div>
