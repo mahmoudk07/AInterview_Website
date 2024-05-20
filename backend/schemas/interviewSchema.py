@@ -32,4 +32,4 @@ class UpdateInterview(BaseModel):
 class ProcessingInterviews(BaseModel):
     Interview_ID:str
     Interviewee_ID:str
-    Vedio_Path:str
+    Vedios_PATH:List[str]

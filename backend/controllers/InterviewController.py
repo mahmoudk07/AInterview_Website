@@ -169,18 +169,14 @@ async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(U
 
 @InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
 async def detect(input_data:ProcessingInterviews):
-    url=input_data.Vedio_Path
+    
     input_data_dict = {
         "Interview_ID": input_data.Interview_ID,
         "Interviewee_ID": input_data.Interviewee_ID,
-        "Vedio_Path": input_data.Vedio_Path
+        "Vedios_PATH": input_data.Vedios_PATH
     }
-    print(json.dumps( input_data_dict)
-          )
-    if not url.startswith("http"):
-        raise HTTPException(
-            status_code=400, detail="Invalid URL format"
-        )
+    print(json.dumps( input_data_dict))
+
     connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
