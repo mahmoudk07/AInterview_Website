@@ -3,7 +3,9 @@ from beanie import Document
 from datetime import date , time
 from bson.objectid import ObjectId
 class Interview(Document):
-    title: str
+    job_title: str
+    job_description: str
+    job_opportunity: str
     questions: List[dict]
     company_id: ObjectId
     company_name: str
