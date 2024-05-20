@@ -146,6 +146,7 @@ async def get_interview_by_id(id : str , _ : dict = Depends(UserServices.is_auth
 
 @InterviewRoutes.get("/get_interviewees/{id}" , summary = "Get Interviewees by ID")
 async def get_interviewees_by_id(id : str , _ : dict = Depends(UserServices.is_authorized_user)):
+    
     interview = await Interview.find_one(Interview.id == ObjectId(id))
     if not interview:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
