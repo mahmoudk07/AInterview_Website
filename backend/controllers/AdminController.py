@@ -8,7 +8,7 @@ from models.company import Company
 from models.interview import Interview
 from services.userServices import UserServices
 from schemas.userSchema import UpdateUser
-from pymongo import DeleteMany
+# from pymongo import DeleteMany
 AdminRoutes = APIRouter()
 
 def extract_users_field(user):
