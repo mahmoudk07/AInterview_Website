@@ -141,6 +141,7 @@ const Quiz = () => {
     if (quizFinished) {
         return (
             <div className='flex flex-col h-screen justify-center items-center'>
+                <Header />
                 <div className='bg-white p-4 rounded-md w-96'>
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
