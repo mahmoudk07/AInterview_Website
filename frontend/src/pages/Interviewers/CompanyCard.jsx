@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import defaultImage from '../../assets/unknown.png';
 import axios from 'axios';
-
-const CompanyCard = ({ comapanyImage, companyname, address , id }) => {
+import { TbWorld } from "react-icons/tb";
+const CompanyCard = ({ comapanyImage, companyname, address , id,website }) => {
     const [isFollowed, setIsFollowed] = useState(false);
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const CompanyCard = ({ comapanyImage, companyname, address , id }) => {
         }
     };
     return (
-        <div className='bg-transparent pt-4 pb-4 mx-5 w-52  h-64 rounded-lg flex flex-col border border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg items-center justify-between transform transition-all duration-500 hover:scale-105 cursor-pointer '>
+        <div className='bg-transparent pt-4 pb-4 mx-5 w-52  h-64 rounded-lg flex flex-col border border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg items-center justify-between transform transition-all duration-500 hover:scale-105 cursor-pointer hover:border-white '>
             <div className='flex flex-col space-y-3 items-center '>
                 <div>
                     <img className="w-14 h-14 rounded-full border-4 border-white" src={comapanyImage || defaultImage} alt="image" />
@@ -69,7 +69,7 @@ const CompanyCard = ({ comapanyImage, companyname, address , id }) => {
                 </div>
             </div>
             <div>
-                <button onClick={handleFollowToggle} className={`text-[15px] font-bold text-white outline-none border-none py-[10px] px-[15px] rounded-[20px] transition-all ease-in-out duration-300  ${isFollowed ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'}`}>{isFollowed ? 'Unfollow' : 'Follow'}</button>
+                <button onClick={handleFollowToggle} className={`text-[15px] font-bold text-white outline-none border-none py-[10px] px-[15px] rounded-[20px] transition-all ease-in-out duration-300 mb-3  ${isFollowed ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'}`}>{isFollowed ? 'Unfollow' : 'Follow'}</button>
             </div>
         </div>
     )
