@@ -21,6 +21,7 @@ import  Quiz from './pages/Interviewers/Quiz';
 import UserProfile from './pages/Interviewers/UserProfile';
 import UserHome from './pages/Interviewers/userHome';
 import UserInterviews from './pages/Interviewers/UserInterviews';
+import UserCompanies from './pages/Interviewers/UserCompanies';
 import { store } from './store';
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
                 <Route path="/UserProfile" element={<UserProfile />} />
                 <Route path="/UserHome" element={<UserHome />} />
                 <Route path="/UserInterviews" element={<UserInterviews />} />
+                <Route path="/UserCompanies" element={<UserCompanies />} />
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>
