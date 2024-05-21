@@ -35,7 +35,7 @@ const InterviewCard = ({
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/Quiz', { state: { userId: UserID, interviewId: id } });
+        navigate('/Quiz', { state: { userId: UserID, interviewId: id ,  } });
     };
 
     const handleFollowToggle = async () => {
