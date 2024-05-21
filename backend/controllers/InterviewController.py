@@ -23,7 +23,7 @@ def extract_interview_fields(interview):
         "status": interview.status,
         "Date": interview.Date,
         "Time": interview.Time,
-        "interviewees": interview.interviewees,
+        "interviewees": [str(interviewee) for interviewee in interview.interviewees],
         "questions": interview.questions,
         "company_name": interview.company_name
     }
