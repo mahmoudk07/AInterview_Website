@@ -49,7 +49,7 @@ const UserProfile = () => {
                 <InformationUser info ={userInfo}  />
                 <div>
                     <h1 className='text-white text-bold text-3xl mt-10 mb-10'> Favourite Interviews</h1>
-                    <div className='flex flex-row flex-wrap space-x-5'>
+                    <div className='flex flex-row flex-wrap space-x-5 space-y-5'>
                         {followed_interviews.map((interview, index) => (
                             <InterviewCard
                                 key={index}
