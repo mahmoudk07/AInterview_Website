@@ -42,7 +42,8 @@ const InterviewScheduling = () => {
       const newQuestions = Array.from({ length: num }, (_, index) => ({
         [`Q${index + 1}`]: "",
         "Type": "",
-        "Answer": ""
+        "Answer": "",
+        "hint_keywords": ""
       }));
       setData(prevData => ({ ...prevData, questions: newQuestions }));
     }

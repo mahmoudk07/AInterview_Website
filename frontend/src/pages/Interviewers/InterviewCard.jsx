@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import defaultImage from '../../assets/unknown.png';
 import axios from 'axios';
+import { MdOutlineDateRange } from "react-icons/md";
+import { CiTimer } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom';
 
 const InterviewCard = ({
     id,
@@ -11,7 +14,10 @@ const InterviewCard = ({
     company_name,
     title,
     status,
+    UsersAttending,
+    UserID
 }) => {
+    const [isApplied, setIsApplied] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
 
     useEffect(() => {
@@ -19,20 +25,53 @@ const InterviewCard = ({
         if (followedInterviews.includes(id)) {
             setIsFollowed(true);
         }
+
+        const appliedInterviews = JSON.parse(localStorage.getItem('AppliedInterviewsIDS')) || [];
+        if (appliedInterviews.includes(id)) {
+            setIsApplied(true);
+        }
     }, [id]);
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/Quiz', { state: { userId: UserID, interviewId: id ,  } });
+    };
 
     const handleFollowToggle = async () => {
         const followedInterviews = JSON.parse(localStorage.getItem('FollowedInterviewsIDS')) || [];
         if (isFollowed) {
             const updatedInterviews = followedInterviews.filter(interviewId => interviewId !== id);
             localStorage.setItem('FollowedInterviewsIDS', JSON.stringify(updatedInterviews));
-            await onUnfollow(); // Call the unfollow function
+            await onUnfollow();
         } else {
             followedInterviews.push(id);
             localStorage.setItem('FollowedInterviewsIDS', JSON.stringify(followedInterviews));
-            await onFollow(); // Call the follow function
+            await onFollow();
         }
         setIsFollowed(!isFollowed);
+    };
+
+    const applyInterview = async () => {
+        try {
+            const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/join_interview/${id}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleApplyClick = async () => {
+        setIsApplied(true);
+        const appliedInterviews = JSON.parse(localStorage.getItem('AppliedInterviewsIDS')) || [];
+        appliedInterviews.push(id);
+        localStorage.setItem('AppliedInterviewsIDS', JSON.stringify(appliedInterviews));
+        await applyInterview();
     };
 
     const onFollow = async () => {
@@ -63,41 +102,59 @@ const InterviewCard = ({
         }
     };
 
+    if (!UsersAttending) {
+        UsersAttending = [];
+    }
+
+    const isUserAttending = UsersAttending.includes(UserID);
+
     return (
-        <div className="bg-white flex flex-col items-center border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 max-w-sm shadow-lg w-60 transform transition-all duration-500 hover:scale-105 cursor-pointer">
+        <div className="bg-transparent flex flex-row space-x-6 border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg w-[30rem] transform transition-all duration-500 hover:scale-105 cursor-pointer hover:border-white">
             <div className="flex flex-col items-center">
                 <img className="w-16 h-16 rounded-full border-4 border-white" src={image || defaultImage} alt="company_image" />
-                <h1 className="text-tertiary-color text-2xl font-bold text-center mt-2 mb-2">{company_name}</h1>
             </div>
-            <div className="flex flex-col space-y-1 mt-2 items-center">
-                <p className="text-lg font-bold text-gray-100 text-center">
-                    {title}
-                </p>
-                <p className="text-sm text-gray-400 text-center">
-                    {description}
-                </p>
-                <p className="text-sm text-gray-400 text-center">
-                    {Date}
-                </p>
-                <p className="text-sm text-gray-400 text-center">
-                    {Time}
-                </p>
-                <p className="text-md uppercase text-green-400 font-sans text-center">
-                    {status}
-                </p>
-            </div>
-            <div className='mt-3'>
-                <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" ? "hidden" : ""}`}>
-                    Apply
-                </button>
-            </div>
-            <div className=''>
-                <button
-                    onClick={handleFollowToggle}
-                    className={`mt-[18px] text-[15px] font-bold text-white outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 ${isFollowed ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'}`}
-                >
-                    {isFollowed ? 'Remove From Favourites' : 'Add To Favourites'}
-                </button>
+            <div className="flex flex-col justify-start items-start">
+                <h1 className="text-tertiary-color text-2xl font-bold text-center mt-1 mb-1">{company_name}</h1>
+                <p className="text-lg font-bold text-gray-100 text-center">{title}</p>
+                <p className="text-sm text-gray-400 text-center">{description}</p>
+                <div className="flex flex-row space-x-4">
+                    <div className="flex flex-row space-x-2">
+                        <MdOutlineDateRange className="text-gray-400" />
+                        <p className="text-sm text-gray-400 text-center">{Date}</p>
+                    </div>
+                    <div className="flex flex-row space-x-2">
+                        <CiTimer className="text-gray-400" />
+                        <p className="text-sm text-gray-400 text-center">{Time}</p>
+                    </div>
+                </div>
+                <p className="text-md uppercase text-green-400 font-sans text-center">{status}</p>
+                <div className={`flex flex-row ${status !== "upcoming" ? 'gap-x-0' : 'gap-x-4'}`}>
+                    <div>
+                        <button
+                            onClick={handleApplyClick}
+                            disabled={isApplied}
+                            className={`mt-[18px] text-[15px] font-bold text-white outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 ${isApplied ? 'bg-gray-600 cursor-not-allowed ' : 'bg-green-600 hover:bg-green-500'} ${status !== "upcoming" ? "hidden" : ""}`}
+                        >
+                            {isApplied ? 'Applied' : 'Apply'}
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            onClick={handleFollowToggle}
+                            className={`mt-[18px] text-[15px] font-bold text-white outline-none border-none py-[8px] px-[28px] rounded-[20px] transition-all ease-in-out duration-300 ${isFollowed ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'}`}
+                        >
+                            {isFollowed ? 'Remove' : 'Add To Favourites'}
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button
+                        onClick={handleClick}
+                        className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" || !isUserAttending ? "hidden" : ""}`}
+                    >
+                        Start Quiz
+                    </button>
+                </div>
             </div>
         </div>
     );

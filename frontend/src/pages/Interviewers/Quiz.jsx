@@ -3,11 +3,16 @@ import { FaRegClock } from "react-icons/fa6";
 import { FaBriefcase } from "react-icons/fa";
 import { RiSurveyFill } from "react-icons/ri";
 import Header from '../../components/Header/Header';
-const Quiz = () => {
+import { useLocation } from 'react-router-dom';
+
+const Quiz = ({userId,interviewId}) => {
+    const location = useLocation();
+    const { data } = location.state || {};
+    console.log(location.state);
     const [questions] = useState({
         "Q1": {
             "Type": "MCQ",
-            "Question": "What is the capital of France?",  
+            "Question": "What is the capital of France?",
             "Choices": ["Paris", "London", "Berlin"]
         },
         "Q2": {
@@ -157,8 +162,8 @@ const Quiz = () => {
                 <div className='bg-white p-4 rounded-md md:w-[700px] sm:w-full'>
                     <h1 className='text-center text-3xl font-bold'>Interview Time</h1>
                     <div className='flex flex-row justify-between my-3'>
-                        <div  className='flex flex-r justify-center items-center gap-2'>
-                            <FaBriefcase className= '' />
+                        <div className='flex flex-r justify-center items-center gap-2'>
+                            <FaBriefcase className='' />
                             <h1 className='font-bold'>Google</h1>
                         </div>
                         <div className=' gap-2 flex flex-r justify-center items-center'>
