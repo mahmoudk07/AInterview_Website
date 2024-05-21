@@ -31,7 +31,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
             )
     }
   return (
-    <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
+    <div className = 'w-full md:w-[32%] h-[265px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
         <div className = 'w-full flex items-center justify-center'>
               <span className='text-white font-bold text-xl m-auto'>{title}</span>
         </div>
@@ -45,7 +45,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
                 </div>
                 <span className='text-white text-[14px] ml-[1.5%] font-bold'>{interviewees} Interviewees applied for an interview</span>
             </div>
-            <div className = 'flex items-center justify-end mt-[15px] gap-5'>
+            <div className = 'flex items-center justify-end mt-[5px] gap-5'>
                 {handle_status(status)}
             </div>
         </div> 

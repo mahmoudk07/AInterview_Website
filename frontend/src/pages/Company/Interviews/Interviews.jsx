@@ -50,7 +50,7 @@ const Interviews = () => {
   }, [active, isDeleted])
   return (
     <InterviewsContext.Provider value={{ setShowModal }}>
-      <div className='w-full min-h-[80vh] overflow-x-hidden mt-[100px]'>
+      <div className='w-full min-h-[90vh] overflow-hidden mt-[65px] relative'>
         <Header />
         <Modal show={showModal} close={closeModal} message="Interview deleted successfully" />
         {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
@@ -61,7 +61,7 @@ const Interviews = () => {
             {data.map((interview) => <Interview key={interview.id} id={interview.id} title={interview.job_opportunity} Date={interview.Date} Time={interview.Time} status={interview.status} interviewees={interview.interviewees} />)}
           </div> : ''}
         {totalPages && totalPages !== 0 ?
-          <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+          <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden absolute left-1/2 top-[80vh] transform -translate-x-1/2`}>
             <Button
               variant="text"
               className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
@@ -97,7 +97,7 @@ const Interviews = () => {
               </div>
               : ''}
           </div>
-        }
+         } 
       </div>
 
     </InterviewsContext.Provider>

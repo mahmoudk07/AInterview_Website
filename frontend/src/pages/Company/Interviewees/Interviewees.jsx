@@ -42,7 +42,7 @@ const Interviewees = () => {
   }, [active])
   
   return (
-    <div className="w-full min-h-[80vh] overflow-x-hidden flex-col flex justify-center items-center mt-[100px]">
+    <div className="w-full min-h-[85vh] overflow-x-hidden flex-col flex items-center mt-[100px]">
       <Header />
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
@@ -127,7 +127,7 @@ const Interviewees = () => {
           </Card>
         </div> : ''}
       {totalPages && totalPages !== 0 ?
-        <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+        <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden absolute left-1/2 top-[88vh] transform -translate-x-1/2 `}>
           <Button
             variant="text"
             className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
