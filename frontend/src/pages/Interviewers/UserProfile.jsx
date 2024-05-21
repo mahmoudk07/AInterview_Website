@@ -72,6 +72,7 @@ const UserProfile = () => {
                 {followed_companies.map((company, index) => (
                         <CompanyCard
                             key={index}
+                            id = {company.id}
                             comapanyImage={company.image}
                             companyname={company.name}
                             address={company.address}
