@@ -9,3 +9,5 @@
 
 # Ignore .caffemodel files
 *.caffemodel
+
+__pycache__

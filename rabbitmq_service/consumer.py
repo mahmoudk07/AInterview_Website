@@ -43,18 +43,20 @@ def callback(ch, method, properties, body):
 
   
 
-    questions,q_type,answers=process_questions(interview_questions)
+    questions,q_type,answers,hint_Keywords=process_questions(interview_questions)
     print("Q")
     print(questions)
     print("t")
     print(q_type)
     print("a")
     print(answers)
+    print("a")
+    print(hint_Keywords)
   
     ## main function for predicting
-    for path in body["Vedios_PATH"]:
+    for index, path in enumerate(body["Vedios_PATH"]):
         print("vedio_path"+path)
-        result=predict(path,m=m,net=net,audio_model=clf)
+        result=predict(key=path,m=m,net=net,audio_model=clf,question=questions[index],answer=answers[index],hint_Keywords=hint_Keywords[index])
         print(f"confidence level : {result}")
         
     ## putting in database
