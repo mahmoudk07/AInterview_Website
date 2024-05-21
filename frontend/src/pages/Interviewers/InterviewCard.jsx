@@ -69,6 +69,8 @@ const InterviewCard = ({
     if (!UsersAttending) {
         UsersAttending = []; // Initialize as an empty array if it's not defined
     }
+    console.log(UsersAttending);
+    console.log(UserID)
     const isUserAttending = UsersAttending.includes(UserID);
     return (
         <div className="bg-transparent flex flex-row space-x-6  border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg w-[30rem] transform transition-all duration-500 hover:scale-105 cursor-pointer hover:border-white ">
