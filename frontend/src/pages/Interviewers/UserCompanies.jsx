@@ -90,7 +90,7 @@ const UserCompanies = () => {
                     </div>
                     {!isLoading && Companies ?
                         <div className='flex flex-row flex-wrap  px-[5%] py-[2%] '>
-                            {Companies.map((company) => <CompanyCard id={company.id} comapanyImage={company.image} address={company.address} companyname={company.name}  />)}
+                            {Companies.map((company) => <CompanyCard id={company.id} comapanyImage={company.image} address={company.address} companyname={company.name} website={company.website} />)}
                         </div> : ''}
                     {/* {totalPages && totalPages !== 0 ?
                         <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!Companies ? 'mt-[80vh]' : ''} ${isLoading && Companies ? 'mt-[80vh]' : ''}`}>
