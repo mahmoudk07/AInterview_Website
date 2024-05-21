@@ -18,6 +18,11 @@ const UpdateQuestions = () => {
     newType[index]['Type'] = e.target.value
     setData({ ...data, questions: newType })
   }
+  const addKeyowrds = (e, index) => {
+    const newKeywords = [...data.questions]
+    newKeywords[index]['hint_keywords'] = e.target.value
+    setData({ ...data, questions: newKeywords })
+  }
   return (
     <div className='mt-[60px]'>
       {
@@ -26,6 +31,7 @@ const UpdateQuestions = () => {
             <Input type="text" label={`Question ${index + 1}`} variant='outlined' defaultValue={question[`Q${index + 1}`]} color='white' onChange={(e) => { setIsInputChanged(true); addQuestion(e, index) }} />
             <Input type="text" label="Type" variant='outlined' color='white' defaultValue={question.Type} onChange={(e) => { setIsInputChanged(true); addType(e, index) }} />
             <Input type="text" label="Answer" variant='outlined' color='white' defaultValue={question.Answer} onChange={(e) => { setIsInputChanged(true); addAnswer(e, index) }} />
+            <Input type="text" label="Keyowrds" variant='outlined' color='white' defaultValue={question.hint_keywords} onChange={(e) => { setIsInputChanged(true); addKeyowrds(e, index) }} />
           </div>
         ))
       }
