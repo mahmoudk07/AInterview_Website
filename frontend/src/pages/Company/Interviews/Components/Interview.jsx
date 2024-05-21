@@ -31,7 +31,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
             )
     }
   return (
-    <div className = 'w-full md:w-[32%] h-[280px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
+    <div className = 'w-full md:w-[32%] h-[265px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
         <div className = 'w-full flex items-center justify-center'>
               <span className='text-white font-bold text-xl m-auto'>{title}</span>
         </div>
