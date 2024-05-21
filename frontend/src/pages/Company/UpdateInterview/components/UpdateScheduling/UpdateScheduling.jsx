@@ -47,7 +47,8 @@ const UpdateScheduling = () => {
                     const additionalQuestions = Array.from({ length: num - currentLength }, (_, index) => ({
                         [`Q${currentLength + index + 1}`]: "",
                         "Type": "",
-                        "Answer": ""
+                        "Answer": "",
+                        "hint_keywords": ""
                     }));
                     newQuestions = [...currentQuestions, ...additionalQuestions];
                 } else {
