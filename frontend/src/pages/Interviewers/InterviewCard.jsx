@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import defaultImage from '../../assets/unknown.png';
 import axios from 'axios';
 import { MdOutlineDateRange } from "react-icons/md";
@@ -13,9 +13,11 @@ const InterviewCard = ({
     company_name,
     title,
     status,
+    UsersAttending,
+    UserID
 }) => {
     const [isFollowed, setIsFollowed] = useState(false);
-
+    //const { UserID } = useContext(GlobalContext);
     useEffect(() => {
         const followedInterviews = JSON.parse(localStorage.getItem('FollowedInterviewsIDS')) || [];
         if (followedInterviews.includes(id)) {
@@ -64,7 +66,10 @@ const InterviewCard = ({
             console.error(error);
         }
     };
-
+    if (!UsersAttending) {
+        UsersAttending = []; // Initialize as an empty array if it's not defined
+    }
+    const isUserAttending = UsersAttending.includes(UserID);
     return (
         <div className="bg-transparent flex flex-row space-x-6  border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg w-[30rem] transform transition-all duration-500 hover:scale-105 cursor-pointer hover:border-white ">
             <div className="flex flex-col items-center">
@@ -96,9 +101,9 @@ const InterviewCard = ({
                 <p className="text-md uppercase text-green-400 font-sans text-center">
                     {status}
                 </p>
-                <div className='flex flex-row space-x-4'>
+                <div className={`flex flex-row ${status!== "upcoming" ? 'gap-x-0' : 'gap-x-4'}`}>
                     <div className=''>
-                        <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" ? "hidden" : ""}`}>
+                        <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "upcoming" ? "hidden" : ""}`}>
                             Apply
                         </button>
                     </div>
@@ -111,6 +116,12 @@ const InterviewCard = ({
                         </button>
                     </div>
                 </div>
+                <div>
+                    <button className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" || !isUserAttending ? "hidden" : ""}`}>
+                        Start Quiz
+                    </button>
+                </div>
+
 
             </div>
 
