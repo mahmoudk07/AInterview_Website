@@ -145,17 +145,21 @@ async def get_interview_by_id(id : str , _ : dict = Depends(UserServices.is_auth
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interview": interview})
 
 @InterviewRoutes.get("/get_interviewees/{id}" , summary = "Get Interviewees by ID")
-async def get_interviewees_by_id(id : str , _ : dict = Depends(UserServices.is_authorized_user)):
-    
+async def get_interviewees_by_id(id : str , page : int = Query(1 , gt = 0), _ : dict = Depends(UserServices.is_authorized_user)):
+    limit : int = 6
+    skip = (page - 1) * limit
     interview = await Interview.find_one(Interview.id == ObjectId(id))
     if not interview:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Interview not found")
+    total_count = len(interview.interviewees)
+    total_pages = (total_count + limit - 1) // limit
+    interviewees_slice = interview.interviewees[skip:skip + limit]
     interviewees = []
-    for interviewee in interview.interviewees:
+    for interviewee in interviewees_slice:
         user = await User.find_one(User.id == interviewee)
         user = extract_interviewee_fields(user)
         interviewees.append(user)
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "count": len(interviewees)})
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "totalPages": total_pages})
 
 @InterviewRoutes.get("/get_all_interviews" , summary = "Get all interviews")
 async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(UserServices.is_authorized_user)):
@@ -169,18 +173,14 @@ async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(U
 
 @InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
 async def detect(input_data:ProcessingInterviews):
-    url=input_data.Vedio_Path
+    
     input_data_dict = {
         "Interview_ID": input_data.Interview_ID,
         "Interviewee_ID": input_data.Interviewee_ID,
-        "Vedio_Path": input_data.Vedio_Path
+        "Vedios_PATH": input_data.Vedios_PATH
     }
-    print(json.dumps( input_data_dict)
-          )
-    if not url.startswith("http"):
-        raise HTTPException(
-            status_code=400, detail="Invalid URL format"
-        )
+    print(json.dumps( input_data_dict))
+
     connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()

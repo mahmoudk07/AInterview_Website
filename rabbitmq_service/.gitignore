@@ -1,0 +1,11 @@
+# Ignore .env files
+*.env
+
+# Ignore .onnx files
+*.onnx
+
+# Ignore .pkl files
+*.pkl
+
+# Ignore .caffemodel files
+*.caffemodel

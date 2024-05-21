@@ -18,6 +18,11 @@ const QuestionsAnswers = () => {
         newType[index]['Type'] = e.target.value
         setData({...data , questions: newType})
     }
+    const addKeywords = (e, index) => {
+        const newKeywords = [...data.questions]
+        newKeywords[index]['hint_keywords'] = e.target.value
+        setData({...data , questions: newKeywords})
+    }
   return (
     <div className = 'mt-[60px]'>
         {
@@ -26,6 +31,7 @@ const QuestionsAnswers = () => {
                     <Input type="text" label={`Question ${index + 1}`} variant='outlined' color='white' onChange={(e) => addQuestion(e, index)} />
                     <Input type="text" label="Type" variant='outlined' color='white' onChange = {(e) => addType(e , index)} />
                     <Input type="text" label="Answer" variant='outlined' color='white' onChange={(e) => addAnswer(e, index)} />
+                    <Input type="text" label="Keywords" variant='outlined' color='white' onChange={(e) => addKeywords(e, index)} />
                 </div>
             ))
         }
