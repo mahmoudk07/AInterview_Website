@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { getFollowedInterviews } from '../../../src/services/auth/authSlice'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getUserInformation } from '../../services/auth/authSlice'
 import button from '@material-tailwind/react'
 import axios from 'axios'
 export const InterviewsContext = createContext(null)
@@ -19,6 +20,14 @@ const UserInterviews = () => {
     const [interviews, setinterviews] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
     const [totalPages, setTotalPages] = useState(null)
+    const [userID, setUserID] = useState('')
+    const fetchUserInfo = async () => {
+        await dispatch(getUserInformation()).then((response) => {
+            if (!response.error) {
+                setUserID(response.payload.user.id)
+            }
+        })
+    }
     //const [showModal, setShowModal] = useState(false)
     // const closeModal = () => {
     //     setShowModal(false)
@@ -40,7 +49,7 @@ const UserInterviews = () => {
         setinterviews(null)
     };
     const [FollowedInterviewsIDS, setFollowedInterviewsIDS] = useState([])
-    const fetchFollowedInterviews = async () => { 
+    const fetchFollowedInterviews = async () => {
         await dispatch(getFollowedInterviews()).then((response) => {
             if (!response.error) {
                 const newID = response.payload.interviews.map((interview) => interview.id)
@@ -76,7 +85,7 @@ const UserInterviews = () => {
                 }
             })
             setinterviews(response.data.interviews)
-            setTotalPages(Math.floor((response.data.interviews.length)/6)+1)
+            setTotalPages(Math.floor((response.data.interviews.length) / 6) + 1)
             console.log(response.data)
         } catch (error) {
             console.error(error)
@@ -93,7 +102,7 @@ const UserInterviews = () => {
     // }
     const [isAllClicked, setIsAllClicked] = useState(true);
     const [isCompaniesClicked, setIsCompaniesClicked] = useState(false);
-    
+
     const handleAllClick = () => {
         setIsAllClicked(true);
         setIsCompaniesClicked(false);
@@ -103,6 +112,7 @@ const UserInterviews = () => {
         setIsAllClicked(false);
     }
     useEffect(() => {
+        fetchUserInfo();
         const storedFollowedInterviewsIDS = localStorage.getItem('FollowedInterviewsIDS');
         if (storedFollowedInterviewsIDS) {
             setFollowedInterviewsIDS(JSON.parse(storedFollowedInterviewsIDS));
@@ -114,7 +124,7 @@ const UserInterviews = () => {
         if (isCompaniesClicked) fetchCompaniesInterviews();
         //fetchAllInterviews();
         // eslint-disable-next-line
-    }, [active, isDeleted,isAllClicked,isCompaniesClicked])
+    }, [active, isDeleted, isAllClicked, isCompaniesClicked])
     return (
         <div>
             <InterviewsContext.Provider value={{}}>
@@ -148,7 +158,10 @@ const UserInterviews = () => {
                                 Date={interview.Date}
                                 Time={interview.Time}
                                 company_name={interview.company_name}
-                                status={interview.status} />)}
+                                status={interview.status}
+                                UsersAttending = {interview.interviewees_ids}
+                                UserID={userID}
+                            />)}
                         </div> : ''}
                     {totalPages && totalPages !== 0 ?
                         <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!interviews ? 'mt-[80vh]' : ''} ${isLoading && interviews ? 'mt-[80vh]' : ''}`}>
