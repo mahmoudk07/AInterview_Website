@@ -54,7 +54,7 @@ const CompanyCard = ({ comapanyImage, companyname, address , id }) => {
         }
     };
     return (
-        <div className='bg-white pt-4 pb-4 mx-5 w-52  h-64 rounded-lg flex flex-col border border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg items-center justify-between transform transition-all duration-500 hover:scale-105 cursor-pointer '>
+        <div className='bg-transparent pt-4 pb-4 mx-5 w-52  h-64 rounded-lg flex flex-col border border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg items-center justify-between transform transition-all duration-500 hover:scale-105 cursor-pointer '>
             <div className='flex flex-col space-y-3 items-center '>
                 <div>
                     <img className="w-14 h-14 rounded-full border-4 border-white" src={comapanyImage || defaultImage} alt="image" />
