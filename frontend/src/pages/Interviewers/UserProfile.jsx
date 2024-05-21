@@ -49,7 +49,7 @@ const UserProfile = () => {
                 <InformationUser info ={userInfo}  />
                 <div>
                     <h1 className='text-white text-bold text-3xl mt-10 mb-10'> Favourite Interviews</h1>
-                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
+                    <div className='flex flex-row flex-wrap space-x-5'>
                         {followed_interviews.map((interview, index) => (
                             <InterviewCard
                                 key={index}
@@ -76,6 +76,7 @@ const UserProfile = () => {
                             comapanyImage={company.image}
                             companyname={company.name}
                             address={company.address}
+                            website={company.website}
                         />
                     ))}
                 </div>
