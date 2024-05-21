@@ -45,7 +45,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
                 </div>
                 <span className='text-white text-[14px] ml-[1.5%] font-bold'>{interviewees} Interviewees applied for an interview</span>
             </div>
-            <div className = 'flex items-center justify-end mt-[15px] gap-5'>
+            <div className = 'flex items-center justify-end mt-[5px] gap-5'>
                 {handle_status(status)}
             </div>
         </div> 
