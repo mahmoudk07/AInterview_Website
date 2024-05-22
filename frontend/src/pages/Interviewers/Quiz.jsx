@@ -8,7 +8,6 @@ import { useLocation } from 'react-router-dom';
 const Quiz = ({userId,interviewId}) => {
     const location = useLocation();
     const { data } = location.state || {};
-    console.log(location.state);
     const [questions] = useState({
         "Q1": {
             "Type": "MCQ",
@@ -21,7 +20,7 @@ const Quiz = ({userId,interviewId}) => {
             "Choices": ["True", "False"]
         },
         "Q3": {
-            "Type": "Camera",
+            "Type": "Technical",
             "Question": "Please record a short video introducing yourself.",
             "Choices": []
         },
@@ -39,7 +38,9 @@ const Quiz = ({userId,interviewId}) => {
     const [transitioning, setTransitioning] = useState(false); // State for smooth transition
     const [recording, setRecording] = useState(false); // State for recording
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
-
+    useEffect(() => {
+        console.log(location.state);
+    }, []);
     const handleNextQuestion = () => {
         if (quizFinished) return;
         setTransitioning(true); // Start transition
@@ -110,6 +111,7 @@ const Quiz = ({userId,interviewId}) => {
     };
 
     useEffect(() => {
+
         if (quizFinished) return; // Stop the timer if the quiz is finished
         const timer = setInterval(() => {
             setTimeLeft(prevTimeLeft => {
@@ -204,7 +206,7 @@ const Quiz = ({userId,interviewId}) => {
                             </label>
                         </div>
                     ))}
-                    {Type === 'Camera' && (
+                    {Type === 'Technical' && (
                         <div className='flex flex-col items-center'>
                             <button onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
                                 {recording ? 'Stop Recording' : 'Record Video'}
