@@ -15,7 +15,8 @@ const InterviewCard = ({
     title,
     status,
     UsersAttending,
-    UserID
+    UserID,
+    questions
 }) => {
     const [isApplied, setIsApplied] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
@@ -35,7 +36,7 @@ const InterviewCard = ({
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/Quiz', { state: { userId: UserID, interviewId: id ,  } });
+        navigate('/Quiz', { state: { userId: UserID, interviewId: id , questions: questions} });
     };
 
     const handleFollowToggle = async () => {
