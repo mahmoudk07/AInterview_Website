@@ -5,7 +5,7 @@ import { RiSurveyFill } from "react-icons/ri";
 import Header from '../../components/Header/Header';
 import { useLocation } from 'react-router-dom';
 
-const Quiz = ({userId,interviewId}) => {
+const Quiz = ({}) => {
     const location = useLocation();
     const { data } = location.state || {};
     const [questions] = useState({
