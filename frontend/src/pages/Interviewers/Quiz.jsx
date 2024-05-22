@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 const Quiz = ({}) => {
     const location = useLocation();
-    const { data } = location.state || {};
+    //const { data } = location.state || {};
     const [questions] = useState({
         "Q1": {
             "Type": "MCQ",
