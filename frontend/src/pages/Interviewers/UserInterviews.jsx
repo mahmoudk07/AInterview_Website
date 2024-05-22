@@ -161,6 +161,7 @@ const UserInterviews = () => {
                                 status={interview.status}
                                 UsersAttending = {interview.interviewees_ids}
                                 UserID={userID}
+                                questions = {interview.questions}
                             />)}
                         </div> : ''}
                     {totalPages && totalPages !== 0 ?
