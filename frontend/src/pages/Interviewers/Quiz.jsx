@@ -39,7 +39,7 @@ const Quiz = ({}) => {
     const [recording, setRecording] = useState(false); // State for recording
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
     useEffect(() => {
-        console.log(location.state);
+        console.log(location.state.questions);
     }, []);
     const handleNextQuestion = () => {
         if (quizFinished) return;
