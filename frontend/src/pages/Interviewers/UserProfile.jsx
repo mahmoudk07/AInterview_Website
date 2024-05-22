@@ -68,6 +68,7 @@ const UserProfile = () => {
                                 status={interview.status}
                                 UserID={userID}
                                 UsersAttending = {interview.interviewees_ids}
+                                questions = {interview.questions}
                             />
                         ))}
                     </div>
