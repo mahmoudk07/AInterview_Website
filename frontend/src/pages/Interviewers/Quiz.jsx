@@ -160,6 +160,7 @@ const Quiz = () => {
             });
 
             finalAnswers.push(newScore);
+            SentFileToServer.push(newScore);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
             console.log("SentFileToServer:", SentFileToServer);
