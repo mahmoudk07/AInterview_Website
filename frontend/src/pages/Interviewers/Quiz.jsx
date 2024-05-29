@@ -17,6 +17,7 @@ const Quiz = () => {
     const [recording, setRecording] = useState(false); // State for recording
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
     const [score, setScore] = useState(0); // Initialize the score
+    const [finalized, setFinalized] = useState(false); // Track if final answers have been processed
 
     useEffect(() => {
         if (location.state && location.state.questions) {
@@ -129,7 +130,7 @@ const Quiz = () => {
     }, [selectedChoice, currentQuestionKey, quizFinished]);
 
     useEffect(() => {
-        if (quizFinished) {
+        if (quizFinished && !finalized) {
             // Calculate the score
             let newScore = 0;
             const finalAnswers = Object.keys(questions).map(questionKey => {
@@ -153,15 +154,16 @@ const Quiz = () => {
             finalAnswers.push(newScore);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
+            setFinalized(true); // Mark as finalized to prevent reprocessing
         }
-    }, [quizFinished, answers, questions]);
+    }, [quizFinished, answers, questions, finalized]);
 
     if (!currentQuestionKey) {
         return <div>Loading...</div>;
     }
 
     const currentQuestion = questions[currentQuestionKey];
-    const { Type, Question, Choices,Answer } = currentQuestion;
+    const { Type, Question, Choices } = currentQuestion;
 
     if (quizFinished) {
         return (
