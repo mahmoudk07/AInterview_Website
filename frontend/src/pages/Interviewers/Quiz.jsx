@@ -23,8 +23,8 @@ const Quiz = () => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
                     Type: question.Type,
-                    Question: question.Q1,
-                    Choices: [] // Initialize Choices as an empty array
+                    Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the filed name
+                    Choices: [] // Initialize Choices as an empty array will be changed when mahmoud  add Choices
                 };
                 return acc;
             }, {});
