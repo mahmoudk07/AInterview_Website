@@ -140,7 +140,9 @@ const Quiz = () => {
             const finalAnswers = Object.keys(questions).map(questionKey => {
                 const question = questions[questionKey];
                 const answer = answers[questionKey];
-                
+                console.log("Question:", questionKey, "Answer:", answer);
+                const UserID = question.UserId;
+                const InterviewID = question.InterviewId;
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
