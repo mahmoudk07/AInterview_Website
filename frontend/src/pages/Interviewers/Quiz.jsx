@@ -137,12 +137,14 @@ const Quiz = () => {
     useEffect(() => {
         if (quizFinished && !finalized) {
             let newScore = 0;
+            let SentFileToServer = [];
             const finalAnswers = Object.keys(questions).map(questionKey => {
                 const question = questions[questionKey];
                 const answer = answers[questionKey];
-                console.log("Question:", questionKey, "Answer:", answer);
+                // console.log("Question:", questionKey, "Answer:", answer);
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
+                SentFileToServer.push(UserID.concat("_",InterviewID,"_",questionKey)); 
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
@@ -160,6 +162,7 @@ const Quiz = () => {
             finalAnswers.push(newScore);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
+            console.log("SentFileToServer:", SentFileToServer);
             setFinalized(true); 
         }
     }, [quizFinished, answers, questions, finalized]);
