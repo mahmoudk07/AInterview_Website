@@ -18,6 +18,7 @@ const Quiz = () => {
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
 
     useEffect(() => {
+        console.log(location.state.questions)
         if (location.state && location.state.questions) {
             const transformedQuestions = location.state.questions.reduce((acc, question, index) => {
                 const questionKey = `Q${index + 1}`;
