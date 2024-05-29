@@ -18,14 +18,14 @@ const Quiz = () => {
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
 
     useEffect(() => {
-        console.log(location.state.questions)
         if (location.state && location.state.questions) {
             const transformedQuestions = location.state.questions.reduce((acc, question, index) => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
                     Type: question.Type,
                     Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the filed name
-                    Choices: [] // Initialize Choices as an empty array will be changed when mahmoud  add Choices
+                    Choices: [], // Initialize Choices as an empty array will be changed when mahmoud  add Choices
+                    Answer:question.Answer
                 };
                 return acc;
             }, {});
