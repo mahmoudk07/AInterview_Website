@@ -13,9 +13,9 @@ const Quiz = () => {
     const [selectedChoice, setSelectedChoice] = useState('');
     const [answers, setAnswers] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
-    const [transitioning, setTransitioning] = useState(false); // State for smooth transition
-    const [recording, setRecording] = useState(false); // State for recording
-    const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
+    const [transitioning, setTransitioning] = useState(false); 
+    const [recording, setRecording] = useState(false); 
+    const [mediaRecorder, setMediaRecorder] = useState(null); 
     const [score, setScore] = useState(0); // Initialize the score
     const [finalized, setFinalized] = useState(false); // Track if final answers have been processed
 
