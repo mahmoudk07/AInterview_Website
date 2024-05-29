@@ -139,7 +139,7 @@ const Quiz = () => {
     }
 
     const currentQuestion = questions[currentQuestionKey];
-    const { Type, Question, Choices } = currentQuestion;
+    const { Type, Question, Choices ,Answer } = currentQuestion;
 
     if (quizFinished) {
         return (
