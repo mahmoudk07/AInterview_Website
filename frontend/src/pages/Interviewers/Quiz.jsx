@@ -30,7 +30,9 @@ const Quiz = () => {
                     Type: question.Type,
                     Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the field name
                     Choices: [], // Initialize Choices as an empty array, will be changed when Mahmoud adds Choices
-                    Answer: question.Answer
+                    Answer: question.Answer,
+                    UserId: UserId,
+                    InterviewId: InterviewId
                 };
                 return acc;
             }, {});
@@ -138,7 +140,7 @@ const Quiz = () => {
             const finalAnswers = Object.keys(questions).map(questionKey => {
                 const question = questions[questionKey];
                 const answer = answers[questionKey];
-
+                
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
