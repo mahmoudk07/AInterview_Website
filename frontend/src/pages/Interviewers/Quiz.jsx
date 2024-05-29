@@ -21,7 +21,9 @@ const Quiz = () => {
 
     useEffect(() => {
         if (location.state && location.state.questions) {
-            console.log('Location State:', location.state);
+            //console.log('Location State:', location.state);
+            const UserId = location.state.userId;
+            const InterviewId = location.state.interviewId;
             const transformedQuestions = location.state.questions.reduce((acc, question, index) => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
