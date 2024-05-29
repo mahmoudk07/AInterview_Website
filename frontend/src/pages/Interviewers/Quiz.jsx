@@ -5,42 +5,34 @@ import { RiSurveyFill } from "react-icons/ri";
 import Header from '../../components/Header/Header';
 import { useLocation } from 'react-router-dom';
 
-const Quiz = ({}) => {
+const Quiz = () => {
     const location = useLocation();
-    //const { data } = location.state || {};
-    const [questions] = useState({
-        "Q1": {
-            "Type": "MCQ",
-            "Question": "What is the capital of France?",
-            "Choices": ["Paris", "London", "Berlin"]
-        },
-        "Q2": {
-            "Type": "TF",
-            "Question": "Is the Earth round?",
-            "Choices": ["True", "False"]
-        },
-        "Q3": {
-            "Type": "Technical",
-            "Question": "Please record a short video introducing yourself.",
-            "Choices": []
-        },
-        "Q4": {
-            "Type": "Written",
-            "Question": "What is your age?",
-            "Choices": []
-        },
-    });
+    const [questions, setQuestions] = useState({});
     const [timeLeft, setTimeLeft] = useState(60);
-    const [currentQuestionKey, setCurrentQuestionKey] = useState(Object.keys(questions)[0]);
+    const [currentQuestionKey, setCurrentQuestionKey] = useState(null);
     const [selectedChoice, setSelectedChoice] = useState('');
     const [answers, setAnswers] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
     const [transitioning, setTransitioning] = useState(false); // State for smooth transition
     const [recording, setRecording] = useState(false); // State for recording
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
+
     useEffect(() => {
-        console.log(location.state.questions);
-    }, []);
+        if (location.state && location.state.questions) {
+            const transformedQuestions = location.state.questions.reduce((acc, question, index) => {
+                const questionKey = `Q${index + 1}`;
+                acc[questionKey] = {
+                    Type: question.Type,
+                    Question: question.Q1,
+                    Choices: [] // Initialize Choices as an empty array
+                };
+                return acc;
+            }, {});
+            setQuestions(transformedQuestions);
+            setCurrentQuestionKey(Object.keys(transformedQuestions)[0]);
+        }
+    }, [location.state]);
+
     const handleNextQuestion = () => {
         if (quizFinished) return;
         setTransitioning(true); // Start transition
@@ -111,7 +103,6 @@ const Quiz = ({}) => {
     };
 
     useEffect(() => {
-
         if (quizFinished) return; // Stop the timer if the quiz is finished
         const timer = setInterval(() => {
             setTimeLeft(prevTimeLeft => {
@@ -123,7 +114,6 @@ const Quiz = ({}) => {
             });
         }, 1000);
         return () => clearInterval(timer);
-        // eslint-disable-next-line
     }, [currentQuestionKey, quizFinished]);
 
     useEffect(() => {
@@ -134,17 +124,22 @@ const Quiz = ({}) => {
                 [currentQuestionKey]: selectedChoice
             }));
         }
-        // eslint-disable-next-line
     }, [selectedChoice, currentQuestionKey, quizFinished]);
+
     useEffect(() => {
         // Log answers when quiz is finished
         if (quizFinished) {
             console.log("Interview finished. Answers:", answers);
         }
-        // eslint-disable-next-line
     }, [quizFinished, answers]);
+
+    if (!currentQuestionKey) {
+        return <div>Loading...</div>;
+    }
+
     const currentQuestion = questions[currentQuestionKey];
     const { Type, Question, Choices } = currentQuestion;
+
     if (quizFinished) {
         return (
             <div className='flex flex-col h-screen justify-center items-center'>
@@ -157,6 +152,7 @@ const Quiz = ({}) => {
             </div>
         )
     }
+
     return (
         <div className='flex flex-col h-screen justify-center items-center'>
             <Header />
