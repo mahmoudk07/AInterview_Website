@@ -16,6 +16,7 @@ const Quiz = () => {
     const [transitioning, setTransitioning] = useState(false); // State for smooth transition
     const [recording, setRecording] = useState(false); // State for recording
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store the mediaRecorder
+    const [score, setScore] = useState(0); // Initialize the score
 
     useEffect(() => {
         if (location.state && location.state.questions) {
@@ -23,9 +24,9 @@ const Quiz = () => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
                     Type: question.Type,
-                    Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the filed name
-                    Choices: [], // Initialize Choices as an empty array will be changed when mahmoud  add Choices
-                    Answer:question.Answer
+                    Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the field name
+                    Choices: [], // Initialize Choices as an empty array, will be changed when Mahmoud adds Choices
+                    Answer: question.Answer
                 };
                 return acc;
             }, {});
@@ -128,18 +129,39 @@ const Quiz = () => {
     }, [selectedChoice, currentQuestionKey, quizFinished]);
 
     useEffect(() => {
-        // Log answers when quiz is finished
         if (quizFinished) {
-            console.log("Interview finished. Answers:", answers);
+            // Calculate the score
+            let newScore = 0;
+            const finalAnswers = Object.keys(questions).map(questionKey => {
+                const question = questions[questionKey];
+                const answer = answers[questionKey];
+
+                if (question.Type === 'MCQ' || question.Type === 'TF') {
+                    if (answer === question.Answer) {
+                        newScore++;
+                    }
+                    return '';
+                }
+
+                if (question.Type === 'Technical') {
+                    return answer || '';
+                }
+
+                return '';
+            });
+
+            finalAnswers.push(newScore);
+            setScore(newScore);
+            console.log("Interview finished. Final Answers:", finalAnswers);
         }
-    }, [quizFinished, answers]);
+    }, [quizFinished, answers, questions]);
 
     if (!currentQuestionKey) {
         return <div>Loading...</div>;
     }
 
     const currentQuestion = questions[currentQuestionKey];
-    const { Type, Question, Choices ,Answer } = currentQuestion;
+    const { Type, Question, Choices } = currentQuestion;
 
     if (quizFinished) {
         return (
@@ -149,9 +171,10 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
+                    <h3 className='text-center text-lg'>Your Score: {score}</h3>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
