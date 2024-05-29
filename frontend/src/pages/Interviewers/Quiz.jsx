@@ -171,7 +171,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
-                    <h3 className='text-center text-lg'>Your Score: {score}</h3>
+                    {/* <h3 className='text-center text-lg'>Your Score: {score}</h3> */}
                 </div>
             </div>
         );
