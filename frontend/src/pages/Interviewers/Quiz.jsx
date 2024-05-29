@@ -131,7 +131,6 @@ const Quiz = () => {
 
     useEffect(() => {
         if (quizFinished && !finalized) {
-            // Calculate the score
             let newScore = 0;
             const finalAnswers = Object.keys(questions).map(questionKey => {
                 const question = questions[questionKey];
@@ -154,7 +153,7 @@ const Quiz = () => {
             finalAnswers.push(newScore);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
-            setFinalized(true); // Mark as finalized to prevent reprocessing
+            setFinalized(true); 
         }
     }, [quizFinished, answers, questions, finalized]);
 
