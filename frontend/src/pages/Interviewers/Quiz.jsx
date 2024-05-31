@@ -74,7 +74,6 @@ const Quiz = () => {
             mediaRecorder.stop();
             setRecording(false);
         } else {
-            // Start recording
             navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(stream => {
                     const recorder = new MediaRecorder(stream);
