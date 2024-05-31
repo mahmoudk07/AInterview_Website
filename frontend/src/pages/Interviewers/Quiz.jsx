@@ -145,7 +145,7 @@ const Quiz = () => {
         }
     };
     useEffect(() => {
-        if (counter === totalTechnicalQuestions) {
+        if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
         }
     }, [counter, totalTechnicalQuestions]);
