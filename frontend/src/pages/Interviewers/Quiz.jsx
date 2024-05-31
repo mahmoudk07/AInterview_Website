@@ -238,7 +238,7 @@ const Quiz = () => {
                     ))}
                     {Type === 'Technical' && (
                         <div className='flex flex-col items-center'>
-                            <button disabled={recording} onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
+                            <button disabled={stopped} onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
                                 {recording ? 'Stop Recording' : 'Record Video'}
                             </button>
                         </div>
