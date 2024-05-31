@@ -26,6 +26,13 @@ const Quiz = () => {
     const [counter, setCounter] = useState(0);
     const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
     const [allUploaded, setAllUploaded] = useState(false);
+    const [gohometime, setGohometime] = useState(3);
+    useEffect (() => {
+        const interval = setInterval(() => {
+            setGohometime(prevGohometime => prevGohometime - 1);
+        }, 1000);
+        return () => clearInterval(interval);
+    });
     useEffect(() => {
         if (location.state && location.state.questions) {
             //console.log('Location State:', location.state);
@@ -223,7 +230,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
-                    {/* <h3 className='text-center text-lg'>You will be directed to home page in {gohometime} seconds</h3> */}
+                    <h3 className='text-center text-lg'>You will be directed to home page in {gohometime} seconds</h3>
                 </div>
             </div>
         );
