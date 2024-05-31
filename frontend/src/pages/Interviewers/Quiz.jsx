@@ -33,7 +33,7 @@ const Quiz = () => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
                     Type: question.Type,
-                    Question: question.Q1,    // Will be changed to the actual question when Mahmoud changes the field name
+                    Question: question[questionKey],    // Will be changed to the actual question when Mahmoud changes the field name
                     Choices: [], // Initialize Choices as an empty array, will be changed when Mahmoud adds Choices
                     Answer: question.Answer,
                     UserId: UserId,
