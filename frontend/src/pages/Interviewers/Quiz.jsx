@@ -71,7 +71,6 @@ const Quiz = () => {
 
     const handleRecordVideo = () => {
         if (recording) {
-            // Stop recording
             mediaRecorder.stop();
             setRecording(false);
         } else {
