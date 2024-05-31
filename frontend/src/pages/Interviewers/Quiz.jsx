@@ -25,7 +25,7 @@ const Quiz = () => {
     const InterviewId = location.state.interviewId;
     const [counter, setCounter] = useState(0);
     const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
-
+    const [allUploaded, setAllUploaded] = useState(false);
     useEffect(() => {
         if (location.state && location.state.questions) {
             //console.log('Location State:', location.state);
@@ -147,6 +147,7 @@ const Quiz = () => {
     useEffect(() => {
         if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
+            setAllUploaded(true);
         }
     }, [counter, totalTechnicalQuestions]);
     useEffect(() => {
