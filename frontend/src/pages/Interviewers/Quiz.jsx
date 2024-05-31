@@ -88,7 +88,8 @@ const Quiz = () => {
                     recorder.onstop = () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
-                        const target = { Bucket: "megs17", Key: "recording.webm", Body: blob };
+                        const FileName = UserID.concat("_",InterviewID,"_",currentQuestionKey,".webm");
+                        const target = { Bucket: "megs17", Key: {FileName}, Body: blob };
                         const creds = { accessKeyId: "DO00834NLBHPEYPFF7YM", secretAccessKey: "1eFMNb87+HhKpSQpytXpfikbfbUqaMrrdsE/Icm3r4o" };
                         
                         setAnswers(prevAnswers => ({
