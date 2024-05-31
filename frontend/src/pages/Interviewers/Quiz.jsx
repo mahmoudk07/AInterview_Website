@@ -89,6 +89,7 @@ const Quiz = () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
                         const FileName = UserId.concat("_",InterviewId,"_",currentQuestionKey,".webm");
+                        console.log("FileName:", FileName);
                         const target = { Bucket: "megs17", Key: {FileName}, Body: blob };
                         const creds = { accessKeyId: "DO00834NLBHPEYPFF7YM", secretAccessKey: "1eFMNb87+HhKpSQpytXpfikbfbUqaMrrdsE/Icm3r4o" };
                         
@@ -145,7 +146,7 @@ const Quiz = () => {
                 // console.log("Question:", questionKey, "Answer:", answer);
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
-                SentFileToServer.push(UserID.concat("_",InterviewID,"_",questionKey)); 
+                SentFileToServer.push(UserID.concat("_",InterviewID,"_",questionKey,".webm")); 
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
