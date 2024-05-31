@@ -23,6 +23,7 @@ const Quiz = () => {
     const [stopped, setStopped] = useState(false);
     const UserId = location.state.userId;
     const InterviewId = location.state.interviewId;
+    const [counter, setCounter] = useState(0);
 
     useEffect(() => {
         if (location.state && location.state.questions) {
@@ -126,6 +127,7 @@ const Quiz = () => {
 
                             await upload.done();
                             console.log('File uploaded successfully!');
+                            setCounter(counter + 1);
                         } catch (error) {
                             console.error('Error uploading file:', error);
                         }
