@@ -26,7 +26,7 @@ const Quiz = () => {
     const [counter, setCounter] = useState(0);
     const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
     const [allUploaded, setAllUploaded] = useState(false);
-    const [gohometime, setGohometime] = useState(3);
+    const [gohometime, setGohometime] = useState(10000);
     const navigate = useNavigate();
     if (gohometime === 0) {
         navigate('/');
@@ -159,6 +159,7 @@ const Quiz = () => {
         if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
             setAllUploaded(true);
+            setGohometime(5);
         }
     }, [counter, totalTechnicalQuestions]);
     useEffect(() => {
