@@ -6,7 +6,7 @@ import Header from '../../components/Header/Header';
 import { useLocation } from 'react-router-dom';
 import { Upload } from "@aws-sdk/lib-storage";
 import { S3Client } from "@aws-sdk/client-s3";
-
+import { useNavigate } from 'react-router-dom';
 const Quiz = () => {
     const location = useLocation();
     const [questions, setQuestions] = useState({});
