@@ -27,6 +27,10 @@ const Quiz = () => {
     const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
     const [allUploaded, setAllUploaded] = useState(false);
     const [gohometime, setGohometime] = useState(3);
+    const navigate = useNavigate();
+    if (gohometime === 0) {
+        navigate('/');
+    }
     useEffect (() => {
         const interval = setInterval(() => {
             setGohometime(prevGohometime => prevGohometime - 1);
