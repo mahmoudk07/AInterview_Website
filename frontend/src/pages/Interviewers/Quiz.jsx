@@ -144,7 +144,11 @@ const Quiz = () => {
                 });
         }
     };
-
+    useEffect(() => {
+        if (counter === totalTechnicalQuestions) {
+            console.log('All videos have been uploaded!');
+        }
+    }, [counter, totalTechnicalQuestions]);
     useEffect(() => {
         if (quizFinished) return; 
         const timer = setInterval(() => {
