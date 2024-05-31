@@ -4,6 +4,8 @@ import { FaBriefcase } from "react-icons/fa";
 import { RiSurveyFill } from "react-icons/ri";
 import Header from '../../components/Header/Header';
 import { useLocation } from 'react-router-dom';
+import { Upload } from "@aws-sdk/lib-storage";
+import { S3Client } from "@aws-sdk/client-s3";
 
 const Quiz = () => {
     const location = useLocation();
@@ -89,7 +91,7 @@ const Quiz = () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
                         const FileName = UserId.concat("_",InterviewId,"_",currentQuestionKey,".webm");
-                        console.log("FileName:", FileName);
+                        
                         const target = { Bucket: "megs17", Key: {FileName}, Body: blob };
                         const creds = { accessKeyId: "DO00834NLBHPEYPFF7YM", secretAccessKey: "1eFMNb87+HhKpSQpytXpfikbfbUqaMrrdsE/Icm3r4o" };
                         
