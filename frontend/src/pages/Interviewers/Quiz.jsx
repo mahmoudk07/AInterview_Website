@@ -235,7 +235,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
-                    <h3 className='text-center text-lg'>You will be directed to home page in {gohometime} seconds</h3>
+                    <p className='text-center text-md text-gray-400'>You will be redirected to home page in {gohometime} seconds</p>
                 </div>
             </div>
         );
