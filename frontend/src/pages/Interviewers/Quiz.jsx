@@ -223,6 +223,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
+                    {/* <h3 className='text-center text-lg'>You will be directed to home page in {gohometime} seconds</h3> */}
                 </div>
             </div>
         );
@@ -235,10 +236,11 @@ const Quiz = () => {
             <div className='flex flex-col h-screen justify-center items-center'>
                 <Header />
                 <div className='bg-white p-4 rounded-md w-96'>
-                    <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
+                    <h1 className='text-center text-3xl font-bold'>Answers are being Analyzed.....</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
-                    <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
-                    <h3 className='text-center text-lg text-red-500'>Please don't Close the interview now Wait for A while</h3>
+                    {/* <h2 className='text-center text-xl'>Thank you for taking the Interview</h2> */}
+                    <h2 className='text-center text-lg text-red-500'>Please don't Close this interview</h2>
+                    <h2 className='text-center text-lg text-red-500'>Wait for a while it only takes seconds</h2>
                     {/* <h3 className='text-center text-lg'>Your Score: {score}</h3> */}
                 </div>
             </div>
