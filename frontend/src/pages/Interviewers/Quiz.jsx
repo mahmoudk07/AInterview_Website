@@ -24,6 +24,7 @@ const Quiz = () => {
     const UserId = location.state.userId;
     const InterviewId = location.state.interviewId;
     const [counter, setCounter] = useState(0);
+    const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
 
     useEffect(() => {
         if (location.state && location.state.questions) {
@@ -42,6 +43,8 @@ const Quiz = () => {
             }, {});
             setQuestions(transformedQuestions);
             setCurrentQuestionKey(Object.keys(transformedQuestions)[0]);
+            const technicalCount = location.state.questions.filter(question => question.Type === 'Technical').length;
+            setTotalTechnicalQuestions(technicalCount);
         }
     }, [location.state]);
 
