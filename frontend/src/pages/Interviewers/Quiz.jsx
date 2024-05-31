@@ -141,13 +141,12 @@ const Quiz = () => {
                 })
                 .catch(error => {
                     console.error('Error accessing camera:', error);
-                    // Handle error, e.g., display an error message to the user
                 });
         }
     };
 
     useEffect(() => {
-        if (quizFinished) return; // Stop the timer if the quiz is finished
+        if (quizFinished) return; 
         const timer = setInterval(() => {
             setTimeLeft(prevTimeLeft => {
                 const newTimeLeft = prevTimeLeft - 1;
