@@ -18,7 +18,7 @@ const Quiz = () => {
     const [mediaRecorder, setMediaRecorder] = useState(null); 
     const [score, setScore] = useState(0); // Initialize the score
     const [finalized, setFinalized] = useState(false); // Track if final answers have been processed
-
+    const [stopped, setStopped] = useState(false);
     useEffect(() => {
         if (location.state && location.state.questions) {
             //console.log('Location State:', location.state);
@@ -73,6 +73,7 @@ const Quiz = () => {
         if (recording) {
             mediaRecorder.stop();
             setRecording(false);
+            setStopped(true);
         } else {
             navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(stream => {
