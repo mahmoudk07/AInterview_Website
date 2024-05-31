@@ -23,6 +23,7 @@ const Quiz = () => {
     const [stopped, setStopped] = useState(false);
     const UserId = location.state.userId;
     const InterviewId = location.state.interviewId;
+
     useEffect(() => {
         if (location.state && location.state.questions) {
             //console.log('Location State:', location.state);
@@ -87,13 +88,13 @@ const Quiz = () => {
                         chunks.push(event.data);
                     };
 
-                    recorder.onstop = () => {
+                    recorder.onstop = async () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
                         const FileName = UserId.concat("_",InterviewId,"_",currentQuestionKey,".webm");
-                        
-                        const target = { Bucket: "megs17", Key: {FileName}, Body: blob };
-                        const creds = { accessKeyId: "DO00834NLBHPEYPFF7YM", secretAccessKey: "1eFMNb87+HhKpSQpytXpfikbfbUqaMrrdsE/Icm3r4o" };
+
+                        const target = { Bucket: "megs17", Key: FileName, Body: blob };
+                        const creds = { accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY };
                         
                         setAnswers(prevAnswers => ({
                             ...prevAnswers,
@@ -102,6 +103,32 @@ const Quiz = () => {
 
                         // Stop all video tracks to release the camera
                         stream.getTracks().forEach(track => track.stop());
+
+                        // Upload video to S3
+                        try {
+                            const s3Client = new S3Client({
+                                region: "nyc3",
+                                credentials: creds,
+                                endpoint: "https://nyc3.digitaloceanspaces.com"
+                            });
+
+                            const upload = new Upload({
+                                client: s3Client,
+                                queueSize: 4,
+                                partSize: 5 * 1024 * 1024, // 5MB part size
+                                leavePartsOnError: false,
+                                params: target,
+                            });
+
+                            upload.on("httpUploadProgress", (progress) => {
+                                console.log(`Upload progress: ${Math.round((progress.loaded / progress.total) * 100)}%`);
+                            });
+
+                            await upload.done();
+                            console.log('File uploaded successfully!');
+                        } catch (error) {
+                            console.error('Error uploading file:', error);
+                        }
                     };
 
                     recorder.start();
