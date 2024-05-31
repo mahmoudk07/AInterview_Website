@@ -88,7 +88,6 @@ const Quiz = () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
 
-                        // Save the videoURL as the answer to the current question
                         setAnswers(prevAnswers => ({
                             ...prevAnswers,
                             [currentQuestionKey]: videoURL
