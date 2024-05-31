@@ -215,6 +215,21 @@ const Quiz = () => {
     const currentQuestion = questions[currentQuestionKey];
     const { Type, Question, Choices } = currentQuestion;
 
+    if (allUploaded) {
+        return (
+            <div className='flex flex-col h-screen justify-center items-center'>
+                <Header />
+                <div className='bg-white p-4 rounded-md w-96'>
+                    <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
+                    <hr className='my-2 border-t-1 border-gray-400' />
+                    <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
+                </div>
+            </div>
+        );
+    }
+    
+    
+    
     if (quizFinished && finalized) {
         return (
             <div className='flex flex-col h-screen justify-center items-center'>
@@ -223,6 +238,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
+                    <h3 className='text-center text-lg text-red-500'>Please don't Close the interview now Wait for A while</h3>
                     {/* <h3 className='text-center text-lg'>Your Score: {score}</h3> */}
                 </div>
             </div>
