@@ -153,7 +153,7 @@ const InterviewCard = ({
                         onClick={handleClick}
                         className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" || !isUserAttending ? "hidden" : ""}`}
                     >
-                        Start Quiz
+                        Start Interview
                     </button>
                 </div>
             </div>
