@@ -111,13 +111,13 @@ const InterviewCard = ({
 
     return (
         <div className="bg-transparent flex flex-row space-x-6 border-[1px] border-borderColor border-bac bg-opacity-35 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg w-[30rem] transform transition-all duration-500 hover:scale-105 cursor-pointer hover:border-white">
-            <div className="flex flex-col items-center">
+            <div className="flex-shrink-0">
                 <img className="w-16 h-16 rounded-full border-4 border-white" src={image || defaultImage} alt="company_image" />
             </div>
-            <div className="flex flex-col justify-start items-start">
+            <div className="flex flex-col justify-start items-start flex-wrap">
                 <h1 className="text-tertiary-color text-2xl font-bold text-center mt-1 mb-1">{company_name}</h1>
-                <p className="text-lg font-bold text-gray-100 text-center">{title}</p>
-                <p className="text-sm text-gray-400 text-center">{description}</p>
+                <p className="text-lg font-bold text-gray-100 ">{title}</p>
+                <p className="text-sm text-gray-400">{description}</p>
                 <div className="flex flex-row space-x-4">
                     <div className="flex flex-row space-x-2">
                         <MdOutlineDateRange className="text-gray-400" />
