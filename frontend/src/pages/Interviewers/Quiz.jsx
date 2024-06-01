@@ -227,7 +227,7 @@ const Quiz = () => {
     const currentQuestion = questions[currentQuestionKey];
     const { Type, Question, Choices } = currentQuestion;
 
-    if (allUploaded) {
+    if (allUploaded && finalized && quizFinished) {
         return (
             <div className='flex flex-col h-screen justify-center items-center'>
                 <Header />
