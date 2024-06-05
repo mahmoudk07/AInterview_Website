@@ -1,6 +1,6 @@
 import { Avatar } from "@material-tailwind/react";
 
-export function AvatarStack() {
+export function AvatarStack({interviewees}) {
     return (
         <div className="flex items-center -space-x-4">
             <Avatar
@@ -21,7 +21,7 @@ export function AvatarStack() {
                     className="border-2 border-white hover:z-10 focus:z-10 w-[40px] h-[40px] bg-red-200 "
 
                 />
-                <span className = "absolute text-white inset-0 flex justify-center items-center text-[13px] font-bold">+32</span>
+                <span className="absolute text-white inset-0 flex justify-center items-center text-[13px] font-bold">+{ interviewees }</span>
             </div>
 
         </div>
