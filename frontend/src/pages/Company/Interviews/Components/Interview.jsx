@@ -19,7 +19,7 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
             )
         else if (status === 'finished')
             return (
-                <span className = 'font-bold text-orange-800 border-[1px] border-borderColor py-[2%] px-[3%] rounded-[15px] cursor-default'>Still processing!</span>
+                <span className='font-bold text-orange-800 border-[1px] border-borderColor py-[2%] px-[3%] rounded-[15px] cursor-default'>Still processing</span>
             )
         else if (status === 'current')
             return (
@@ -33,12 +33,12 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
   return (
     <div className = 'w-full md:w-[32%] h-[265px] bg-red-500 px-[2%] py-[1%] rounded-[20px] bg-transparent border-[1px] border-borderColor cursor-pointer'>
         <div className = 'w-full flex items-center justify-center'>
-              <span className='text-white font-bold text-xl m-auto'>{title}</span>
+              <span className='text-white text-xl m-auto'>{title}</span>
         </div>
         <div className = 'flex flex-col justify-center gap-y-2 mt-[10px]'>
               <span className='text-white font-bold text-[18px]'>Date: <span className='text-gray-400 font-bold'>{Date}</span></span>
               <span className='text-white font-bold text-[18px]'>Time: <span className='text-gray-400 font-bold'>{Time} AM</span></span>
-              <span className='text-white font-bold text-[18px]'>Status: <span className='text-gray-400'>{status.toUpperCase()}</span></span>
+              <span className='text-white font-bold text-[18px]'>Status: <span className= {`${status === 'finished' ? "text-red-500" : "text-green-500"}`} >{status.toUpperCase()}</span></span>
             <div className = 'flex items-center mt-[5px]'>
                 <div className='cursor-pointer' onClick={() => navigate(`/interviewees/${id}`)}>
                     {parseInt(interviewees) !== 0 ? <AvatarStack interviewees = {interviewees} /> : ''}

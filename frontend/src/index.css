@@ -1,3 +1,4 @@
+@import "./fonts/fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,7 +12,7 @@ body{
     background-repeat: no-repeat; */
     /* background-color: #002D62; */
     background-color: rgba(0,21,52,255);
-
+    font-family: 'Neue Plak';
 }
 @layer utilities{
     .header{
