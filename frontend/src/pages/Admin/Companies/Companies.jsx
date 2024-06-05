@@ -52,7 +52,7 @@ const Companies = () => {
     // eslint-disable-next-line
   }, [active, isDeleted])
   return (
-    <div className='w-full min-h-[80vh] overflow-x-hidden mt-[30px] flex justify-center items-center'>
+    <div className='w-full min-h-[85vh] overflow-x-hidden mt-[100px] flex justify-center'>
       <Header />
       <Modal show={showModal} close={closeModal} message="Company deleted successfully" />
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
@@ -137,34 +137,35 @@ const Companies = () => {
               </table>
             </CardBody>
           </Card>
-          <div className={`w-full flex items-center gap-4 justify-center mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
-            <Button
-              variant="text"
-              className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
-              onClick={prev}
-              disabled={active === 1}
-            > Previous
-            </Button>
-            <div className="flex items-center gap-2 flex-wrap">
-              {[...Array(totalPages)].map((_, index) => (
-                <IconButton
-                  key={index}
-                  className={`text-white bg-transparent border-[1px] border-borderColor text-[16px] font-bold ${active === index + 1 ? "bg-green-700" : ""}`}
-                  {...getItemProps(index + 1)}
-                >
-                  {index + 1}
-                </IconButton>
-              ))}
-            </div>
-            <Button
-              variant="text"
-              className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px]"
-              onClick={next}
-              disabled={active === totalPages}
-            >
-              Next
-            </Button>
-          </div>
+          {totalPages !== 0 ?
+            <div className={`w-full flex items-center gap-4 justify-center mb-[50px] overflow-x-hidden absolute left-1/2 top-[90vh] transform -translate-x-1/2`}>
+              <Button
+                variant="text"
+                className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
+                onClick={prev}
+                disabled={active === 1}
+              > Previous
+              </Button>
+              <div className="flex items-center gap-2 flex-wrap">
+                {[...Array(totalPages)].map((_, index) => (
+                  <IconButton
+                    key={index}
+                    className={`text-white bg-transparent border-[1px] border-borderColor text-[16px] font-bold ${active === index + 1 ? "bg-green-700" : ""}`}
+                    {...getItemProps(index + 1)}
+                  >
+                    {index + 1}
+                  </IconButton>
+                ))}
+              </div>
+              <Button
+                variant="text"
+                className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px]"
+                onClick={next}
+                disabled={active === totalPages}
+              >
+                Next
+              </Button>
+            </div> : ''}
         </div> : ''}
     </div>
   )

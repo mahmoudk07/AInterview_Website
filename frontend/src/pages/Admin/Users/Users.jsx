@@ -52,7 +52,7 @@ const Users = () => {
         // eslint-disable-next-line
     }, [active, isDeleted])
   return (
-    <div className='w-full min-h-[80vh] overflow-x-hidden mt-[100px] flex justify-center items-center'>
+    <div className='w-full min-h-[80vh] overflow-x-hidden mt-[100px] flex justify-center'>
       <Header />
       <Modal show={showModal} close={closeModal} message="User deleted successfully" />
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
@@ -148,7 +148,7 @@ const Users = () => {
               </table>
             </CardBody>
           </Card>
-          <div className={`w-full flex items-center justify-center gap-4 mb-[50px] overflow-x-hidden ${!data ? 'mt-[80vh]' : ''} ${isLoading && data ? 'mt-[80vh]' : ''}`}>
+          <div className={`w-full flex items-center justify-center gap-4 mb-[50px] overflow-x-hidden absolute left-1/2 top-[88vh] transform -translate-x-1/2`}>
             <Button
               variant="text"
               className="flex items-center gap-2 text-white font-bold border-[1px] border-borderColor text-[14px] "
