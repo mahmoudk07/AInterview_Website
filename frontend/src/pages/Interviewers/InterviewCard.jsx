@@ -16,7 +16,8 @@ const InterviewCard = ({
     status,
     UsersAttending,
     UserID,
-    questions
+    questions,
+    attended_interviewees_ids
 }) => {
     const [isApplied, setIsApplied] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
