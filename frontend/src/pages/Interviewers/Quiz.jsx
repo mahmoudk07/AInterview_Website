@@ -194,9 +194,9 @@ const Quiz = () => {
     }, [selectedChoice, currentQuestionKey, quizFinished]);
     const Megz_Finished_Interview = async (SentFileToServer) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_interview`, {
-                Interview_ID: InterviewId,
-                Interviewee_ID: UserId,
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_Interview`, {
+                Interview_ID: InterviewId.toString(),
+                Interviewee_ID: UserId.toString(),
                 Vedios_PATH: SentFileToServer,
                 Score: score.toString() // Ensure the score is sent as a string
             }, {
@@ -225,6 +225,8 @@ const Quiz = () => {
             console.error(error);
         }
     };
+    
+    const [SentFileToServer,setSentFileToServer] = useState([]);
 
     useEffect(() => {
         if (quizFinished && !finalized) {
@@ -236,7 +238,10 @@ const Quiz = () => {
                 // console.log("Question:", questionKey, "Answer:", answer);
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
-                SentFileToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
+                let temp_list = [];
+                temp_list.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
+                //SentFileToServer.push(UserID.concat("", InterviewID, "_", questionKey, ".webm"));
+                setSentFileToServer(temp_list);                
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
@@ -256,11 +261,22 @@ const Quiz = () => {
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
             console.log("SentFileToServer:", SentFileToServer);
-            //Megz_Finished_Interview(SentFileToServer);
+            // if(allUploaded)   
+            // {
+            //     Megz_Finished_Interview(SentFileToServer);
+            // }
+            
             Mahmoud_Finished_Interview();
             setFinalized(true);
         }
     }, [quizFinished, answers, questions, finalized]);
+    useEffect(() => {
+        if (allUploaded){
+            console.log(SentFileToServer)
+            Megz_Finished_Interview(SentFileToServer);
+        }
+    }, [allUploaded]);
+    
 
     if (!currentQuestionKey) {
         return <div>Loading...</div>;
