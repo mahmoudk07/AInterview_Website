@@ -192,7 +192,26 @@ const Quiz = () => {
             }));
         }
     }, [selectedChoice, currentQuestionKey, quizFinished]);
-
+    const Megz_Finished_Interview = async (SentFileToServer) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_interview`, {
+                Interview_ID: InterviewId,
+                Interviewee_ID: UserId,
+                Vedios_PATH: SentFileToServer,
+                Score: score.toString() // Ensure the score is sent as a string
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (response.status === 200) {
+                console.log('Megz API Called Correctly:', response.data);
+            }
+        } catch (error) {
+            console.error('Error finishing interview:', error);
+        }
+    };
     const Mahmoud_Finished_Interview = async () => {
         try {
             const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/finish_interview/${InterviewId}`, {}, {
