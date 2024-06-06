@@ -172,7 +172,7 @@ async def get_interviews_by_following_companies(page : int = Query(0 , gt = 0) ,
     interviews = [extract_interview_fields(interview) for interview in interviews]
     total_count = len(interviews)
     total_pages = (total_count + limit - 1) // limit
-    print(companies)
+    interviews = interviews[skip:skip + limit]
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages": total_pages})
 
 @UserRoutes.patch("/follow_interview/{interview_id}" , summary = "Follow an interview")
