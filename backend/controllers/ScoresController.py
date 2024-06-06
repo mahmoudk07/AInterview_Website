@@ -1,5 +1,5 @@
 from bson import ObjectId
-from fastapi import APIRouter, Depends , status
+from fastapi import APIRouter, Depends , status , Query
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from models.scores import Scores
@@ -28,14 +28,13 @@ async def add_scores(request: ScoresSchema):
     return JSONResponse(status_code=status.HTTP_201_CREATED, content = {"message": "Scores added successfully"})
 
 @ScoresRoutes.get("/get_scores/{interview_id}" , summary = "get scores of interviewees by interview id")
-async def get_scores(interview_id: str, _ : dict = Depends(UserServices.is_authorized_user)):
+async def get_scores(interview_id: str, page : int = Query(1 , gt = 0), _ : dict = Depends(UserServices.is_authorized_user)):
     scores = await Scores.find_one({"interview_id" : ObjectId(interview_id)})
     if not scores:
         raise HTTPException(status_code=404, detail="Scores with this interview id not found")
-    interviewees_scores = []
-    for score in scores.interviewees_scores:
-        user = await User.find_one(User.id == ObjectId(score["id"]))
-        user = extract_user_fields(user)
-        user["score"] = score["score"]
-        interviewees_scores.append(user)
-    return JSONResponse(status_code=status.HTTP_200_OK, content = {"message": "Scores retrieved successfully", "interviewees_scores": interviewees_scores})
+    limit = 6
+    total_count = len(scores.interviewees_scores)
+    skip = (page - 1) * limit
+    totalPages = (total_count + limit - 1) // limit
+    paginated_scores = scores.interviewees_scores[skip:skip + limit]
+    return JSONResponse(status_code=status.HTTP_200_OK, content = {"total_count": total_count, "total_pages": totalPages, "scores": paginated_scores})
