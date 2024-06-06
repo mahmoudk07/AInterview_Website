@@ -3,14 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-    --background-image : url("D:/College/GP/AInterview_Website/frontend/src/assets/background5.jpg")
-} */
 body{
-    /* background-image: var(--background-image);
-    background-size: cover;
-    background-repeat: no-repeat; */
-    /* background-color: #002D62; */
     background-color: rgba(0,21,52,255);
     font-family: 'Neue Plak';
 }
