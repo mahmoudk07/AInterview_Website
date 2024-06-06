@@ -117,11 +117,11 @@ const UserInterviews = () => {
             <InterviewsContext.Provider value={{}}>
                 <div className='w-full min-h-[80vh] overflow-x-hidden mt-[60px]'>
                     <Header />
-                    {isLoading ? (
+                    {isLoading && (
                         <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
                             <Spinner color="blue" size="5xl" className="h-12 w-12" />
                         </div>
-                    ) : null}
+                    )}
                     <div className='flex flex-row space-x-4 ms-3'>
                         <button
                             onClick={handleAllClick}
