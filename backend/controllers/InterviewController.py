@@ -180,7 +180,8 @@ async def detect(input_data:ProcessingInterviews):
     input_data_dict = {
         "Interview_ID": input_data.Interview_ID,
         "Interviewee_ID": input_data.Interviewee_ID,
-        "Vedios_PATH": input_data.Vedios_PATH
+        "Vedios_PATH": input_data.Vedios_PATH,
+        "Score": input_data.Score
     }
     print(json.dumps( input_data_dict))
 

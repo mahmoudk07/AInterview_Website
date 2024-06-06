@@ -33,3 +33,4 @@ class ProcessingInterviews(BaseModel):
     Interview_ID:str
     Interviewee_ID:str
     Vedios_PATH:List[str]
+    Score:str
