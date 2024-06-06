@@ -16,9 +16,12 @@ const QuestionsAnswers = () => {
     }
     const addType = (e, index) => {
         if (e.target.value === 'MCQ' || e.target.value === 'TF') { delete data.questions[index]['hint_keywords']; console.log("here") }
-        else
+        else {
             data.questions[index]['hint_keywords'] = ""
-        console.log(data.questions)
+            if (data.questions[index].hasOwnProperty('choices')) {
+                delete data.questions[index]['choices'];
+            }
+        }
         const newType = [...data.questions]
         newType[index]['Type'] = e.target.value
         setData({...data , questions: newType})
