@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { Upload } from "@aws-sdk/lib-storage";
 import { S3Client } from "@aws-sdk/client-s3";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Quiz = () => {
     const location = useLocation();
     const [questions, setQuestions] = useState({});
@@ -15,9 +16,9 @@ const Quiz = () => {
     const [selectedChoice, setSelectedChoice] = useState('');
     const [answers, setAnswers] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
-    const [transitioning, setTransitioning] = useState(false); 
-    const [recording, setRecording] = useState(false); 
-    const [mediaRecorder, setMediaRecorder] = useState(null); 
+    const [transitioning, setTransitioning] = useState(false);
+    const [recording, setRecording] = useState(false);
+    const [mediaRecorder, setMediaRecorder] = useState(null);
     const [score, setScore] = useState(0); // Initialize the score
     const [finalized, setFinalized] = useState(false); // Track if final answers have been processed
     const [stopped, setStopped] = useState(false);
@@ -31,7 +32,7 @@ const Quiz = () => {
     if (gohometime === 0) {
         navigate('/');
     }
-    useEffect (() => {
+    useEffect(() => {
         const interval = setInterval(() => {
             setGohometime(prevGohometime => prevGohometime - 1);
         }, 1000);
@@ -106,11 +107,11 @@ const Quiz = () => {
                     recorder.onstop = async () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         const videoURL = URL.createObjectURL(blob);
-                        const FileName = UserId.concat("_",InterviewId,"_",currentQuestionKey,".webm");
+                        const FileName = UserId.concat("_", InterviewId, "_", currentQuestionKey, ".webm");
 
                         const target = { Bucket: "megs17", Key: FileName, Body: blob };
                         const creds = { accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY };
-                        
+
                         setAnswers(prevAnswers => ({
                             ...prevAnswers,
                             [currentQuestionKey]: videoURL
@@ -163,7 +164,7 @@ const Quiz = () => {
         }
     }, [counter, totalTechnicalQuestions]);
     useEffect(() => {
-        if (quizFinished) return; 
+        if (quizFinished) return;
         const timer = setInterval(() => {
             setTimeLeft(prevTimeLeft => {
                 const newTimeLeft = prevTimeLeft - 1;
@@ -185,7 +186,39 @@ const Quiz = () => {
             }));
         }
     }, [selectedChoice, currentQuestionKey, quizFinished]);
-
+    // const Megz_Finished_Interview = async (SentFileToServer) => {
+    //     try {
+    //         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_interview`, {
+    //             Interview_ID: InterviewId,
+    //             Interviewee_ID: UserId,
+    //             Vedios_PATH: SentFileToServer,
+    //             Score: score.toString() // Ensure the score is sent as a string
+    //         }, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //             }
+    //         });
+    //         if (response.status === 200) {
+    //             console.log('Megz API Called Correctly:', response.data);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error finishing interview:', error);
+    //     }
+    // };
+    const Mahmoud_Finished_Interview = async () => {
+        try {
+            const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/finish_interview/${InterviewId}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log("7oda API",response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     useEffect(() => {
         if (quizFinished && !finalized) {
             let newScore = 0;
@@ -196,7 +229,7 @@ const Quiz = () => {
                 // console.log("Question:", questionKey, "Answer:", answer);
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
-                SentFileToServer.push(UserID.concat("_",InterviewID,"_",questionKey,".webm")); 
+                SentFileToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
@@ -212,11 +245,13 @@ const Quiz = () => {
             });
 
             finalAnswers.push(newScore);
-            SentFileToServer.push(newScore);
+            //SentFileToServer.push(newScore);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
             console.log("SentFileToServer:", SentFileToServer);
-            setFinalized(true); 
+            //Megz_Finished_Interview(SentFileToServer);
+            Mahmoud_Finished_Interview();
+            setFinalized(true);
         }
     }, [quizFinished, answers, questions, finalized]);
 
@@ -240,9 +275,9 @@ const Quiz = () => {
             </div>
         );
     }
-    
-    
-    
+
+
+
     if (quizFinished && finalized) {
         return (
             <div className='flex flex-col h-screen justify-center items-center'>
