@@ -64,8 +64,9 @@ const UserInterviews = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            console.log(response.data.totalPages)
             setInterviews(response.data.interviews);
-            setTotalPages(Math.ceil(response.data.totalInterviews / 6));
+            setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error(error);
         }
