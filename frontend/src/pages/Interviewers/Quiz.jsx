@@ -8,6 +8,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { S3Client } from "@aws-sdk/client-s3";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 const Quiz = () => {
     const location = useLocation();
     const [questions, setQuestions] = useState({});
@@ -29,15 +30,18 @@ const Quiz = () => {
     const [allUploaded, setAllUploaded] = useState(false);
     const [gohometime, setGohometime] = useState(10000);
     const navigate = useNavigate();
+
     if (gohometime === 0) {
         navigate('/');
     }
+
     useEffect(() => {
         const interval = setInterval(() => {
             setGohometime(prevGohometime => prevGohometime - 1);
         }, 1000);
         return () => clearInterval(interval);
-    });
+    }, []);
+
     useEffect(() => {
         if (location.state && location.state.questions) {
             //console.log('Location State:', location.state);
@@ -109,8 +113,8 @@ const Quiz = () => {
                         const videoURL = URL.createObjectURL(blob);
                         const FileName = UserId.concat("_", InterviewId, "_", currentQuestionKey, ".webm");
 
-                        const target = { Bucket: "megs17", Key: FileName, Body: blob };
-                        const creds = { accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY };
+                        const target = { Bucket: "megz-bucket", Key: FileName, Body: blob };
+                        const creds = { accessKeyId: 'DO00DKLWYQ693LRYQVNT', secretAccessKey: 'dzoaaPhHNeGoR1bVBdRh3YycWRw6mqEJxYWjBY9pMy8' };
 
                         setAnswers(prevAnswers => ({
                             ...prevAnswers,
@@ -123,9 +127,9 @@ const Quiz = () => {
                         // Upload video to S3
                         try {
                             const s3Client = new S3Client({
-                                region: "nyc3",
+                                region: "fra1",
                                 credentials: creds,
-                                endpoint: "https://nyc3.digitaloceanspaces.com"
+                                endpoint: "https://fra1.digitaloceanspaces.com"
                             });
 
                             const upload = new Upload({
@@ -156,6 +160,7 @@ const Quiz = () => {
                 });
         }
     };
+
     useEffect(() => {
         if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
@@ -163,6 +168,7 @@ const Quiz = () => {
             setGohometime(5);
         }
     }, [counter, totalTechnicalQuestions]);
+
     useEffect(() => {
         if (quizFinished) return;
         const timer = setInterval(() => {
@@ -186,26 +192,7 @@ const Quiz = () => {
             }));
         }
     }, [selectedChoice, currentQuestionKey, quizFinished]);
-    // const Megz_Finished_Interview = async (SentFileToServer) => {
-    //     try {
-    //         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_interview`, {
-    //             Interview_ID: InterviewId,
-    //             Interviewee_ID: UserId,
-    //             Vedios_PATH: SentFileToServer,
-    //             Score: score.toString() // Ensure the score is sent as a string
-    //         }, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //             }
-    //         });
-    //         if (response.status === 200) {
-    //             console.log('Megz API Called Correctly:', response.data);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error finishing interview:', error);
-    //     }
-    // };
+
     const Mahmoud_Finished_Interview = async () => {
         try {
             const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/finish_interview/${InterviewId}`, {}, {
@@ -214,11 +201,12 @@ const Quiz = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            console.log("7oda API",response);
+            console.log("7oda API", response);
         } catch (error) {
             console.error(error);
         }
     };
+
     useEffect(() => {
         if (quizFinished && !finalized) {
             let newScore = 0;
@@ -275,8 +263,6 @@ const Quiz = () => {
             </div>
         );
     }
-
-
 
     if (quizFinished && finalized) {
         return (
@@ -358,7 +344,7 @@ const Quiz = () => {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Quiz;
