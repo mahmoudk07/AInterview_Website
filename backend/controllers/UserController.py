@@ -165,13 +165,14 @@ async def get_interviews_by_following_companies(page : int = Query(0 , gt = 0) ,
     interviews = []
     limit = 6
     skip = (page - 1) * limit
-    total_count = len(companies)
-    total_pages = (total_count + limit - 1) // limit
     companies = companies[skip:skip + limit]
     for company in companies:
         company_interviews = await Interview.find(Interview.company_id == company.id).to_list()
         interviews.extend(company_interviews)
     interviews = [extract_interview_fields(interview) for interview in interviews]
+    total_count = len(interviews)
+    total_pages = (total_count + limit - 1) // limit
+    print(companies)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages": total_pages})
 
 @UserRoutes.patch("/follow_interview/{interview_id}" , summary = "Follow an interview")
