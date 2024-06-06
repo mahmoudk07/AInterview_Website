@@ -165,7 +165,6 @@ async def get_interviews_by_following_companies(page : int = Query(0 , gt = 0) ,
     interviews = []
     limit = 6
     skip = (page - 1) * limit
-    companies = companies[skip:skip + limit]
     for company in companies:
         company_interviews = await Interview.find(Interview.company_id == company.id).to_list()
         interviews.extend(company_interviews)
