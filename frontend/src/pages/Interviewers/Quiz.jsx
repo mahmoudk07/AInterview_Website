@@ -298,7 +298,7 @@ const Quiz = () => {
             </div>
         );
     }
-
+    const TF_Choices = ['True', 'False'];
     return (
         <div className='flex flex-col h-screen justify-center items-center'>
             <Header />
@@ -336,7 +336,7 @@ const Quiz = () => {
                             </label>
                         </div>
                     ))}
-                    {Type === 'TF' && Choices.map((choice, index) => (
+                    {Type === 'TF' && TF_Choices.map((choice, index) => (
                         <div key={index} className='flex items-center'>
                             <input type='radio' name='choice' className='hidden peer' id={`choice-${index}`} />
                             <label
