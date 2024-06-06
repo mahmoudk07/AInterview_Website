@@ -42,6 +42,8 @@ def extract_interview_fields(interview):
         "Time": interview.Time,
         "interviewees": len(interview.interviewees),
         "interviewees_ids": [str(interviewee) for interviewee in interview.interviewees],
+        "attended_interviewees": len(interview.attended_interviewees),
+        "attended_interviewees_ids": [str(interviewee) for interviewee in interview.attended_interviewees],
         "questions": interview.questions,
         "company_name": interview.company_name
 }
