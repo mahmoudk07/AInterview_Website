@@ -1,6 +1,6 @@
 from datetime import timedelta
 from bson import ObjectId
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from fastapi.exceptions import HTTPException
 from models.company import Company
 from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema
@@ -159,15 +159,20 @@ async def get_following_companies(payload: dict = Depends(UserServices.is_author
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"companies": companies})
 
 @UserRoutes.get("/get_interviews_by_following_companies" , summary = "Get interviews by following companies")
-async def get_interviews_by_following_companies(payload: dict = Depends(UserServices.is_authorized_user)):
+async def get_interviews_by_following_companies(page : int = Query(0 , gt = 0) , payload: dict = Depends(UserServices.is_authorized_user)):
     user = await UserServices.get_user_by_email(payload["email"])
     companies = await Company.find({"_id": {"$in": user.following}}).to_list()
     interviews = []
+    limit = 6
+    skip = (page - 1) * limit
     for company in companies:
         company_interviews = await Interview.find(Interview.company_id == company.id).to_list()
         interviews.extend(company_interviews)
     interviews = [extract_interview_fields(interview) for interview in interviews]
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews})
+    total_count = len(interviews)
+    total_pages = (total_count + limit - 1) // limit
+    interviews = interviews[skip:skip + limit]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages": total_pages})
 
 @UserRoutes.patch("/follow_interview/{interview_id}" , summary = "Follow an interview")
 async def follow_interview(interview_id: str , user: dict = Depends(UserServices.is_authorized_user)):
