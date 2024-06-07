@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from 'react'
 import Header from '../../../src/components/Header/Header'
 import CompanyCard from './CompanyCard'
 import { Spinner } from '@material-tailwind/react'
-//import Modal from '../../../src/components/Modal/Modal'
+import Modal from '../../../src/components/Modal/Modal'
 import { Button, IconButton } from '@material-tailwind/react'
 import { useDispatch } from 'react-redux'
 import { getFollowedCompanies } from '../../../src/services/auth/authSlice'
@@ -58,6 +58,7 @@ const UserCompanies = () => {
                 }
             })
             setCompanies(response.data.companies)
+            setTotalPages(response.data.totalPages)
             //setTotalPages(Math.floor((response.data.companies.length) / 6) + 1)
             console.log(response.data)
         } catch (error) {
@@ -79,7 +80,7 @@ const UserCompanies = () => {
         <div>
             <InterviewsContext.Provider value={{}}>
             <Header />
-                <div className='w-[80%] border border-blue-400 mx-auto min-h-[80vh] overflow-x-hidden mt-[100px] pt-5 ps-3'>
+                <div className='w-[80%] border border-borderColor rounded-lg mx-auto min-h-[80vh] overflow-x-hidden mt-[100px] pt-5 ps-3'>
                     
                     {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
                         <Spinner color="blue" size="5xl" className="h-12 w-12" />
@@ -89,10 +90,10 @@ const UserCompanies = () => {
                         <h1 className='text-white text-3xl'>Companies You can Follow</h1>
                     </div>
                     {!isLoading && Companies ?
-                        <div className='flex flex-row flex-wrap  px-[5%] py-[2%] '>
+                        <div className='flex flex-row flex-wrap  px-[5%] py-[2%] justify-center mt-12 '>
                             {Companies.map((company) => <CompanyCard id={company.id} comapanyImage={company.image} address={company.address} companyname={company.name} website={company.website} />)}
                         </div> : ''}
-                    {/* {totalPages && totalPages !== 0 ?
+                    {totalPages && totalPages !== 0 ?
                         <div className={`flex items-center justify-center gap-4 abosolute mb-[50px] overflow-x-hidden ${!Companies ? 'mt-[80vh]' : ''} ${isLoading && Companies ? 'mt-[80vh]' : ''}`}>
                             <Button
                                 variant="text"
@@ -128,7 +129,7 @@ const UserCompanies = () => {
                                 </div>
                                 : ''}
                         </div>
-                    } */}
+                    }
                 </div>
 
             </InterviewsContext.Provider>
