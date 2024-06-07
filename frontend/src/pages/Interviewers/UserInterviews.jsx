@@ -141,23 +141,22 @@ const UserInterviews = () => {
                     {!isLoading && interviews ? (
                         <div className='flex items-center justify-center flex-wrap w-full min-h-[100px] px-[5%] py-[2%] gap-x-[2%] gap-y-6 '>
                             {interviews.map((interview) => (
-                                (interview.status === 'current' || interview.status === 'upcoming') && (
-                                    <InterviewCard
-                                        key={interview.id}
-                                        id={interview.id}
-                                        image={interview.image}
-                                        title={interview.job_title}
-                                        description={interview.job_description}
-                                        Date={interview.Date}
-                                        Time={interview.Time}
-                                        company_name={interview.company_name}
-                                        status={interview.status}
-                                        UsersAttending={interview.interviewees_ids}
-                                        UserID={userID}
-                                        questions={interview.questions}
-                                        attended_interviewees_ids={interview.attended_interviewees_ids}
-                                    />
-                                )
+                                
+                                <InterviewCard
+                                    key={interview.id}
+                                    id={interview.id}
+                                    image={interview.image}
+                                    title={interview.job_title}
+                                    description={interview.job_description}
+                                    Date={interview.Date}
+                                    Time={interview.Time}
+                                    company_name={interview.company_name}
+                                    status={interview.status}
+                                    UsersAttending={interview.interviewees_ids}
+                                    UserID={userID}
+                                    questions={interview.questions}
+                                    attended_interviewees_ids={interview.attended_interviewees_ids}
+                                />
                             ))}
                         </div>
                     ) : null}
