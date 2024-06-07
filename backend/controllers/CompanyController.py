@@ -98,12 +98,15 @@ async def update_company(data : updateCompanySchema , payload : dict = Depends(U
     company = await Company.find_one(Company.id == user.company_id)
     if not company:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail = "Company not found")
+    print(data)
     company.name = data.name
     company.address = data.address
     company.country = data.country
     company.website = data.website
+    user.image = data.image
     try:
         await company.save()
+        await user.save()
     except pymongo.errors.DuplicateKeyError as e:
         raise HTTPException(status_code = status.HTTP_400_BAD_REQUEST , detail = "Company already exists")
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Company updated successfully"})
