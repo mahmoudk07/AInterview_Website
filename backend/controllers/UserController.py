@@ -168,7 +168,7 @@ async def get_interviews_by_following_companies(page : int = Query(0 , gt = 0) ,
     for company in companies:
         company_interviews = await Interview.find(Interview.company_id == company.id).to_list()
         interviews.extend(company_interviews)
-    interviews = [extract_interview_fields(interview) for interview in interviews]
+    interviews = [extract_interview_fields(interview) for interview in interviews if interview.status in ["upcoming", "current"]]
     total_count = len(interviews)
     total_pages = (total_count + limit - 1) // limit
     interviews = interviews[skip:skip + limit]
