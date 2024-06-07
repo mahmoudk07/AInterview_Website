@@ -80,7 +80,7 @@ const UserCompanies = () => {
         <div>
             <InterviewsContext.Provider value={{}}>
             <Header />
-                <div className='w-[80%] border border-borderColor rounded-lg mx-auto min-h-[80vh] overflow-x-hidden mt-[100px] pt-5 ps-3'>
+                <div className='w-[80%] border border-borderColor rounded-2xl mx-auto min-h-[80vh] overflow-x-hidden mt-[100px] pt-5 ps-3'>
                     
                     {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
                         <Spinner color="blue" size="5xl" className="h-12 w-12" />
