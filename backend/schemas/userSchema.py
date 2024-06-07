@@ -38,6 +38,7 @@ class UpdateUser(BaseModel):
           "Customer Service Representative",
           "Operations Manager"])
     role: str = Field(None, description = "Role of the user", enum = ['admin', 'user', 'manager'])
+    image: Optional[str] = Field(None , description = "Image of the user")
     # interviews : Optional[List[ObjectId]] = Field([] , description = "Interviews of the user")
     class Config:
         arbitrary_types_allowed = True
