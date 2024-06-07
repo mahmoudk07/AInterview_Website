@@ -3,7 +3,7 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, Query, status
 from fastapi.exceptions import HTTPException
 from models.company import Company
-from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema
+from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema , UpdateUser
 from models.user import User
 from models.interview import Interview
 from services.userServices import UserServices
@@ -205,3 +205,24 @@ async def get_following_interviews(payload: dict = Depends(UserServices.is_autho
 async def getUser(user: dict = Depends(UserServices.is_authorized_user)):
     existed_user = await UserServices.get_user_by_email(user["email"])
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User retrieved successfully", "user": extract_users_field(existed_user)})
+@UserRoutes.patch("/updateUser" , summary = "Update user by id")
+async def updateUser(data: UpdateUser , user : dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    if not existed_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if data.firstname:
+        existed_user.firstname = data.firstname
+    if data.lastname:
+        existed_user.lastname = data.lastname
+    if data.email:
+        existed_user.email = data.email
+    if data.job:
+        existed_user.job = data.job
+    if data.image:
+        existed_user.image = data.image
+    try:
+        await existed_user.save()
+    except pymongo.errors.DuplicateKeyError as e:
+        raise HTTPException(status_code = status.HTTP_400_BAD_REQUEST , detail = "User already exists")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User updated successfully"})
+    
