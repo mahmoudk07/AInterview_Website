@@ -21,6 +21,7 @@ const InterviewCard = ({
 }) => {
     const [isApplied, setIsApplied] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
+    const [isAttending, setIsAttending] = useState(false);
 
     useEffect(() => {
         const followedInterviews = JSON.parse(localStorage.getItem('FollowedInterviewsIDS')) || [];
@@ -32,7 +33,10 @@ const InterviewCard = ({
         if (appliedInterviews.includes(id)) {
             setIsApplied(true);
         }
-    }, [id]);
+        if (attended_interviewees_ids.includes(UserID)) {
+            setIsAttending(true);
+        }
+    }, [id,attended_interviewees_ids,UserID]);
 
     const navigate = useNavigate();
 
@@ -151,10 +155,11 @@ const InterviewCard = ({
                 </div>
                 <div>
                     <button
+                        disabled={isAttending}
                         onClick={handleClick}
-                        className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300 hover:bg-green-500 ${status !== "current" ? "hidden" : ""}`}
+                        className={`mt-[18px] text-[15px] font-bold text-white ${isAttending ? 'bg-gray-600' : 'bg-green-600'} ${isAttending ? '' :'hover:bg-green-500'} outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300  ${status !== "current" ? "hidden" : ""}`}
                     >
-                        Start Interview
+                        {isAttending ? 'Interview Attempted' : 'Start Interview'}
                     </button>
                 </div>
             </div>
