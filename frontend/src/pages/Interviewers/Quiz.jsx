@@ -270,12 +270,12 @@ const Quiz = () => {
             setFinalized(true);
         }
     }, [quizFinished, answers, questions, finalized]);
-    useEffect(() => {
-        if (allUploaded){
-            console.log(SentFileToServer)
-            Megz_Finished_Interview(SentFileToServer);
-        }
-    }, [allUploaded]);
+    // useEffect(() => {
+    //     if (allUploaded && quizFinished && finalized){
+    //         console.log(SentFileToServer)
+    //         Megz_Finished_Interview(SentFileToServer);
+    //     }
+    // }, [allUploaded , quizFinished , finalized , SentFileToServer]);
     
 
     if (!currentQuestionKey) {
