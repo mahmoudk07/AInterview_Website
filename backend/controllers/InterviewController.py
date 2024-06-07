@@ -168,11 +168,12 @@ async def get_interviewees_by_id(id : str , page : int = Query(1 , gt = 0), _ : 
 async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(UserServices.is_authorized_user)):
     limit : int = 6
     skip = (page - 1) * limit
-    interviews = await Interview.find().skip(skip).limit(limit).to_list()
-    total_count = await Interview.find().count()
+    interviews = await Interview.find().to_list()
+    interviews = [extract_interview_fields(interview) for interview in interviews if interview.status in ["current" , "upcoming"] ]
+    total_count = len(interviews)
     total_pages = (total_count + limit - 1) // limit
-    interviews = [extract_interview_fields(interview) for interview in interviews]
-    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages})
+    interviews = interviews[skip:skip + limit]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages , "totalCount": total_count})
 
 @InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
 async def detect(input_data:ProcessingInterviews):
