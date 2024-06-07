@@ -69,6 +69,7 @@ const UserProfile = () => {
                                 UserID={userID}
                                 UsersAttending = {interview.interviewees_ids}
                                 questions = {interview.questions}
+                                attended_interviewees_ids = {interview.attended_interviewees_ids}
                             />
                         ))}
                     </div>
