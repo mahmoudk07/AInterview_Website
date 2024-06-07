@@ -154,6 +154,7 @@ const UserInterviews = () => {
                                     UsersAttending={interview.interviewees_ids}
                                     UserID={userID}
                                     questions={interview.questions}
+                                    attended_interviewees_ids={interview.attended_interviewees_ids}
                                 />
                             ))}
                         </div>
