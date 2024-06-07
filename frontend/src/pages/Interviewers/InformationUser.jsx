@@ -49,7 +49,11 @@ const Information_User = ({ info }) => {
             firstname: info.firstname,
             lastname: info.lastname,
             email: info.email,
-            job: info.job
+            job: info.job,
+            role: info.role,
+            id: info.id
+            
+
         });
     }, [info]);
 
@@ -61,24 +65,24 @@ const Information_User = ({ info }) => {
         });
     };
 
-    // const handleUpdate = async () => {
-    //     try {
-    //         const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/user/updateUser`, formData, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //             }
-    //         });
-    //         console.log(response);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
     const handleUpdate = async () => {
-
-
-
+        try {
+            const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/updateUser`, formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
+    // const handleUpdate = async () => {
+
+
+
+    // };
 
     return (
         <div className='flex flex-col mt-2'>
