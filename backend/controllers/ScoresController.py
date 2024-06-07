@@ -32,6 +32,8 @@ async def get_scores(interview_id: str, page : int = Query(1 , gt = 0), _ : dict
     scores = await Scores.find_one({"interview_id" : ObjectId(interview_id)})
     if not scores:
         raise HTTPException(status_code=404, detail="Scores with this interview id not found")
+    ## Sort Scores descending ##
+    scores.interviewees_scores = sorted(scores.interviewees_scores, key=lambda x: x["final_Score"], reverse=True)
     limit = 6
     total_count = len(scores.interviewees_scores)
     skip = (page - 1) * limit

@@ -19,6 +19,7 @@ class updateCompanySchema(BaseModel):
     address: Optional[str] = Field(description = "Address of the company" , min_length = 3 , max_length = 50)
     country: Optional[str] = Field(description = "Country of the company" , min_length = 3 , max_length = 50)
     website: Optional[str] = Field(description = "Website of the company" , min_length = 3 , max_length = 50)
+    image: Optional[str] = Field(description = "Image of the company")
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {

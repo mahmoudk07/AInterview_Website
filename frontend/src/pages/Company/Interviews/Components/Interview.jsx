@@ -23,7 +23,8 @@ const Interview = ({ id, title, Date, Time, status, interviewees }) => {
             )
         else if (status === 'current')
             return (
-                <span className='font-bold text-green-500 border-[1px] border-borderColor py-[2%] px-[3%] rounded-[15px] cursor-default'>Available Now</span>
+                // <span className='font-bold text-green-500 border-[1px] border-borderColor py-[2%] px-[3%] rounded-[15px] cursor-default'>Available Now</span>
+                <button className='text-white bg-orange-600 px-[3%] py-[1%] rounded-[20px] font-bold' onClick={() => navigate(`/result/${id}`)}>Result</button>
             )
         else
             return (

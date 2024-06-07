@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Spinner } from '@material-tailwind/react';
 import { ImSad } from "react-icons/im";
 import axios from "axios"
-const TABLE_HEAD = ["Member", "Email", "NLP Score" , "Audio Score" , "Video Score"];
+const TABLE_HEAD = ["Member", "Email", "Technical Score" , "Audio Score" , "Video Score" , "MCQ/TF Score" , "Final Score"];
 const Results = () => {
   const { id } = useParams()
   const { isLoading } = useSelector((state) => state.Manager)
@@ -46,8 +46,8 @@ const Results = () => {
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
-      {data?.length !== 0 && !isLoading ? (
-        <div className="min-w-[60%] mb-[50px]">
+      {data && data?.length !== 0 && !isLoading ? (
+        <div className="min-w-[70%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
               Interviewees Scores
@@ -74,7 +74,7 @@ const Results = () => {
                 </thead>
                 <tbody>
                   {data?.map(
-                    ({ id, image, firstname, email, images_Score, lastname, audio_Score, nlp_Score}, index) => {
+                    ({ id, image, firstname, email, images_Score, lastname, audio_Score, nlp_Score, final_Score, MCQ_Score}, index) => {
                       const isLast = index === data.length - 1;
                       const classes = isLast
                         ? "p-4"
@@ -110,7 +110,7 @@ const Results = () => {
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="text-white"
+                                className="text-white text-center"
                               >
                                 {nlp_Score}%
                               </Typography>
@@ -121,7 +121,7 @@ const Results = () => {
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="text-white"
+                                className="text-white text-center"
                               >
                                 {audio_Score}%
                               </Typography>
@@ -132,9 +132,31 @@ const Results = () => {
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="text-white"
+                                className="text-white text-center"
                               >
                                 {images_Score}%
+                              </Typography>
+                            </div>
+                          </td>
+                          <td className={classes}>
+                            <div className="flex flex-col">
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="text-white text-center"
+                              >
+                                {MCQ_Score ? MCQ_Score + '%' : '-'}
+                              </Typography>
+                            </div>
+                          </td>
+                          <td className={classes}>
+                            <div className="flex flex-col">
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="text-white text-center"
+                              >
+                                {final_Score}%
                               </Typography>
                             </div>
                           </td>
