@@ -66,6 +66,21 @@ export const getFollowedInterviews = createAsyncThunk('auth/getFollowedInterview
         return rejectWithValue(error.response.data)
     }
 })
+export const fetchAllEmails = createAsyncThunk('auth/fetchAllEmails', async (page, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/get_emails?page=${page}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 const initialState = {
     firstname: "",
     lastname: "",
@@ -156,7 +171,19 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
     });
+    builder.addCase(fetchAllEmails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+    });
+    builder.addCase(fetchAllEmails.fulfilled, (state) => {
+        state.isLoading = false;
+    });
+    builder.addCase(fetchAllEmails.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+    });
     }
+    
 })
 export const Error = (state) => state.User.error
 export const { logout } = userSlice.actions
