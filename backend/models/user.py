@@ -15,6 +15,7 @@ class User(Document):
     company_id: Optional[ObjectId] = None
     following: Optional[List[ObjectId]] = []
     following_interviews: Optional[List[ObjectId]] = []
+    companies_email: Optional[List[object]] = []
     class Settings:
         collection = "User"
     class Config:
