@@ -62,7 +62,12 @@ const Home = () => {
   }, [])
   const handleRole = () => {
     if (role === "manager" && isManager !== "None")
-      return <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
+      return (
+        <div className=' justify-center flex flex-row space-x-3'>
+            <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
+            <button className='green-button' onClick={() => navigate('/ReadyTemp')}>View ready Templates</button>
+        </div>
+      )
     else if(role === "manager" && isManager === "None")
       return <button className='interview-button' onClick={companyCreation}>Add your company</button>
     else
