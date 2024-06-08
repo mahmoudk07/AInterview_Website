@@ -5,6 +5,7 @@ import { Button, IconButton } from "@material-tailwind/react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@material-tailwind/react';
 import { ImSad } from "react-icons/im";
+import { fetchAllEmails } from '../../services/auth/authSlice';
 const Emails = () => {
     const [data, setData] = useState(null);
     const [totalPages, setTotalPages] = useState(null);
@@ -27,21 +28,29 @@ const Emails = () => {
         setActive(active - 1);
         setData(null);
     };
-
-    const fetchEmails = async () => {
-        await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/get_emails?page=${active}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+    // const fetchEmails = async () => {
+    //     await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/get_emails?page=${active}`, {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //         }
+    //     }).then((response) => {
+    //         setTotalPages(response.data.totalPages);
+    //         setData(response.data.emails);
+    //     }).catch((error) => console.log(error));
+    // };
+    const fetchingEmails = async () => {
+        await dispatch(fetchAllEmails(active)).then((response) => {
+            if (!response.error) {
+                console.log(response)
+                setTotalPages(response.payload.totalPages)
+                setData(response.payload.emails)
             }
-        }).then((response) => {
-            setTotalPages(response.data.totalPages);
-            setData(response.data.emails);
-        }).catch((error) => console.log(error));
-    };
+        })
+    }
 
     useEffect(() => {
-        fetchEmails();
+        fetchingEmails();
     }, []);
 
     return (
