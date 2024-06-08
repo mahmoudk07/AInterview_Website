@@ -114,7 +114,7 @@ const Home = () => {
               </button>
             </form>
           </div>
-          <ToastContainer position="top-center" />
+          <ToastContainer />
         </div>
 
       )
