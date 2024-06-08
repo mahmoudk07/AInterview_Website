@@ -254,10 +254,20 @@ async def sendRejectionEmail(user_id : str , interview_id : str ,  user: dict = 
     user = await User.find_one(User.id == ObjectId(user_id))
     interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
     company = await Company.find_one(Company.id == existed_user.company_id)
-    # interview_score = await Scores.find_one(Scores.interview_id == ObjectId(interview_id))
-    # interviewee_score = next((score for score in interview_score.interviewees_scores if ObjectId(score['id']) == ObjectId(user_id)), None)
+    interview_score = await Scores.find_one(Scores.interview_id == ObjectId(interview_id))
+    interviewee_score = next((score for score in interview_score.interviewees_scores if ObjectId(score['id']) == ObjectId(user_id)), None)
     subject = "Rejection"
-    message = f"Dear {user.firstname} {user.lastname},\n\nI regret to inform you that you have not been selected for the position of {interview.job_title} as {interview.job_opportunity} at {company.name}. We appreciate your time and effort.\n\nBest Regards,\n{company.name}"
+    # message = f"Dear {user.firstname} {user.lastname},\n\nI regret to inform you that you have not been selected for the position of {interview.job_title} as {interview.job_opportunity} at {company.name}. We appreciate your time and effort.\n\nBest Regards,\n{company.name}"
+    nlp_score = interviewee_score['nlp_Score']
+    audio_score = interviewee_score['audio_Score']
+    video_score = interviewee_score['images_Score']
+    final_score = interviewee_score['final_Score']
+    message = (
+    f"Dear {user.firstname} {user.lastname},\n\n"
+    f"We regret to inform you that you have not been selected for the position of {interview.job_title} as {interview.job_opportunity} at {company.name}. "
+    f"Your scores for the interview was {nlp_score} in technical score, {audio_score} in audio score, {video_score} in video score, and final score was {final_score}.We appreciate your time and effort.\n\n"
+    f"Best Regards,\n{company.name}"
+    )
     user.companies_email.append({"message" : message , "subject" : subject})
     try:
         await user.save()
@@ -269,7 +279,7 @@ async def sendRejectionEmail(user_id : str , interview_id : str ,  user: dict = 
 async def get_emails(page : int = Query(0 , gt = 0) ,user: dict = Depends(UserServices.is_authorized_user)):
     existed_user = await UserServices.get_user_by_email(user["email"])
     emails = existed_user.companies_email
-    limit = 6
+    limit = 3
     skip = (page - 1) * limit
     total_count = len(emails)
     total_pages = (total_count + limit - 1) // limit
