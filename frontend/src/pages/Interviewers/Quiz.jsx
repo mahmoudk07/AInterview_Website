@@ -266,7 +266,7 @@ const Quiz = () => {
     useEffect(() => {
         if (allUploaded && quizFinished && finalized) {
             console.log('Megz API Called Correctly:', SentFileToServer);
-            Megz_Finished_Interview(SentFileToServer);
+            //Megz_Finished_Interview(SentFileToServer);
             setStartGohomeCountdown(true);
             setGohometime(5);
         }
@@ -366,7 +366,7 @@ const Quiz = () => {
                     ))}
                     {Type === 'Technical' && (
                         <div className='flex flex-col items-center'>
-                            <button disabled={stopped} onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
+                            <button  onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
                                 {recording ? 'Stop Recording' : 'Record Video'}
                             </button>
                         </div>
