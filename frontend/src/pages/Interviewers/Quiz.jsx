@@ -44,13 +44,12 @@ const Quiz = () => {
 
     useEffect(() => {
         if (location.state && location.state.questions) {
-            //console.log('Location State:', location.state);
             const transformedQuestions = location.state.questions.reduce((acc, question, index) => {
                 const questionKey = `Q${index + 1}`;
                 acc[questionKey] = {
                     Type: question.Type,
-                    Question: question[questionKey],    // Will be changed to the actual question when Mahmoud changes the field name
-                    Choices:question.choices ? question.choices.split(',') : [], // Initialize Choices as an empty array, will be changed when Mahmoud adds Choices
+                    Question: question[questionKey],
+                    Choices: question.choices ? question.choices.split(',') : [],
                     Answer: question.Answer,
                     UserId: UserId,
                     InterviewId: InterviewId
@@ -184,7 +183,6 @@ const Quiz = () => {
     }, [currentQuestionKey, quizFinished]);
 
     useEffect(() => {
-        // Store the selected choice in answers state
         if (selectedChoice !== null) {
             setAnswers(prevAnswers => ({
                 ...prevAnswers,
@@ -192,6 +190,7 @@ const Quiz = () => {
             }));
         }
     }, [selectedChoice, currentQuestionKey, quizFinished]);
+
     const Megz_Finished_Interview = async (SentFileToServer) => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/interview/Process_Interview`, {
@@ -212,6 +211,7 @@ const Quiz = () => {
             console.error('Error finishing interview:', error);
         }
     };
+
     const Mahmoud_Finished_Interview = async () => {
         try {
             const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/finish_interview/${InterviewId}`, {}, {
@@ -226,22 +226,19 @@ const Quiz = () => {
         }
     };
     
-    const [SentFileToServer,setSentFileToServer] = useState([]);
+    const [SentFileToServer, setSentFileToServer] = useState([]);
 
     useEffect(() => {
         if (quizFinished && !finalized) {
             let newScore = 0;
-            let SentFileToServer = [];
+            const filesToServer = [];
             const finalAnswers = Object.keys(questions).map(questionKey => {
                 const question = questions[questionKey];
                 const answer = answers[questionKey];
-                // console.log("Question:", questionKey, "Answer:", answer);
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
-                let temp_list = [];
-                temp_list.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
-                //SentFileToServer.push(UserID.concat("", InterviewID, "_", questionKey, ".webm"));
-                setSentFileToServer(temp_list);                
+                filesToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
+                
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
@@ -256,27 +253,20 @@ const Quiz = () => {
                 return '';
             });
 
-            finalAnswers.push(newScore);
-            //SentFileToServer.push(newScore);
+            setSentFileToServer(filesToServer);
             setScore(newScore);
             console.log("Interview finished. Final Answers:", finalAnswers);
-            console.log("SentFileToServer:", SentFileToServer);
-            // if(allUploaded)   
-            // {
-            //     Megz_Finished_Interview(SentFileToServer);
-            // }
-            
+            console.log("SentFileToServer:", filesToServer);
             Mahmoud_Finished_Interview();
             setFinalized(true);
         }
     }, [quizFinished, answers, questions, finalized]);
-    // useEffect(() => {
-    //     if (allUploaded && quizFinished && finalized){
-    //         console.log(SentFileToServer)
-    //         Megz_Finished_Interview(SentFileToServer);
-    //     }
-    // }, [allUploaded , quizFinished , finalized , SentFileToServer]);
-    
+
+    useEffect(() => {
+        if (allUploaded && quizFinished && finalized) {
+            Megz_Finished_Interview(SentFileToServer);
+        }
+    }, [allUploaded, quizFinished, finalized, SentFileToServer]);
 
     if (!currentQuestionKey) {
         return <div>Loading...</div>;
@@ -306,14 +296,13 @@ const Quiz = () => {
                 <div className='bg-white p-4 rounded-md w-96'>
                     <h1 className='text-center text-3xl font-bold'>Answers are being Analyzed.....</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
-                    {/* <h2 className='text-center text-xl'>Thank you for taking the Interview</h2> */}
                     <h2 className='text-center text-lg text-red-500'>Please don't Close this interview</h2>
                     <h2 className='text-center text-lg text-red-500'>Wait for a while it only takes seconds</h2>
-                    {/* <h3 className='text-center text-lg'>Your Score: {score}</h3> */}
                 </div>
             </div>
         );
     }
+
     const TF_Choices = ['True', 'False'];
     return (
         <div className='flex flex-col h-screen justify-center items-center'>
