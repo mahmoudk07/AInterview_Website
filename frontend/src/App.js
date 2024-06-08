@@ -23,6 +23,7 @@ import UserHome from './pages/Interviewers/userHome';
 import UserInterviews from './pages/Interviewers/UserInterviews';
 import UserCompanies from './pages/Interviewers/UserCompanies';
 import Emails from './pages/Interviewers/Emails';
+import ReadyTemp from './pages/Company/ReadyTemp';
 import { store } from './store';
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/UserInterviews" element={<UserInterviews />} />
                 <Route path="/UserCompanies" element={<UserCompanies />} />
                 <Route path="/Emails" element={<Emails />} />
+                <Route path='/ReadyTemp' element={< ReadyTemp/>}/>
               </Route>
               <Route path="*" element={<Error />} />
             </Routes>
