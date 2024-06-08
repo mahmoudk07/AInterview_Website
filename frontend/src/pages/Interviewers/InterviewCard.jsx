@@ -155,11 +155,10 @@ const InterviewCard = ({
                 </div>
                 <div>
                     <button
-                        disabled={isAttending}
                         onClick={handleClick}
-                        className={`mt-[18px] text-[15px] font-bold text-white ${isAttending ? 'bg-gray-600' : 'bg-green-600'} ${isAttending ? '' :'hover:bg-green-500'} outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300  ${status !== "current" ? "hidden" : ""}`}
+                        className={`mt-[18px] text-[15px] font-bold text-white bg-green-600 hover:bg-green-500 outline-none border-none py-[8px] px-[20px] rounded-[20px] transition-all ease-in-out duration-300  ${status !== "current" ? "hidden" : ""}`}
                     >
-                        {isAttending ? 'Interview Attempted' : 'Start Interview'}
+                        Start Interview
                     </button>
                 </div>
             </div>
