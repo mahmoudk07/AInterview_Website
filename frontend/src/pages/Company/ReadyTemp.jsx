@@ -33,8 +33,8 @@ const ReadyTemp = () => {
         <div>
             <Header />
             <div className='flex flex-row flex-wrap px-[30px] gap-10 justify-center items-center'>
-                <Template title="Interview For Frontend Engineer" questions={frontendQuestions} />
-                <Template title="Interview For Backend Engineer" questions={backendQuestions} />
+                <Template  job_title = 'Software Engineer' job_description = 'We are seeking a skilled and passionated Frontend Engineer' job_opportunity = 'Frontend Engineer'  title="Interview For Frontend Engineer" questions={frontendQuestions} />
+                <Template  job_title = 'Software Engineer' job_description = 'We are seeking a skilled and passionated Backend Engineer' job_opportunity = 'Backend Engineer' title="Interview For Backend Engineer" questions={backendQuestions} />
             </div>
         </div>
     );
