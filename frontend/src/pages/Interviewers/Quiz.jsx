@@ -266,7 +266,7 @@ const Quiz = () => {
     useEffect(() => {
         if (allUploaded && quizFinished && finalized) {
             console.log('Megz API Called Correctly:', SentFileToServer);
-            //Megz_Finished_Interview(SentFileToServer);
+            Megz_Finished_Interview(SentFileToServer);
             setStartGohomeCountdown(true);
             setGohometime(5);
         }
