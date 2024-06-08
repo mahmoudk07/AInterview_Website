@@ -20,27 +20,32 @@ const Quiz = () => {
     const [transitioning, setTransitioning] = useState(false);
     const [recording, setRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const [score, setScore] = useState(0); // Initialize the score
-    const [finalized, setFinalized] = useState(false); // Track if final answers have been processed
+    const [score, setScore] = useState(0);
+    const [finalized, setFinalized] = useState(false);
     const [stopped, setStopped] = useState(false);
     const UserId = location.state.userId;
     const InterviewId = location.state.interviewId;
     const [counter, setCounter] = useState(0);
     const [totalTechnicalQuestions, setTotalTechnicalQuestions] = useState(0);
     const [allUploaded, setAllUploaded] = useState(false);
-    const [gohometime, setGohometime] = useState(10000);
+    const [gohometime, setGohometime] = useState(null);
+    const [startGohomeCountdown, setStartGohomeCountdown] = useState(false);
     const navigate = useNavigate();
 
-    if (gohometime === 0) {
-        navigate('/');
-    }
+    useEffect(() => {
+        if (startGohomeCountdown && gohometime === 0) {
+            navigate('/');
+        }
+    }, [gohometime, startGohomeCountdown, navigate]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setGohometime(prevGohometime => prevGohometime - 1);
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        if (startGohomeCountdown) {
+            const interval = setInterval(() => {
+                setGohometime(prevGohometime => prevGohometime - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [startGohomeCountdown]);
 
     useEffect(() => {
         if (location.state && location.state.questions) {
@@ -65,7 +70,7 @@ const Quiz = () => {
 
     const handleNextQuestion = () => {
         if (quizFinished) return;
-        setTransitioning(true); // Start transition
+        setTransitioning(true);
         setTimeout(() => {
             const questionKeys = Object.keys(questions);
             const currentIndex = questionKeys.indexOf(currentQuestionKey);
@@ -83,13 +88,13 @@ const Quiz = () => {
             setCurrentQuestionKey(questionKeys[nextIndex]);
             setTimeLeft(60);
             setSelectedChoice(null);
-            setTransitioning(false); // End transition
-        }, 300); // Adjust the delay time to match your transition duration
-    }
+            setTransitioning(false);
+        }, 300);
+    };
 
     const handleChoice = (choice) => {
         setSelectedChoice(choice);
-    }
+    };
 
     const handleRecordVideo = () => {
         if (recording) {
@@ -120,10 +125,8 @@ const Quiz = () => {
                             [currentQuestionKey]: videoURL
                         }));
 
-                        // Stop all video tracks to release the camera
                         stream.getTracks().forEach(track => track.stop());
 
-                        // Upload video to S3
                         try {
                             const s3Client = new S3Client({
                                 region: "fra1",
@@ -134,7 +137,7 @@ const Quiz = () => {
                             const upload = new Upload({
                                 client: s3Client,
                                 queueSize: 4,
-                                partSize: 5 * 1024 * 1024, // 5MB part size
+                                partSize: 5 * 1024 * 1024,
                                 leavePartsOnError: false,
                                 params: target,
                             });
@@ -164,7 +167,6 @@ const Quiz = () => {
         if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
             setAllUploaded(true);
-            setGohometime(5);
         }
     }, [counter, totalTechnicalQuestions]);
 
@@ -197,7 +199,7 @@ const Quiz = () => {
                 Interview_ID: InterviewId.toString(),
                 Interviewee_ID: UserId.toString(),
                 Vedios_PATH: SentFileToServer,
-                Score: score.toString() // Ensure the score is sent as a string
+                Score: score.toString()
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -225,9 +227,8 @@ const Quiz = () => {
             console.error(error);
         }
     };
-    
-    const [SentFileToServer, setSentFileToServer] = useState([]);
 
+    const [SentFileToServer, setSentFileToServer] = useState([]);
     useEffect(() => {
         if (quizFinished && !finalized) {
             let newScore = 0;
@@ -238,7 +239,7 @@ const Quiz = () => {
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
                 filesToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
-                
+
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
                     if (answer === question.Answer) {
                         newScore++;
@@ -264,9 +265,19 @@ const Quiz = () => {
 
     useEffect(() => {
         if (allUploaded && quizFinished && finalized) {
-            Megz_Finished_Interview(SentFileToServer);
+            console.log('Megz API Called Correctly:', SentFileToServer);
+            //Megz_Finished_Interview(SentFileToServer);
+            setStartGohomeCountdown(true);
+            setGohometime(5);
         }
     }, [allUploaded, quizFinished, finalized, SentFileToServer]);
+
+    // useEffect(() => {
+    //     if (quizFinished && !allUploaded && finalized) {
+    //         setStartGohomeCountdown(true);
+    //         setGohometime(5);
+    //     }
+    // }, [quizFinished, finalized, allUploaded]);
 
     if (!currentQuestionKey) {
         return <div>Loading...</div>;
@@ -283,7 +294,7 @@ const Quiz = () => {
                     <h1 className='text-center text-3xl font-bold'>Interview Finished</h1>
                     <hr className='my-2 border-t-1 border-gray-400' />
                     <h2 className='text-center text-xl'>Thank you for taking the Interview</h2>
-                    <p className='text-center text-md text-gray-400'>You will be redirected to home page in {gohometime} seconds</p>
+                    <p className='text-center text-md text-gray-400'>You will be redirected to the home page in {gohometime} seconds</p>
                 </div>
             </div>
         );
