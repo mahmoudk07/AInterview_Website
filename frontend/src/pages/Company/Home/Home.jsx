@@ -5,15 +5,22 @@ import { useNavigate } from 'react-router-dom'
 import Service1 from "../../../assets/service-1.png"
 import check from "../../../assets/check.svg"
 import loading from "../../../assets/loading.png"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 // import axios from 'axios'
 const Home = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   const [isManager, setIsManager] = useState("")
-  const [role , setRole] = useState("")
+  const [role, setRole] = useState("")
   const navigate = useNavigate()
   const interviewCreation = () => {
     navigate('/createInterview')
   }
-  const companyCreation = () => { 
+  const companyCreation = () => {
     navigate('/addCompany')
   }
   const brainwaveServices = [
@@ -58,38 +65,77 @@ const Home = () => {
       // fetchCompanies()
       // fetchInterviews()
     }
-    console.log(role , isManager)
+    console.log(role, isManager)
   }, [])
   const handleRole = () => {
     if (role === "manager" && isManager !== "None")
       return (
         <div className=' justify-center flex flex-row space-x-3'>
-            <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
-            <button className='green-button' onClick={() => navigate('/ReadyTemp')}>View ready Templates</button>
+          <button className='interview-button' onClick={interviewCreation}>Create Interview</button>
+          <button className='green-button' onClick={() => navigate('/ReadyTemp')}>View ready Templates</button>
         </div>
       )
-    else if(role === "manager" && isManager === "None")
+    else if (role === "manager" && isManager === "None")
       return <button className='interview-button' onClick={companyCreation}>Add your company</button>
     else
       return ""
   }
+  const [feedback, setFeedback] = useState('');
+  const userrole = () => {
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      toast.success('You submitted your feedback');
+      setFeedback('');
+    };
+
+    if (role === "user")
+      return (
+        <div className=' mt-[5%] flex flex-row flex-wrap justify between  gap-x-[250px] mb-[6%]'>
+          <div data-aos='fade-right' data-aos-duration='2000'>
+            <span className='text-white font-bold text-5xl'>Feedback providing</span>
+            <p className='text-white text-xl'>if you are facing any issues you can give us your feedback</p>
+          </div>
+
+          <div className='flex flex-col justify-center ' data-aos='fade-left' data-aos-duration='2000'>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-5'>
+              <textarea
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                className='p-2 w-96 rounded bg-transparent text-white border border-borderColor focus:outline-none focus:border-blue-500 transition'
+                rows="5"
+                placeholder='Your feedback here...'
+              />
+              <button
+                type='submit'
+                className='green-button'
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+          <ToastContainer position="top-center" />
+        </div>
+
+      )
+  }
   return (
-    <div className = 'w-full min-h-[100vh] overflow-x-hidden'>
+    <div className='w-full min-h-[100vh] overflow-x-hidden'>
       <Header />
-      <div className='main-section'>
+      <div className='main-section' data-aos='fade-down' data-aos-duration='2000'>
         <div className='text-center'>
           <span className='block text-3xl font-bold text-gray-200 mb-[15px]'>Seamless Interview Management Platform </span>
           <span className='block font-bold text-gray-200 text-2xl'>Make Your Interview Process Easy!</span>
           {handleRole()}
         </div>
-        <div className = 'text-center'>
-          <img src = {AI_Image} className = 'h-[500px]' alt = "AI" />
+        <div className='text-center'>
+          <img src={AI_Image} className='h-[500px]' alt="AI" />
         </div>
       </div>
-      <div className = 'text-center mb-[50px]'>
+      <div className='text-center mb-[50px]'>
         <span className='text-white font-bold text-3xl'>Transforming Recruitment with AI</span>
       </div>
-      <div className = 'w-full px-[10%]'>
+      <div className='w-full px-[10%]' data-aos='fade-down' data-aos-duration='2000'>
         <div className="relative z-1 flex items-center h-[39rem] mb-5 p-8 border border-[#FFFFFF1A] rounded-3xl overflow-hidden lg:p-20 xl:h-[46rem]">
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none md:w-3/5 xl:w-auto">
             <img
@@ -111,7 +157,7 @@ const Home = () => {
                   key={index}
                   className="flex items-start py-4 border-t border-n-6 border-[#252180] text-white"
                 >
-                  <img width={24} height={24} src={check} alt = "Service" />
+                  <img width={24} height={24} src={check} alt="Service" />
                   <p className="ml-4">{item}</p>
                 </li>
               ))}
@@ -123,7 +169,9 @@ const Home = () => {
             <img className="w-5 h-5 mr-4" src={loading} alt="Loading" />
             <span className='text-white'>Evaluating Candidate Performance...</span>
           </div>
+
         </div>
+        {userrole()}
       </div>
     </div>
   )
