@@ -23,6 +23,7 @@ const Header = () => {
         <a href="/UserProfile" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Profile</a>
         <a href="/UserInterviews" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Interviews</a>
         <a href="/UserCompanies" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Companies</a>
+        <a href="/Emails" className={`header-links ${isOpen ? 'w-full p-2 hover:bg-gray-400 duration-700' : ''}`}>Emails</a>
       </>)
     else
       return (<>
