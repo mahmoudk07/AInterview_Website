@@ -16,7 +16,7 @@ const Template = ({ title, questions, job_title, job_description, job_opportunit
             [`Q${index + 1}`]: question.question,
             Answer: question.answer,
             hint_keywords: question.keywords.join(', '),
-            type: 'Technical'
+            Type: 'Technical'
         }))
     });
 
