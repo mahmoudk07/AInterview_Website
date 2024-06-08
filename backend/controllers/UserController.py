@@ -6,6 +6,7 @@ from models.company import Company
 from schemas.userSchema import RegisterSchema, LoginSchema , PasswordSchema , UpdateUser
 from models.user import User
 from models.interview import Interview
+from models.scores import Scores
 from services.userServices import UserServices
 from fastapi.responses import JSONResponse
 import pymongo
@@ -225,4 +226,52 @@ async def updateUser(data: UpdateUser , user : dict = Depends(UserServices.is_au
     except pymongo.errors.DuplicateKeyError as e:
         raise HTTPException(status_code = status.HTTP_400_BAD_REQUEST , detail = "User already exists")
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "User updated successfully"})
-    
+
+@UserRoutes.patch("/sendAcceptanceEmail/{user_id}/{interview_id}" , summary = "Manager send an email to interviewee after finishing the interview")
+async def sendEmail(user_id : str , interview_id : str ,  user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    if not existed_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    user = await User.find_one(User.id == ObjectId(user_id))
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    company = await Company.find_one(Company.id == existed_user.company_id)
+    # interview_score = await Scores.find_one(Scores.interview_id == ObjectId(interview_id))
+    # interviewee_score = next((score for score in interview_score.interviewees_scores if ObjectId(score['id']) == ObjectId(user_id)), None)
+    subject = "Congratulations"
+    message = f"Dear {user.firstname} {user.lastname},\n\nI am pleased to inform you that you have been selected for the position of {interview.job_title} as {interview.job_opportunity} at {company.name}. Please contact us to discuss the next steps.\n\nBest Regards,\n{company.name}"
+    user.companies_email.append({"message" : message , "subject" : subject})
+    try:
+        await user.save()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error occurred while saving")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Email sent successfully"})
+
+@UserRoutes.patch("/sendRejectionEmail/{user_id}/{interview_id}" , summary = "Manager send a rejection email to interviewee after finishing the interview")
+async def sendRejectionEmail(user_id : str , interview_id : str ,  user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    if not existed_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    user = await User.find_one(User.id == ObjectId(user_id))
+    interview = await Interview.find_one(Interview.id == ObjectId(interview_id))
+    company = await Company.find_one(Company.id == existed_user.company_id)
+    # interview_score = await Scores.find_one(Scores.interview_id == ObjectId(interview_id))
+    # interviewee_score = next((score for score in interview_score.interviewees_scores if ObjectId(score['id']) == ObjectId(user_id)), None)
+    subject = "Rejection"
+    message = f"Dear {user.firstname} {user.lastname},\n\nI regret to inform you that you have not been selected for the position of {interview.job_title} as {interview.job_opportunity} at {company.name}. We appreciate your time and effort.\n\nBest Regards,\n{company.name}"
+    user.companies_email.append({"message" : message , "subject" : subject})
+    try:
+        await user.save()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error occurred while saving")
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"message": "Email sent successfully"})
+
+@UserRoutes.get("/get_emails" , summary = "Get emails")
+async def get_emails(page : int = Query(0 , gt = 0) ,user: dict = Depends(UserServices.is_authorized_user)):
+    existed_user = await UserServices.get_user_by_email(user["email"])
+    emails = existed_user.companies_email
+    limit = 6
+    skip = (page - 1) * limit
+    total_count = len(emails)
+    total_pages = (total_count + limit - 1) // limit
+    emails = emails[skip:skip + limit]
+    return JSONResponse(status_code = status.HTTP_200_OK , content = {"emails": emails , "totalPages": total_pages})

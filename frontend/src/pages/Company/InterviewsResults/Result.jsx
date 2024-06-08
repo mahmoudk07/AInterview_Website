@@ -6,9 +6,12 @@ import { useSelector } from 'react-redux';
 import { Spinner } from '@material-tailwind/react';
 import { ImSad } from "react-icons/im";
 import axios from "axios"
-const TABLE_HEAD = ["Member", "Email", "Technical Score" , "Audio Score" , "Video Score" , "MCQ/TF Score" , "Final Score"];
+import Modal from '../../../components/Modal/Modal';
+const TABLE_HEAD = ["Member", "Email", "Technical Score" , "Audio Score" , "Video Score" , "MCQ/TF Score" , "Final Score" , '' , ''];
 const Results = () => {
   const { id } = useParams()
+  const [isClicked, setIsClicked] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const { isLoading } = useSelector((state) => state.Manager)
   const [totalPages, setTotalPages] = useState(null)
   const [data, setData] = useState(null)
@@ -27,6 +30,9 @@ const Results = () => {
     setActive(active - 1);
     setData(null)
   };
+  const closeModal = () => {
+    setShowModal(false)
+  }
   const fetchingScores = async () => {
     await axios.get(`${process.env.REACT_APP_BASE_URL}/scores/get_scores/${id}?page=${active}`, {
       headers: {
@@ -36,6 +42,24 @@ const Results = () => {
     })
       .then((response) => { console.log(response); setTotalPages(response.data.total_pages); setData(response.data.scores)}).catch((error) => console.log(error))
   }
+  const handleAccept = async (user_id) => {
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/sendAcceptanceEmail/${user_id}/${id}`, {} ,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then((response) => { console.log(response); setShowModal(true) }).catch((error) => console.log(error))
+  }
+  const handleReject = async (user_id) => {
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/sendRejectionEmail/${user_id}/${id}`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then((response) => { console.log(response); setShowModal(true) }).catch((error) => console.log(error))
+  }
   useEffect(() => {
     fetchingScores()
     // eslint-disable-next-line
@@ -43,11 +67,12 @@ const Results = () => {
   return (
     <div className="w-full min-h-[85vh] overflow-x-hidden mt-[100px] flex justify-center">
       <Header />
+      <Modal show={showModal} close={closeModal} message="Email sent successfully to interviewee" /> 
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
       {data && data?.length !== 0 && !isLoading ? (
-        <div className="min-w-[70%] mb-[50px]">
+        <div className="min-w-[75%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
               Interviewees Scores
@@ -112,7 +137,7 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {nlp_Score}%
+                                {nlp_Score}
                               </Typography>
                             </div>
                           </td>
@@ -123,7 +148,7 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {audio_Score}%
+                                {audio_Score}
                               </Typography>
                             </div>
                           </td>
@@ -134,7 +159,7 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {images_Score}%
+                                {images_Score}
                               </Typography>
                             </div>
                           </td>
@@ -156,9 +181,15 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {final_Score}%
+                                {final_Score}
                               </Typography>
                             </div>
+                          </td>
+                          <td className={classes}>
+                            <button className='text-white font-bold bg-red-600 rounded-[20px] px-[17%] py-[8%] mr-4' onClick={() => handleReject(id)}>Reject</button>
+                          </td>
+                          <td className={classes}>
+                            <button className='text-white font-bold bg-green-600 rounded-[20px] px-[17%] py-[8%] mr-4' onClick={() => handleAccept(id)}>Accept</button>
                           </td>
                         </tr>
                       );
