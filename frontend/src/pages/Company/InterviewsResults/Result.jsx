@@ -179,7 +179,7 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {exam_Score ? exam_Score + '%' : '-'}
+                                {exam_Score ? exam_Score + '' : '-'}
                               </Typography>
                             </div>
                           </td>
