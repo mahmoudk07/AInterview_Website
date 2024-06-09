@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
 import Header from "../../../components/Header/Header";
 import { Card, Typography, Button, CardBody, Avatar, IconButton } from "@material-tailwind/react";
 import { useSelector } from 'react-redux';
@@ -7,9 +8,11 @@ import { Spinner } from '@material-tailwind/react';
 import { ImSad } from "react-icons/im";
 import axios from "axios"
 import Modal from '../../../components/Modal/Modal';
+import { getAllScores } from '../../../services/manager/managerSlice';
 const TABLE_HEAD = ["Member", "Email", "Technical Score" , "Audio Score" , "Video Score" , "MCQ/TF Score" , "Final Score" , '' , ''];
 const Results = () => {
   const { id } = useParams()
+  const dispatch = useDispatch()
   const [isClicked, setIsClicked] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const { isLoading } = useSelector((state) => state.Manager)
@@ -34,13 +37,19 @@ const Results = () => {
     setShowModal(false)
   }
   const fetchingScores = async () => {
-    await axios.get(`${process.env.REACT_APP_BASE_URL}/scores/get_scores/${id}?page=${active}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    // await axios.get(`${process.env.REACT_APP_BASE_URL}/scores/get_scores/${id}?page=${active}`, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //   }
+    // })
+    //   .then((response) => { console.log(response); setTotalPages(response.data.total_pages); setData(response.data.scores)}).catch((error) => console.log(error))
+    await dispatch(getAllScores({ id, active })).then((response) => {
+      if (!response.error) {
+        setTotalPages(response.payload.total_pages)
+        setData(response.payload.scores)
       }
     })
-      .then((response) => { console.log(response); setTotalPages(response.data.total_pages); setData(response.data.scores)}).catch((error) => console.log(error))
   }
   const handleAccept = async (user_id) => {
     await axios.patch(`${process.env.REACT_APP_BASE_URL}/auth/sendAcceptanceEmail/${user_id}/${id}`, {} ,{
@@ -71,7 +80,7 @@ const Results = () => {
       {isLoading ? <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50'>
         <Spinner color="blue" size="5xl" className="h-12 w-12" />
       </div> : ''}
-      {data && data?.length !== 0 && !isLoading ? (
+      {data && !isLoading ? (
         <div className="min-w-[75%] mb-[50px]">
           <Card className="bg-transparent border-[1px] border-borderColor mb-[50px]">
             <div className="w-[100%] text-center mt-[15px] text-[25px] font-bold text-white">
@@ -229,7 +238,7 @@ const Results = () => {
               </Button>
             </div> : ''
           }
-        </div>) : data?.length === 0 && !isLoading ? (
+        </div>) : !isLoading && !data ? (
           <div className="flex flex-col items-center justify-center gap-4">
             <ImSad className="text-9xl text-gray-400" />
             <h1 className="text-3xl text-gray-400 font-bold">No Scores Available</h1>

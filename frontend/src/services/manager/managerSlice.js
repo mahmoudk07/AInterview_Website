@@ -106,6 +106,21 @@ export const fetchingInterviewees = createAsyncThunk('manager/interviewees', asy
         return rejectWithValue(error.response.data)
     }
 })
+export const getAllScores = createAsyncThunk('manager/getAllScores', async (data, thunkAPI) => { 
+    const { rejectWithValue } = thunkAPI
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/scores/get_scores/${data.id}?page=${data.active}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        return response.data
+    }
+    catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
 const initialState = {
     website: "",
     name: "",
@@ -186,6 +201,17 @@ const managerSlice = createSlice({
           state.error = null;
         });
         builder.addCase(fetchingInterviewees.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload.detail;
+        });
+        builder.addCase(getAllScores.pending, (state, action) => {
+          state.isLoading = true;
+        });
+        builder.addCase(getAllScores.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.error = null;
+        });
+        builder.addCase(getAllScores.rejected, (state, action) => {
           state.isLoading = false;
           state.error = action.payload.detail;
         });
