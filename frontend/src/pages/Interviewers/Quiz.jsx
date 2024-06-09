@@ -213,7 +213,7 @@ const Quiz = () => {
                 }
             });
             if (response.status === 200) {
-                console.log('Megz API Called Correctly:', response.data);
+                console.log('Megz API Called Correctly:', response);
             }
         } catch (error) {
             console.error('Error finishing interview:', error);
@@ -244,9 +244,10 @@ const Quiz = () => {
                 const answer = answers[questionKey];
                 const UserID = question.UserId;
                 const InterviewID = question.InterviewId;
-                filesToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
+                
 
                 if (question.Type === 'MCQ' || question.Type === 'TF') {
+                    filesToServer.push("");
                     if (answer === question.Answer) {
                         newScore++;
                     }
@@ -254,6 +255,7 @@ const Quiz = () => {
                 }
 
                 if (question.Type === 'Technical') {
+                    filesToServer.push(UserID.concat("_", InterviewID, "_", questionKey, ".webm"));
                     return answer || '';
                 }
 
@@ -271,8 +273,9 @@ const Quiz = () => {
 
     useEffect(() => {
         if (allUploaded && quizFinished && finalized) {
-            console.log('Megz API Called Correctly:', SentFileToServer);
+            // console.log('Megz API Called Correctly:', SentFileToServer);
             Megz_Finished_Interview(SentFileToServer);
+            console.log(score);
             setStartGohomeCountdown(true);
             setGohometime(5);
         }
