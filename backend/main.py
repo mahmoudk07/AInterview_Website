@@ -20,6 +20,15 @@ app.add_middleware(
 
 app.include_router(router)
 
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/test")
+def read_test():
+    return {"message": "Nginx is working"}
+
 @app.exception_handler(RequestValidationError)
 async def validationErrorHandler(request: Request , exc: RequestValidationError):
     error_details = [
@@ -33,6 +42,7 @@ async def startup_event():
     successed = await database_connection(connectionString)
     if not successed:
         raise HTTPException(status_code=500, detail="Database connection failed")
+
 
 app.add_event_handler("startup",startup_event)
 if __name__ == "__main__":
