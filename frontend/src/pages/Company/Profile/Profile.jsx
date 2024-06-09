@@ -110,8 +110,13 @@ const Profile = () => {
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
                       <div className='flex items-center justify-between p-[5%]'>
-                          <span className='text-gray-300'>Current Interviews</span>
+                          <span className='text-gray-300'>Upcoming Interviews</span>
                           <span className='text-green-700 font-bold'>{interviewsStatus.find(status => status._id === "upcoming")?.count || 0}</span>
+                      </div>
+                      <hr className='border-borderColor outline-none b-[20px]' />
+                      <div className='flex items-center justify-between p-[5%]'>
+                          <span className='text-gray-300'>Current Interviews</span>
+                          <span className='text-green-700 font-bold'>{interviewsStatus.find(status => status._id === "current")?.count || 0}</span>
                       </div>
                       <hr className='border-borderColor outline-none b-[20px]' />
                       <div className='flex items-center justify-between p-[5%]'>
