@@ -85,7 +85,10 @@ async def get_interviews(page : int = Query(1 , gt=0), payload : dict = Depends(
         elif interview.Date > datetime.datetime.now().strftime("%Y-%m-%d"):
             Status = "upcoming"
         else:
-            Status = "current"
+            if interview.Time > datetime.datetime.now().time().strftime("%H:%M"):
+             Status = "upcoming"
+            else:
+             Status = "current"
         operations.append(UpdateOne({'_id': interview.id}, {'$set': {'status': Status}}))
     if operations:
         try:
@@ -164,16 +167,50 @@ async def get_interviewees_by_id(id : str , page : int = Query(1 , gt = 0), _ : 
         interviewees.append(user)
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviewees": interviewees , "totalPages": total_pages})
 
+# @InterviewRoutes.get("/get_all_interviews" , summary = "Get all interviews")
+# async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(UserServices.is_authorized_user)):
+#     limit : int = 6
+#     skip = (page - 1) * limit
+#     interviews = await Interview.find().to_list()
+#     interviews = [extract_interview_fields(interview) for interview in interviews if interview.status in ["current" , "upcoming"] ]
+#     total_count = len(interviews)
+#     total_pages = (total_count + limit - 1) // limit
+#     interviews = interviews[skip:skip + limit]
+#     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages , "totalCount": total_count})
+
 @InterviewRoutes.get("/get_all_interviews" , summary = "Get all interviews")
 async def get_all_interviews(page : int = Query(1 , gt=0) , _ : dict = Depends(UserServices.is_authorized_user)):
     limit : int = 6
     skip = (page - 1) * limit
     interviews = await Interview.find().to_list()
+    operations = []
+    for interview in interviews:
+        if interview.Date < datetime.datetime.now().strftime("%Y-%m-%d"):
+            if interview.Time > datetime.datetime.now().time().strftime("%H:%M"):
+                Status = "current"
+            else:
+                Status = "finished"
+        elif interview.Date > datetime.datetime.now().strftime("%Y-%m-%d"):
+            Status = "upcoming"
+        else:
+            if interview.Time > datetime.datetime.now().time().strftime("%H:%M"):
+                Status = "upcoming"
+            else:
+                Status = "current"
+        operations.append(UpdateOne({'_id': interview.id}, {'$set': {'status': Status}}))
+    if operations:
+        try:
+            result = await Interview.get_motor_collection().bulk_write(operations)
+            print("Bulk update result:", result.bulk_api_result)
+            interviews = await Interview.find().to_list()
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     interviews = [extract_interview_fields(interview) for interview in interviews if interview.status in ["current" , "upcoming"] ]
     total_count = len(interviews)
     total_pages = (total_count + limit - 1) // limit
     interviews = interviews[skip:skip + limit]
     return JSONResponse(status_code = status.HTTP_200_OK , content = {"interviews": interviews , "totalPages" : total_pages , "totalCount": total_count})
+
 
 @InterviewRoutes.post("/Process_Interview" , summary = "Run AI Models")
 async def detect(input_data:ProcessingInterviews):

@@ -6,6 +6,7 @@ import { Button, IconButton } from '@material-tailwind/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getFollowedInterviews, getUserInformation } from '../../services/auth/authSlice';
+import { getAllInterviews } from '../../services/auth/authSlice';
 import axios from 'axios';
 
 export const InterviewsContext = createContext(null);
@@ -13,7 +14,7 @@ export const InterviewsContext = createContext(null);
 const UserInterviews = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading } = useSelector((state) => state.Manager);
+    const { isLoading } = useSelector((state) => state.User);
     const [interviews, setInterviews] = useState([]);
     const [isDeleted, setIsDeleted] = useState(false);
     const [totalPages, setTotalPages] = useState(null);
@@ -39,21 +40,30 @@ const UserInterviews = () => {
         });
     };
 
-    const fetchAllInterviews = async (page) => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_all_interviews`, {
-                params: { page },
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setInterviews(response.data.interviews);
-            setTotalPages(response.data.totalPages);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // const fetchAllInterviews = async (page) => {
+    //     try {
+    //         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/interview/get_all_interviews`, {
+    //             params: { page },
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //             }
+    //         });
+    //         setInterviews(response.data.interviews);
+    //         setTotalPages(response.data.totalPages);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+    const fetchAllInterviews = async () => {
+        await dispatch(getAllInterviews(active)).then((response) => {
+            if (!response.error)
+            {
+                setInterviews(response.payload.interviews)
+                setTotalPages(response.payload.totalPages)
+            }
+        })
+    }
 
     const fetchCompaniesInterviews = async (page) => {
         try {
@@ -94,7 +104,7 @@ const UserInterviews = () => {
             fetchFollowedInterviews();
         }
         setInterviews(null);
-        if (isAllClicked) fetchAllInterviews(active);
+        if (isAllClicked) fetchAllInterviews();
         if (isCompaniesClicked) fetchCompaniesInterviews(active);
     }, [active, isDeleted, isAllClicked, isCompaniesClicked]);
 
