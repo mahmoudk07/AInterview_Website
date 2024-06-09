@@ -108,7 +108,7 @@ const Results = () => {
                 </thead>
                 <tbody>
                   {data?.map(
-                    ({ id, image, firstname, email, images_Score, lastname, audio_Score, nlp_Score, final_Score, MCQ_Score}, index) => {
+                    ({ id, image, firstname, email, images_Score, lastname, audio_Score, nlp_Score, final_Score, exam_Score}, index) => {
                       const isLast = index === data.length - 1;
                       const classes = isLast
                         ? "p-4"
@@ -179,7 +179,7 @@ const Results = () => {
                                 color="blue-gray"
                                 className="text-white text-center"
                               >
-                                {MCQ_Score ? MCQ_Score + '%' : '-'}
+                                {exam_Score ? exam_Score + '%' : '-'}
                               </Typography>
                             </div>
                           </td>
