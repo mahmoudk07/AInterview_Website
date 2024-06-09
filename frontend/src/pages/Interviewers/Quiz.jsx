@@ -148,7 +148,11 @@ const Quiz = () => {
 
                             await upload.done();
                             console.log('File uploaded successfully!');
-                            setCounter(counter + 1);
+                            setCounter(prevCounter => {
+                                const newCounter = prevCounter + 1;
+                                console.log('Counter to be checked under:', newCounter);
+                                return newCounter;
+                            })
                         } catch (error) {
                             console.error('Error uploading file:', error);
                         }
@@ -164,6 +168,8 @@ const Quiz = () => {
     };
 
     useEffect(() => {
+        console.log('Counter:', counter);
+        console.log('Total Technical Questions:', totalTechnicalQuestions)
         if (counter === totalTechnicalQuestions && counter !== 0) {
             console.log('All videos have been uploaded!');
             setAllUploaded(true);
@@ -366,7 +372,7 @@ const Quiz = () => {
                     ))}
                     {Type === 'Technical' && (
                         <div className='flex flex-col items-center'>
-                            <button  onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
+                            <button onClick={handleRecordVideo} className='bg-blue-600 text-white p-2 rounded-md w-full mt-4'>
                                 {recording ? 'Stop Recording' : 'Record Video'}
                             </button>
                         </div>
