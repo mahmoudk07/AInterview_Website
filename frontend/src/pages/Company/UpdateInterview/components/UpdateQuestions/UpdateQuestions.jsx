@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UpdateInterviewContext } from '../../UpdateInterview'
 import { Input } from '@material-tailwind/react'
 const UpdateQuestions = () => {
   const { data, setData, setIsInputChanged } = useContext(UpdateInterviewContext)
+  const [questionType, setQuestionType] = useState("MCQ")
   const addQuestion = (e, index) => {
     const newQuestions = [...data.questions]
     newQuestions[index][`Q${index + 1}`] = e.target.value
@@ -14,6 +15,17 @@ const UpdateQuestions = () => {
     setData({ ...data, questions: newAnswer })
   }
   const addType = (e, index) => {
+    if (e.target.value === 'MCQ' || e.target.value === 'TF') {
+      if (!data.questions[index].hasOwnProperty('choices'))
+        data.questions[index]['choices'] = ""
+      delete data.questions[index]['hint_keywords'];
+    }
+    else {
+      data.questions[index]['hint_keywords'] = ""
+      if (data.questions[index].hasOwnProperty('choices')) {
+        delete data.questions[index]['choices'];
+      }
+    }
     const newType = [...data.questions]
     newType[index]['Type'] = e.target.value
     setData({ ...data, questions: newType })
@@ -23,15 +35,29 @@ const UpdateQuestions = () => {
     newKeywords[index]['hint_keywords'] = e.target.value
     setData({ ...data, questions: newKeywords })
   }
+  const addChoices = (e, index) => {
+    const newChoices = [...data.questions]
+    newChoices[index]['choices'] = e.target.value
+    setData({ ...data, questions: newChoices })
+  }
+  console.log(data)
   return (
     <div className='mt-[60px]'>
       {
         data?.questions.map((question, index) => (
           <div key={index} className='flex-col space-y-2 mb-[20px] bg-transparent p-[3%] border-[2px] border-gray-600 rounded-[10px]'>
             <Input type="text" label={`Question ${index + 1}`} variant='outlined' defaultValue={question[`Q${index + 1}`]} color='white' onChange={(e) => { setIsInputChanged(true); addQuestion(e, index) }} />
-            <Input type="text" label="Type" variant='outlined' color='white' defaultValue={question.Type} onChange={(e) => { setIsInputChanged(true); addType(e, index) }} />
+            {/* <Input type="text" label="Type" variant='outlined' color='white' defaultValue={question.Type} onChange={(e) => { setIsInputChanged(true); addType(e, index) }} /> */}
+            <select defaultValue = {question.Type} className='bg-transparent text-white border-[1px] border-[white] rounded-[5px] px-[10px] py-[10px] w-full text-[14px] appearance-none outline-none' onChange={(e) => { setQuestionType(e.target.value); addType(e, index); console.log(e.target.value) }}>
+              <option>Select Question type</option>
+              <option value="MCQ">MCQ</option>
+              <option value="TF">TF</option>
+              <option value="Technical">Technical</option>
+            </select>
             <Input type="text" label="Answer" variant='outlined' color='white' defaultValue={question.Answer} onChange={(e) => { setIsInputChanged(true); addAnswer(e, index) }} />
-            <Input type="text" label="Keyowrds" variant='outlined' color='white' defaultValue={question.hint_keywords} onChange={(e) => { setIsInputChanged(true); addKeyowrds(e, index) }} />
+            {(data?.questions[index]['Type'] === 'MCQ' || data?.questions[index]['Type'] === 'TF') && <Input type="text" label="Choices" variant='outlined' color='white' defaultValue={question.choices} onChange={(e) => { setIsInputChanged(true); addChoices(e, index) }} />}
+            {/* <Input type="text" label="Keyowrds" variant='outlined' color='white' defaultValue={question.hint_keywords} onChange={(e) => { setIsInputChanged(true); addKeyowrds(e, index) }} /> */}
+            {data?.questions[index]["Type"] === 'Technical' && <Input type="text" label="Keywords" variant='outlined' color='white' defaultValue={question.hint_keywords} onChange={(e) => { setIsInputChanged(true); addKeyowrds(e, index) }} />}
           </div>
         ))
       }
