@@ -138,7 +138,7 @@ For any questions or suggestions, please contact:
 
 - **Ahmed Tarek:** ahmed.tarek@example.com
 - **Ahmed Magdy:** ahmed.magdy@example.com
-- **Mahmoud Khaled:** mahmoud.khaled@example.com
-- **Ziad Ezzat:** ziad.ezzat@example.com
+- **Mahmoud Khaled:** mahmoudkk177@gmail.com
+- **Ziad Ezzat:** ziadsamadony@gmail.com
 
 Under the supervision of Dr. Ayman Abou El Maaty.
