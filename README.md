@@ -93,7 +93,7 @@ The system follows a producer-consumer architecture:
 - Receive feedback and scores.
 - Understand areas of improvement.
 
-![Results and Outcomes](path/to/results-and-outcomes.png)
+![Results and Outcomes]([path/to/results-and-outcomes.png](https://firebasestorage.googleapis.com/v0/b/ainterview-5e7bf.appspot.com/o/images%2FScreenshot%202024-07-11%20at%2012.47.00%E2%80%AFAM.png?alt=media&token=7c7b8897-262a-44fe-b988-a50f9cb0df97))
 
 ## Future Enhancements
 
