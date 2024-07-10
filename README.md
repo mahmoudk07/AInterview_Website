@@ -12,8 +12,6 @@ AÏnterview is an AI-assisted interviewing toolkit designed to enhance the inter
 - [Approach](#approach)
 - [Results and Outcomes](#results-and-outcomes)
 - [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Introduction
@@ -100,20 +98,6 @@ The system follows a producer-consumer architecture:
 
 - **Multiple Languages:** Support for international companies and interviews in different languages.
 - **Enhanced Dashboards:** Dynamic visuals for interview insights.
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
