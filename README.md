@@ -43,7 +43,7 @@ The system follows a producer-consumer architecture:
 - **Producer:** Handles video uploads to AWS S3 and sends job details to RabbitMQ.
 - **Consumer:** Processes the videos using three main modules (Facial Expression Recognition, Vocal Analysis, NLP).
 
-![System Architecture](path/to/architecture-diagram.png)
+![System Architecture](https://firebasestorage.googleapis.com/v0/b/ainterview-5e7bf.appspot.com/o/images%2FScreenshot%202024-07-11%20at%2012.53.30%E2%80%AFAM.png?alt=media&token=6fa88123-e328-4187-954d-2e87f060b6db)
 
 ## Modules in Depth
 
