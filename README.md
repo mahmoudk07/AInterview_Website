@@ -12,6 +12,7 @@ AÏnterview is an AI-assisted interviewing toolkit designed to enhance the inter
 - [Approach](#approach)
 - [Results and Outcomes](#results-and-outcomes)
 - [Future Enhancements](#future-enhancements)
+- [How to Run the Project](#how-to-run-the-project)
 - [Contact](#contact)
 
 ## Introduction
@@ -82,12 +83,12 @@ The system follows a producer-consumer architecture:
 
 ## Results and Outcomes
 
-### On Company's side
+### On Company's Side
 
 - Detailed score reports for each interviewee.
 - Enhanced decision-making based on comprehensive interview data.
 
-### On Interviewee's side
+### On Interviewee's Side
 
 - Receive feedback and scores.
 - Understand areas of improvement.
@@ -98,6 +99,38 @@ The system follows a producer-consumer architecture:
 
 - **Multiple Languages:** Support for international companies and interviews in different languages.
 - **Enhanced Dashboards:** Dynamic visuals for interview insights.
+
+## How to Run the Project
+
+### Frontend
+
+1. Navigate to the `frontend` folder:
+    ```bash
+    cd frontend
+    ```
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
+3. Start the development server:
+    ```bash
+    npm start
+    ```
+
+### Backend
+
+1. Navigate to the `backend` folder:
+    ```bash
+    cd backend
+    ```
+2. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3. Start the server:
+    ```bash
+    uvicorn main:app --reload
+    ```
 
 ## Contact
 
