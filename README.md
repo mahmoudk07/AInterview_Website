@@ -136,7 +136,7 @@ The system follows a producer-consumer architecture:
 
 For any questions or suggestions, please contact:
 
-- **Ahmed Tarek:** ahmed.tarek@example.com
+- **Ahmed Tarek:** ahmedtarek1754@gmail.com
 - **Ahmed Magdy:** ahmed.magdy@example.com
 - **Mahmoud Khaled:** mahmoudkk177@gmail.com
 - **Ziad Ezzat:** ziadsamadony@gmail.com
